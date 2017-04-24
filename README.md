@@ -14,3 +14,4 @@ The scripts may need the following environment variables:
 Each scenario should have its own folder. Generated output files should be named `<name>.csv`.
 To run a scenario, simply start the 'run.sh' file in the folder. To plot the results, eventually adjust plot title and `filename` variable in `plot.py`. Then run `./plot.py` or `./plot.py n` for only console output of the data.
 
+To abort a running script, press CTRL+Z, then execute `kill %%`.
