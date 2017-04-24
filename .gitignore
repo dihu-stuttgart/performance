@@ -1,0 +1,11 @@
+*.ex*
+*.out
+out*
+fort.*
+*profile*
+tmp*
+profiling*
+EMG.out*
+duration.0*
+pwd.txt
+iterations*
