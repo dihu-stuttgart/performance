@@ -43,7 +43,7 @@ DebuggingOnlyRunShortPartOfSimulation = F    # abort simulation after first stim
 # ------------- numerics -------------------
 TimeStop = 3.0                  # total simulated time
 ODETimeStep = 0.0001            # timestep size for 0D problem
-PDETimeStep = 0.0005    ! 0.005 # timestep size for 1D problem
+PDETimeStep = 0.005    ! 0.005 # timestep size for 1D problem
 ElasticityTimeStep = 0.10000000001  # timestep size for 3D problem
 
 # solvers

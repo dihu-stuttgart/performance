@@ -7,6 +7,10 @@ import numpy as np
 import subprocess
 import datetime
 import time
+import os
+
+# set environment variable
+os.environ['OPENCMISS_SCE_FILE'] = 'small.sce'
 
 def check_exit():
   
