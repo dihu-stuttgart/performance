@@ -25,11 +25,12 @@ def check_exit():
 
 def run(xi1,ode,msolver,mprecond):   
   print "xi1={0}".format(int(xi1))
-  command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR xi1={}, ODESolverId={}, MonodomainSolverId={}, MonodomainPreconditionerId={}"\
+  command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR xi1={} ODESolverId={} MonodomainSolverId={} MonodomainPreconditionerId={}"\
   .format(int(xi1), int(ode), int(msolver), int(mprecond))
 
   #print command
   try:
+    print command
     subprocess.check_call(command, shell=True)
   except:
     pass
@@ -42,9 +43,16 @@ a = 1
 ode = 1       # 1 explicit Euler, 2 BDF
 msolver = 1   # 1 SOLVER_DIRECT_LU, 2 SOLVER_ITERATIVE_GMRES, 3 SOLVER_ITERATIVE_CONJUGATE_GRADIENT, 4 SOLVER_ITERATIVE_CONJGRAD_SQUARED
 precond = 1   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PRECONDITIONER, 4 SOR_PRECONDITIONER, 5 INCOMPLETE_CHOLESKY_PRECONDITIONER, 6 INCOMPLETE_LU_PRECONDITIONER, 7 ADDITIVE_SCHWARZ_PRECONDITIONER
+previous_xi1 = 0
 
-for n in range(n_start,1000):
-  xi1 = np.round(n**(1.2))
+print previous_xi1
+
+for n in range(n_start,500):
+  xi1 = np.round(n**(1.5))
+
+  if (xi1 == previous_xi1):
+    continue
+  previous_xi1 = xi1
   
   # CG
   precond = 1

@@ -1,1 +1,4 @@
-python run.py
+
+while true; do
+  python run.py
+done
