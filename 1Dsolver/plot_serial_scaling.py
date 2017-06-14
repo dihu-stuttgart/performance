@@ -234,7 +234,7 @@ def extract_data(data):
       new_data[index] = float(new_data[index])     if isfloat(new_data[index])    else 0.0
       
     # define sorting key
-    key = "{:04d}|{:01d}|{:01d}".format(new_data[7], new_data[99], new_data[100])
+    key = "{:04d}|{:01d}|{:01d}".format(new_data[8], new_data[99], new_data[100])
       
     # store extracted values
     if key not in datasets:
@@ -345,7 +345,7 @@ for key in datasets:
 ###############################################################
 #######################################################
 # plot
-# x-axis: n elements
+# x-axis: n M elements
 # y-axis: total time
 
 plt.rcParams.update({'font.size': 16})
@@ -361,7 +361,7 @@ for key in datasets:
   dataset = datasets[key]['value']
   variances = datasets[key]['variance']
   nproc = dataset[2]
-  nFE = dataset[7]
+  nMelements = dataset[8]
   main_sim = dataset[13]
   
 # 13 duration main sim
@@ -377,7 +377,7 @@ for key in datasets:
   for plotkey in [15, 17, 18, 19, 96]:
     
     
-    xvalue = nFE
+    xvalue = nMelements
     yvalue = dataset[plotkey]
     yvalue_variance = variances[plotkey]
       
@@ -410,13 +410,13 @@ colors = {
   15: "ko-",
   17: "yo-",
   "parabolic1|1": "co-",
-  "parabolic2|1": "ro--",
+  "parabolic2|1": "co--",
   "parabolic3|1": "ro-.",
   "parabolic3|2": "ro:",
-  "parabolic3|3": "rd-",
-  "parabolic3|4": "rd--",
-  "parabolic3|5": "rd-.",
-  "parabolic3|6": "rd:",
+  "parabolic3|3": "r+-",
+  "parabolic3|4": "r+--",
+  "parabolic3|5": "r+-.",
+  "parabolic3|6": "r+:",
   "parabolic3|7": "mo-",
   "parabolic4|1": "mo--",
   18: "ro-",
@@ -459,7 +459,7 @@ ax = plt.gca()
 ax.set_yscale('log', basey=10) 
 ax.set_xscale('log', basey=10) 
 #ax.set_xticks([1,2,4,8,12,16,24,32,64])
-plt.xlabel('number of finite elements')
+plt.xlabel('number of bioelectric elements')
 plt.ylabel('duration (s)')
 plt.legend(loc='best')
 plt.grid(which='both')

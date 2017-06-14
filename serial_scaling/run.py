@@ -40,13 +40,15 @@ last_total = 0
 f = 1
 a = 1
 ode = 1       # 1 explicit Euler, 2 BDF
-msolver = 1   # 1 SOLVER_DIRECT_LU, 2 SOLVER_ITERATIVE_GMRES, 3 SOLVER_ITERATIVE_CONJUGATE_GRADIENT, 4 SOLVER_ITERATIVE_CONJGRAD_SQUARED
-precond = 1   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PRECONDITIONER, 4 SOR_PRECONDITIONER, 5 INCOMPLETE_CHOLESKY_PRECONDITIONER, 6 INCOMPLETE_LU_PRECONDITIONER, 7 ADDITIVE_SCHWARZ_PRECONDITIONER
+msolver = 3   # 1 SOLVER_DIRECT_LU, 2 SOLVER_ITERATIVE_GMRES, 3 SOLVER_ITERATIVE_CONJUGATE_GRADIENT, 4 SOLVER_ITERATIVE_CONJGRAD_SQUARED
+precond = 6   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PRECONDITIONER, 4 SOR_PRECONDITIONER, 5 INCOMPLETE_CHOLESKY_PRECONDITIONER, 6 INCOMPLETE_LU_PRECONDITIONER, 7 ADDITIVE_SCHWARZ_PRECONDITIONER
 
-for n in range(n_start,1000):
-  x = np.round(n**(1./3))
-  y = np.round((n/x)**(1./2))
-  z = np.round(n/x/y)
+for n in range(n_start,20):
+  total = 1.5**n
+
+  x = np.round(total**(1./3))   
+  y = np.round((total/x)**(1./2))  # y = sqrt(n/x), x*y*y = total
+  z = np.round(total/x/y)          # x*y*z
   total = x*y*z
   
   if total == last_total:
@@ -54,17 +56,7 @@ for n in range(n_start,1000):
  
   last_total = total
 
-  # CG
-  precond = 1
-  for msolver in [1, 2, 4]:
-    check_exit()
-    run(x,y,z,f,a,ode,msolver,precond)
-
-  # CG with different preconditioners
-  msolver = 3
-  
-  for precond in range(1,8):
-    check_exit()
-    run(x,y,z,f,a,ode,msolver,precond)
-
+  print "n=",n,",x=",x,",y=",y,",z=",z,",t=",total
+  check_exit()
+	run(x,y,z,f,a,ode,msolver,precond)
   
