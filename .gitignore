@@ -1,6 +1,7 @@
 *.ex*
 *.out
 out*
+*.pyc
 fort.*
 *profile*
 tmp*
