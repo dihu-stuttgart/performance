@@ -1,5 +1,5 @@
 # Scenario name: default values
-# Date: 24.4.17
+# Date: 24.4.17, 6.7.17
 # Author: Benjamin Maier
 # dihu-stuttgart/iron version: b54928c2f5f9e903fc71f0bf02a730727e670d47
 # dihu-stuttgart/iron-examples version: 79c9113d74e8c4d64e26b89653e35be737e18997
@@ -83,14 +83,22 @@ PhysicalLength = 3.0
 PhysicalWidth = 3.0
 PhysicalHeight = 1.5
 
-OldTomoMechanics = T            # whether to use the old mechanical description of Thomas Heidlauf that works also in parallel
+OldTomoMechanics = T            # whether to use the old mechanical description of Thomas Heidlauf that works also in parallel (deprecated, T=ModelType 0, F=ModelType 1)
+ModelType = 2                   # which physical model to use
+
+# ModelType
+# 0 "MultiPhysStrain", no. 3a, OldTomoMechanics, old model of Thomas Heidlauf, that worked in parallel from the beginning
+# 1 "MultiPhysStrain", no. 3, Model of Thomas Heidlauf, his comment in a e-mail of 25 Oct 2016: "multiscale and multiphysics active strain"
+# 2 "Titin", no. 4, with additional Titin term in stress tensor
+
 PMax = 7.5            ! N/cm^2        
 Conductivity = 0.5
 Am = 1.0
 CmFast = 1.0
 CmSlow = 1.0
 Vmax = -0.02
-InitialStretch = 1.0   ! 1.2
+InitialStretch = 1.0   ! 1.2, 1.6
+TkLinParam = 1.0                # parameter for Titin model (ModelType=2) 0: No Actin-Titin Interactions, 1: With Actin-Tintin Interaction
 
 # -------------- input files --------------------------
 InputDirectory = input                        # directory where all input files are found, relative to working directory
