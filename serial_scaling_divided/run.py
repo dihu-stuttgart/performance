@@ -25,11 +25,11 @@ def check_exit():
 
 def run(p,x,y,z,xi1,ax,ode,msolver,mprecond):
   
-  command = "mpirun -n {p} $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x={x}, y={y}, z={z}, xi1={xi1}, ax={ax} "\
-            "ODESolverId={ode}, MonodomainSolverId={msolver}, MonodomainPreconditionerId={mprecond}"\
+  command = "mpirun -n {p} $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x={x} y={y} z={z} xi1={xi1} ax={ax} "\
+            "ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
             .format(p=int(p), x=int(x), y=int(y), z=int(z), xi1=int(xi1), ax=int(ax), ode=ode, msolver=msolver, mprecond=mprecond)
 
-  print command; return
+  #print command; return
   
   # execute command
   try:
@@ -47,7 +47,7 @@ mprecond = 1   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PR
 
 for n in range(n_start,1000):
   for pp in [2, 4, 8, 16, 32]:
-    total = pp**n
+    total = pp**(n+1)
 
     if total > 65536:
       break

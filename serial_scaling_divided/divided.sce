@@ -35,7 +35,7 @@ NumberOfInSeriesFibres = 1      # number of fibres that are in a series and mech
 NumberOfElementsInAtomicPortionPerDomain = 1    # defines unsplittable blocks of 3D FE elements for the decomposition on multiple processes, alias a
 
 # ------------- debugging --------------------
-OutputTimeStepStride = 10       # write output *.exnode files every nth timestep
+OutputTimeStepStride = 1000       # write output *.exnode files every nth timestep
 EnableExportEMG = F             # if EMG should be output
 DebuggingOutput = F
 DebuggingOnlyRunShortPartOfSimulation = F    # abort simulation after first stimulation

@@ -1,11 +1,11 @@
-# Scenario name: default values
-# Date: 24.4.17
+# Scenario name: Monodomain (1D) solver testing
+# Date: 22.6.17
 # Author: Benjamin Maier
-# dihu-stuttgart/iron version: b54928c2f5f9e903fc71f0bf02a730727e670d47
-# dihu-stuttgart/iron-examples version: 79c9113d74e8c4d64e26b89653e35be737e18997
+# dihu-stuttgart/iron version: d71fbb84d163d5505e0eb6d23d1339cc55f14360
+# dihu-stuttgart/iron-examples version: a2e8742e1173dd8da93ac19a395371cd261201b8
 #
 # Designated number of Processors: 1
-# Estimated run time (walltime):
+# Estimated run time (walltime): (varying)
 #
 # Scenario file for cuboid example
 #
@@ -23,6 +23,7 @@
 # orientation: X = Xi1 = length, Y = Xi2 = width, Z = Xi3 = height
 # fibres are parallel to X axis
 
+# ----- this will be overridden by command arguments -------------
 NumberGlobalXElements = 3       # number of finite elasticty elements in x-direction, alias x
 NumberGlobalYElements = 4       # number of finite elasticty elements in y-direction, alias y
 NumberGlobalZElements = 1       # number of finite elasticty elements in z-direction, alias z
