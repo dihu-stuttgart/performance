@@ -25,6 +25,7 @@ outlier_bottom = 0
 # read csv file
 #report_filename = "serial_scaling_solvers.csv"
 report_filename = "duration.00000.csv"
+report_filename = "fibre_subdivision_run.csv"
 
 
 caption = u'Weak scaling, cuboid muscle, helium'

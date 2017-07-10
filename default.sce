@@ -32,7 +32,10 @@ NumberOfNodesInXi2 = 2          # number of fibres per FE element in Y direction
 NumberOfNodesInXi3 = 3          # number of fibres per FE element in Z direction, alias xi3
 
 NumberOfInSeriesFibres = 1      # number of fibres that are in a series and mechanically connected. This is not completely tested, set to 1, alias f
-NumberOfElementsInAtomicPortionPerDomain = 1    # defines unsplittable blocks of 3D FE elements for the decomposition on multiple processes, alias a
+
+NumberOfElementsInAtomX = 1     # x-size of an non-decomposable "atom" of finite elasticity elements, that are guaranteed to be on the same subdomain, alias ax
+NumberOfElementsInAtomY = 1     # y-size of an non-decomposable "atom" of finite elasticity elements, that are guaranteed to be on the same subdomain, alias ay
+NumberOfElementsInAtomZ = 1     # z-size of an non-decomposable "atom" of finite elasticity elements, that are guaranteed to be on the same subdomain, alias az
 
 # ------------- debugging --------------------
 OutputTimeStepStride = 10       # write output *.exnode files every nth timestep
@@ -47,13 +50,16 @@ PDETimeStep = 0.0005    ! 0.005 # timestep size for 1D problem
 ElasticityTimeStep = 0.10000000001  # timestep size for 3D problem
 
 # solvers
-ODESolverId = 1                 # 0D problem, ODE solver type: 1=explicit Euler, 2=BDF
+ODESolverId = 1                 # 0D problem, ODE solver type: 1=explicit Euler, BDF2=BDF
 MonodomainSolverId = 2          # 1D problem, solver
 MonodomainPreconditionerId = 1  # 1D problem, preconditioner
 
 # ODESolverId
 # 1 explicit Euler (default)
 # 2 BDF
+# 3 General Linear (GL)
+# 4 Crank-Nicolson
+# 5 Improved Euler (Heun's Method)
 
 # MonodomainSolverId
 # 1 SOLVER_DIRECT_LU
@@ -105,4 +111,9 @@ InputDirectory = input                        # directory where all input files 
 FiringTimesFile = MU_firing_times_10s.txt     # file that contains the time steps (rows) for each fibre (columns) when the fibre is stimulated (value 1 else 0)
 InnervationZoneFile = innervation_zone_18.txt # the position of the neuromuscular junction for each fibre
 FibreDistributionFile = MU_fibre_distribution_4050.txt    # the motor unit number distribution for the fibres
-CellMLModelFilename = standard                # the CELLML model file (XML), "standard" gets replaced by the actual standard file, depending on OldTomoMechanics
+CellMLModelFilename = standard                # the CELLML model file (XML), "standard" gets replaced by the actual standard file, depending on ModelType
+
+# CellMLModelFilename
+# ModelType = 0 (MultiPhysStrain): {InputDirectory}/slow_TK_2014_12_08.xml
+# ModelType = 1 (MultiPhysStrain): {InputDirectory}/Aliev_Panfilov_Razumova_2016_08_22.cellml
+# ModelType = 2 (Titin): {InputDirectory}/Aliev_Panfilov_Razumova_Titin_2016_10_10_noFv.cellml
