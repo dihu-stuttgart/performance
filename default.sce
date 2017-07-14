@@ -82,9 +82,10 @@ NewtonTolerance = 1.E-8                       # abs. and rel. tolerance of 3D pr
 
 # ------------- physical parameters ------------------
 
-StimValue = 20000.0             # current value with which fibres are stimulated
+StimValue = 20000.0             # total current value with which fibres are stimulated, will be distributed over stimulated nodes
+PhysicalStimulationLength = 0.1  # length of neuromuscular junction, length of line segment where stimulus is applied [cm] (set to 0 to always use 1 node)
 
-# physical dimension
+# physical dimension [cm]
 PhysicalLength = 3.0
 PhysicalWidth = 3.0
 PhysicalHeight = 1.5
