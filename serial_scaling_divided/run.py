@@ -29,7 +29,7 @@ def run(p,x,y,z,xi1,ax,ode,msolver,mprecond):
             "ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
             .format(p=int(p), x=int(x), y=int(y), z=int(z), xi1=int(xi1), ax=int(ax), ode=ode, msolver=msolver, mprecond=mprecond)
 
-  #print command; return
+  print command; return
   
   # execute command
   try:
@@ -45,8 +45,9 @@ ode = 1       # 1 explicit Euler, 2 BDF
 msolver = 1   # 1 SOLVER_DIRECT_LU, 2 SOLVER_ITERATIVE_GMRES, 3 SOLVER_ITERATIVE_CONJUGATE_GRADIENT, 4 SOLVER_ITERATIVE_CONJGRAD_SQUARED
 mprecond = 1   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PRECONDITIONER, 4 SOR_PRECONDITIONER, 5 INCOMPLETE_CHOLESKY_PRECONDITIONER, 6 INCOMPLETE_LU_PRECONDITIONER, 7 ADDITIVE_SCHWARZ_PRECONDITIONER
 
-for n in range(n_start,1000):
-  for pp in [2, 4, 8, 16, 32]:
+for pp in [2, 4, 8, 16, 32]:          # 2*number fibre subdivisions 
+  for n in range(n_start,1000):
+  #for pp in [16]:
     total = pp**(n+1)
 
     if total > 65536:
@@ -60,13 +61,7 @@ for n in range(n_start,1000):
 
     total = x*y*z
     ax = 1
-    
-    if total == last_total:
-      continue
-   
-    last_total = total
-
-    print "n=",n,",x=",x,",y=",y,",z=",z,",ax=",ax,",total=",total
+    #print "n=",n,",x=",x,",y=",y,",z=",z,",ax=",ax,",total=",total
     check_exit()
     run(pp,x,y,z,xi1,ax,ode,msolver,mprecond)
   

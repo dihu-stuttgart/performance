@@ -27,7 +27,7 @@ def run(p,x,y,z,ax):
   command = "mpirun -n {p} $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x={x}, y={y}, z={z}, ax={ax}".\
     format(p=int(p), x=int(x), y=int(y), z=int(z), ax=int(ax))
 
-  #print command; return
+  print command; return
   try:
     subprocess.check_call(command, shell=True)
   except:
