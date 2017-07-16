@@ -13,7 +13,7 @@ import os
 import domain_decomposition
 
 # set environment variable
-os.environ['OPENCMISS_SCE_FILE'] = 'divided.sce'
+os.environ['OPENCMISS_SCE_FILE'] = 'weak_scaling.sce'
 
 def check_exit():
   
@@ -36,10 +36,11 @@ def run(p,x,y,z,xi1,ax):
             "ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
             .format(p=int(p), x=int(x), y=int(y), z=int(z), xi1=int(xi1), ax=int(ax), ode=ode, msolver=msolver, mprecond=mprecond)
 
-  print command; return
+  #print command; return
   
   # execute command
   try:
+    print command
     subprocess.check_call(command, shell=True)
   except:
     pass
@@ -52,6 +53,8 @@ ode = 1       # 1 explicit Euler, 2 BDF
 msolver = 1   # 1 SOLVER_DIRECT_LU, 2 SOLVER_ITERATIVE_GMRES, 3 SOLVER_ITERATIVE_CONJUGATE_GRADIENT, 4 SOLVER_ITERATIVE_CONJGRAD_SQUARED
 mprecond = 1   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PRECONDITIONER, 4 SOR_PRECONDITIONER, 5 INCOMPLETE_CHOLESKY_PRECONDITIONER, 6 INCOMPLETE_LU_PRECONDITIONER, 7 ADDITIVE_SCHWARZ_PRECONDITIONER
 
+xi1 = 20
+
 initial_x = 16
 initial_y = 5
 initial_z = 6
@@ -61,7 +64,6 @@ for p in range(n_start,13) + [a*12 for a in range(1,6)]:
   
   for fibres_undivided in [True, False]:
     
-    xi1 = 12
     ax = 1
     ay = 1
     az = 1
@@ -119,6 +121,8 @@ for p in range(n_start,13) + [a*12 for a in range(1,6)]:
 
     # use found values
     [x,y,z] = best
+    if fibres_undivided:
+      ax = x
     
     error_p = 1.0 - float(used_number_of_processes) / p
     
