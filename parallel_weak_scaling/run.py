@@ -58,9 +58,9 @@ mprecond = 1   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PR
 
 xi1 = 20
 
-initial_x = 16
-initial_y = 5
-initial_z = 6
+initial_x = 12
+initial_y = 2
+initial_z = 8
 
 #for p in range(n_start,13) + [a*12 for a in range(1,6)]:
 for p in range(1,13) + range(12,25,2):
