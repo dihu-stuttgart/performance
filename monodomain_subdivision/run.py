@@ -29,7 +29,7 @@ def run(p,x,y,z,xi1,ax,ay,az,ode,msolver,mprecond):
             "ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
             .format(p=int(p), x=int(x), y=int(y), z=int(z), xi1=int(xi1), ax=int(ax), ay=int(ay), az=int(az), ode=ode, msolver=msolver, mprecond=mprecond)
 
-  #print command; return
+  print command; return
   
   # execute command
   try:
@@ -45,7 +45,9 @@ ode = 1       # 1 explicit Euler, 2 BDF
 msolver = 1   # 1 SOLVER_DIRECT_LU, 2 SOLVER_ITERATIVE_GMRES, 3 SOLVER_ITERATIVE_CONJUGATE_GRADIENT, 4 SOLVER_ITERATIVE_CONJGRAD_SQUARED
 mprecond = 1   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PRECONDITIONER, 4 SOR_PRECONDITIONER, 5 INCOMPLETE_CHOLESKY_PRECONDITIONER, 6 INCOMPLETE_LU_PRECONDITIONER, 7 ADDITIVE_SCHWARZ_PRECONDITIONER
 
-x = 64
+n_processes = 64
+
+x = n_processes
 y = 8
 z = 8
 xi1 = 2
