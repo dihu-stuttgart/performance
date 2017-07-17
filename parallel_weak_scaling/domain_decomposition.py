@@ -5,12 +5,11 @@ import math
 import sys
 import numpy as np
 
-def number_of_processes(p,x,y,z,ax,ay,az):
+def number_of_processes(p,x,y,z,ax,ay,az,debug=False):
   """
   determine the number of processes that will be used for a domain decomposition parameterized by (x,y,z,ax,ay,z)
   """
   #print p,x,y,z,ax,ay,az
-  debug = False
 
   NumberGlobalXElements = x
   NumberGlobalYElements = y
@@ -117,9 +116,9 @@ def number_of_processes(p,x,y,z,ax,ay,az):
   if debug:
     print "nSubdomainsFloat={},{},{}={}".format(nSubdomainsXFloat,nSubdomainsYFloat,nSubdomainsZFloat,nSubdomainsXFloat*nSubdomainsYFloat*nSubdomainsZFloat)
 
-  nSubdomainsX = max(1, int(np.round(nSubdomainsXFloat)))
-  nSubdomainsY = max(1, int(np.round(nSubdomainsYFloat)))
-  nSubdomainsZ = max(1, int(np.round(nSubdomainsZFloat)))
+  nSubdomainsX = max(1, int(np.ceil(nSubdomainsXFloat)))    # try to round up to use the maximum number of processes possible, if value gets to high, it will be decreased anyway
+  nSubdomainsY = max(1, int(np.ceil(nSubdomainsYFloat)))
+  nSubdomainsZ = max(1, int(np.ceil(nSubdomainsZFloat)))
 
   if debug:
     print "nSubdomains: {},{},{}={} ".format(nSubdomainsX, nSubdomainsY, nSubdomainsZ, nSubdomainsX*nSubdomainsY*nSubdomainsZ)
@@ -206,3 +205,17 @@ def number_of_processes(p,x,y,z,ax,ay,az):
   nUnusedSubdomains = NumberOfDomains - nSubdomains 
 
   return nSubdomains
+
+if __name__ == "__main__":
+  p = int(sys.argv[1])
+  x = int(sys.argv[2])
+  y = int(sys.argv[3])
+  z = int(sys.argv[4])
+  ax = int(sys.argv[5])
+  ay = int(sys.argv[6])
+  az = int(sys.argv[7])
+  print "p=",p,",x=",x,",y=",y,",z=",z,",ax=",ax,",ay=",ay,",az=",az
+  
+  used_number_of_processes = number_of_processes(p,x,y,z,ax,ay,az,True)
+  print "used_number_of_processes: ", used_number_of_processes
+  
