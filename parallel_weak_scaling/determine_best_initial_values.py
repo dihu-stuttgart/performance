@@ -66,8 +66,8 @@ for initial_x in [10,11,12,13,14,15,16]:
       print "initial_x,initial_y,initial_z=",initial_x,initial_y,initial_z
 
       total_badness = 0
-      for p in range(n_start,13) + [a*12 for a in range(1,6)]:
-      #for p in range(1,13):
+      #for p in range(n_start,13) + [a*12 for a in range(1,6)]:
+      for p in range(1,13) + range(12,25,2):
         
         for fibres_undivided in [True, False]:
           
@@ -147,5 +147,5 @@ for initial_x in [10,11,12,13,14,15,16]:
     check_exit()
     #run(used_number_of_processes,x,y,z,xi1,ax)
     
-    # best result: 16, 5, 6
+    # best result: 12, 2, 8
   
