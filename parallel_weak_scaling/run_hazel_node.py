@@ -88,7 +88,7 @@ for p in range(1,13)+range(12,25,2):
     
     factor = p ** (1./3)    # factor how the optimal value of x,y,z should be w.r.t initial_x,initial_y,initial_z (but would be non-integer)
     
-    best = [0,0,0]
+    best = [0,0,0,0]
     best_badness = 100000000
     
     # loop over all possible combinations for x,y,z and find the best according to an error (badness)
@@ -118,7 +118,7 @@ for p in range(1,13)+range(12,25,2):
           # if badness is the lowest so far, store values
           if badness < best_badness:
             best_badness = badness
-            best = [x,y,z]
+            best = [used_number_of_processes,x,y,z]
             
             # debugging output
             if False:
@@ -130,7 +130,7 @@ for p in range(1,13)+range(12,25,2):
                 c1*error_total**2, c2 * (error_x**2 + error_y**2 + error_z*2),c3*error_p**2,badness)
 
     # use found values
-    [x,y,z] = best
+    [used_number_of_processes,x,y,z] = best
     if fibres_undivided:
       ax = x
     
