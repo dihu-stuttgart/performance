@@ -29,11 +29,21 @@ def run(p,x,y,z,xi1,ax,ode,msolver,mprecond):
             "ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
             .format(p=int(p), x=int(x), y=int(y), z=int(z), xi1=int(xi1), ax=int(ax), ode=ode, msolver=msolver, mprecond=mprecond)
 
-  print command; return
+  #print command; return
+  print command
   
   # execute command
   try:
-    subprocess.check_call(command, shell=True)
+    with open('log.txt','ab') as log:
+      log.write("\n\n\n-------- new command ------------------------------------------\n")
+      log.write(command+"\n")
+      log.write("start: "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n")
+
+    out = subprocess.check_output(command, shell=True)
+
+    with open('log.txt','ab') as log:
+      log.write("end:   "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n\n")
+      log.write(out+"\n")
   except:
     pass
 
