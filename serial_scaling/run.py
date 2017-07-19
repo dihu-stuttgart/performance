@@ -28,12 +28,31 @@ def run(x,y,z,f,a,ode,msolver,mprecond):
   command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR {0} {1} {2} {3} {4} {5} {6} {7}"\
   .format(int(x),int(y),int(z),int(f),int(a), int(ode), int(msolver), int(mprecond))
 
-  #print command
-  try:
-    subprocess.check_call(command, shell=True)
-  except:
-    pass
+  print command
 
+  # execute command
+  try:
+    with open('log.txt','ab') as log:
+      log.write("\n\n\n-------- new command ------------------------------------------\n")
+      log.write(command+"\n")
+      log.write("start: "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n")
+
+    output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+
+    with open('log.txt','ab') as log:
+      log.write("end:   "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n\n")
+      log.write(output+"\n")
+  except subprocess.CalledProcessError as exc:
+    with open('log.txt', 'ab') as log:
+      log.write('Command failed, return code: '+str(exc.returncode)+"\n")
+      log.write(exc.output+"\n\n")
+      log.write(output)
+  else:
+    with open('log.txt', 'ab') as log:
+      log.write("Command failed\n")
+      log.write(output)
+
+    pass
 
 n_start = 1   # size of smallest problem to begin with
 last_total = 0

@@ -43,7 +43,7 @@ def run(p,x,y,z,xi1,ax):
 
   #print command; return 
   print command
-  
+
   # execute command
   try:
     with open('log.txt','ab') as log:
@@ -51,16 +51,23 @@ def run(p,x,y,z,xi1,ax):
       log.write(command+"\n")
       log.write("start: "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n")
 
-    out = subprocess.check_output(command, shell=True)
+    output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
 
     with open('log.txt','ab') as log:
       log.write("end:   "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n\n")
-      log.write(out+"\n")
-  except:
-    with open('log.txt','ab') as log:
-      log.write("command failed\n")
-    pass
+      log.write(output+"\n")
+  except subprocess.CalledProcessError as exc:
+    with open('log.txt', 'ab') as log:
+      log.write('Command failed, return code: '+str(exc.returncode)+"\n")
+      log.write(exc.output+"\n\n")
+      log.write(output)
+  else:
+    with open('log.txt', 'ab') as log:
+      log.write("Command failed\n")
+      log.write(output)
 
+    pass
+  
 # load modules
 cmd = "module restore /lustre/cray/ws8/ws/icbbnmai-iron/manage/build_release/gcc49.module_snapshot"
 subprocess.check_call(cmd, shell=True)
