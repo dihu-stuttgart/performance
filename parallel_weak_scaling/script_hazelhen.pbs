@@ -1,14 +1,20 @@
 #!/bin/bash
 #PBS -N weak_scaling_node_level
-#PBS -l nodes=1:ppn=48
+#PBS -l nodes=1:ppn=24
 #PBS -l walltime=12:00:00
+##PBS -l walltime=00:10:00
   
 # Change to the direcotry that the job was submitted from
 cd $PBS_O_WORKDIR
 
+# load modules
+module restore /lustre/cray/ws8/ws/icbbnmai-iron/manage/build_release/gcc49.module_snapshot
+
 # Launch the parallel job to the allocated compute nodes
 #aprun -n 1 -N 1 ./cuboid > out.txt 2>&1
-./run_hazel_node.py
+while true; do
+  ./run_hazel_node.py
+done
 
 
 # submit with qsub

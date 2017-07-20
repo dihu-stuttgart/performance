@@ -41,15 +41,33 @@ def run(p,x,y,z,xi1,ax):
             "ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
             .format(p=int(p), j=j, x=int(x), y=int(y), z=int(z), xi1=int(xi1), ax=int(ax), ode=ode, msolver=msolver, mprecond=mprecond)
 
-  #print command; return
-  
+  #print command; return 
+  print command
+
   # execute command
   try:
-    print command
-    subprocess.check_call(command, shell=True)
-  except:
-    pass
+    with open('log.txt','ab') as log:
+      log.write("\n\n\n-------- new command ------------------------------------------\n")
+      log.write(command+"\n")
+      log.write("start: "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n")
 
+    output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+
+    with open('log.txt','ab') as log:
+      log.write("end:   "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n\n")
+      log.write(output+"\n")
+  except subprocess.CalledProcessError as exc:
+    with open('log.txt', 'ab') as log:
+      log.write('Command failed, return code: '+str(exc.returncode)+"\n")
+      log.write(exc.output+"\n\n")
+      log.write(output)
+  else:
+    with open('log.txt', 'ab') as log:
+      log.write("Command failed\n")
+      log.write(output)
+
+    pass
+  
 # load modules
 cmd = "module restore /lustre/cray/ws8/ws/icbbnmai-iron/manage/build_release/gcc49.module_snapshot"
 subprocess.check_call(cmd, shell=True)
