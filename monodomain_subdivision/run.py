@@ -34,6 +34,7 @@ def run(p,x,y,z,xi1,ax,ay,az,ode,msolver,mprecond):
   print command
 
   # execute command
+  output = ""
   try:
     with open('log.txt','ab') as log:
       log.write("\n\n\n-------- new command ------------------------------------------\n")
