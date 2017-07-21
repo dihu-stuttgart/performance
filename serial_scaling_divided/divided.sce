@@ -28,8 +28,8 @@ NumberGlobalYElements = 1       # number of finite elasticty elements in y-direc
 NumberGlobalZElements = 1       # number of finite elasticty elements in z-direction, alias z
 
 NumberOfNodesInXi1 = 1          # number of bioelectric nodes per 3D FE element in direction of fibre (X direction), alias xi1
-NumberOfNodesInXi2 = 1          # number of fibres per FE element in Y direction, alias xi2
-NumberOfNodesInXi3 = 1          # number of fibres per FE element in Z direction, alias xi3
+NumberOfNodesInXi2 = 2          # number of fibres per FE element in Y direction, alias xi2
+NumberOfNodesInXi3 = 2          # number of fibres per FE element in Z direction, alias xi3
 
 NumberOfInSeriesFibres = 1      # number of fibres that are in a series and mechanically connected. This is not completely tested, set to 1, alias f
 NumberOfElementsInAtomicPortionPerDomain = 1    # defines unsplittable blocks of 3D FE elements for the decomposition on multiple processes, alias a
