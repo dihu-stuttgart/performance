@@ -49,10 +49,13 @@ def number_of_processes(p,x,y,z,ax,ay,az,debug=False):
   #         = NumberOfElementsFE / OptimalSideLength**3
   # => OptimalSideLength = (NumberOfElementsFE / nSubdomains)**(1./3)
 
-  OptimalSideLength = (float(NumberOfElementsFE) / NumberOfDomains)**(1./3)
+  if debug:
+    OptimalSideLength = (float(NumberOfElementsFE) / NumberOfDomains)**(1./3)
 
+  print "NumberGlobalZElements=",NumberGlobalZElements,", OptimalSideLength=",OptimalSideLength,", nAtomsZ=",nAtomsZ
+  
   # if number of atoms is limited in z direction, begin with partioning in z direction
-  if float(NumberGlobalZElements) / OptimalSideLength > nAtomsZ:
+  if float(NumberGlobalZElements) / OptimalSideLength >= nAtomsZ - 1e-3:
     nSubdomainsZFloat = min(float(NumberGlobalZElements) / OptimalSideLength, nAtomsZ)
     if debug:
       print "nAtomsZ={}, OptimalSideLength={}, z={}, z/Opt={}, nSubdomainsZFloat={}".format(nAtomsZ, OptimalSideLength, NumberGlobalZElements, float(NumberGlobalZElements) / OptimalSideLength, nSubdomainsZFloat)

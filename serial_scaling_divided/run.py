@@ -39,7 +39,8 @@ def run(p,x,y,z,xi1,ax,ode,msolver,mprecond):
       log.write(command+"\n")
       log.write("start: "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n")
 
-    output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+    subprocess.check_call(command, stderr=subprocess.STDOUT, shell=True)
+    output = ""
 
     with open('log.txt','ab') as log:
       log.write("end:   "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n\n")
