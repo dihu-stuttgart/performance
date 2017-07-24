@@ -30,7 +30,6 @@ def run(p,x,y,z,xi1,ax,ay,az,ode,msolver,mprecond):
             .format(p=int(p), x=int(x), y=int(y), z=int(z), xi1=int(xi1), ax=int(ax), ay=int(ay), az=int(az), ode=ode, msolver=msolver, mprecond=mprecond)
 
   #print command; return
-  
   print command
 
   # execute command
