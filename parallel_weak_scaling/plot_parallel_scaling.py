@@ -25,8 +25,8 @@ outlier_bottom = 2
 # read csv file
 #report_filename = "serial_scaling_solvers.csv"
 #report_filename = "weak_scaling_hazel_node1.csv"
-#report_filename = "weak_scaling.csv"
-report_filename = "new.csv"
+report_filename = "weak_scaling.csv"
+#report_filename = "new.csv"
 
 
 caption = u'Nodel-level weak scaling, Hazel Hen'
@@ -397,19 +397,21 @@ for key in datasets:
     xdata.add(xvalue)
     plotkeys.add(plotkey)
 
-xlist = sorted(xdata)
-
+# loop over curves and plot data with given label and color
 for plotkey in plotkeys:
     
   xlist = sorted(plotdata[plotkey]["value"])
-  ylist = [y for y in plotdata[plotkey]["value"].values()]
-  yerr = [y for y in plotdata[plotkey]['variance'].values()]
+  ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
+  yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
 
   label = None
   if plotkey in labels:
     label = labels[plotkey]
-  plt.errorbar(xlist, ylist, fmt=colors[plotkey], yerr=yerr, label=label)
-    
+  color = ""
+  if plotkey in colors:
+    color = colors[plotkey]
+  plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
+  
   
 ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
@@ -499,17 +501,21 @@ for key in datasets:
 
 xlist = sorted(xdata)
 
+# loop over curves and plot data with given label and color
 for plotkey in plotkeys:
     
   xlist = sorted(plotdata[plotkey]["value"])
-  ylist = [y for y in plotdata[plotkey]["value"].values()]
-  yerr = [y for y in plotdata[plotkey]['variance'].values()]
+  ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
+  yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
 
   label = None
   if plotkey in labels:
     label = labels[plotkey]
-  plt.errorbar(xlist, ylist, fmt=colors[plotkey], yerr=yerr, label=label)
-    
+  color = ""
+  if plotkey in colors:
+    color = colors[plotkey]
+  plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
+  
   
 ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
@@ -602,17 +608,21 @@ for key in datasets:
     xdata.add(xvalue)
     plotkeys.add(plotkey)
 
-
+# loop over curves and plot data with given label and color
 for plotkey in plotkeys:
     
   xlist = sorted(plotdata[plotkey]["value"])
-  ylist = [y for y in plotdata[plotkey]["value"].values()]
-  yerr = [y for y in plotdata[plotkey]['variance'].values()]
+  ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
+  yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
 
   label = None
   if plotkey in labels:
     label = labels[plotkey]
-  plt.errorbar(xlist, ylist, fmt=colors[plotkey], yerr=yerr, label=label)
+  color = ""
+  if plotkey in colors:
+    color = colors[plotkey]
+  plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
+  
   
 ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
@@ -705,16 +715,21 @@ for key in datasets:
     plotkeys.add(plotkey)
 
 
+# loop over curves and plot data with given label and color
 for plotkey in plotkeys:
     
   xlist = sorted(plotdata[plotkey]["value"])
-  ylist = [y for y in plotdata[plotkey]["value"].values()]
-  yerr = [y for y in plotdata[plotkey]['variance'].values()]
+  ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
+  yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
 
   label = None
   if plotkey in labels:
     label = labels[plotkey]
-  plt.errorbar(xlist, ylist, fmt=colors[plotkey], yerr=yerr, label=label)
+  color = ""
+  if plotkey in colors:
+    color = colors[plotkey]
+  plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
+  
   
 ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
