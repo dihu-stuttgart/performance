@@ -368,6 +368,9 @@ for key in datasets:
   nMelements = dataset[8]
   main_sim = dataset[13]
   
+  if nMelements < 10:
+    continue
+  
 # 13 duration main sim
 #  15:  "Total (User)",
 # 17 ODE
@@ -462,7 +465,7 @@ ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
 ax.set_yscale('log', basey=10) 
 ax.set_xscale('log', basey=10) 
-ax.set_xlim([1, 3e3])
+ax.set_xlim([10, 4e3])
 #ax.set_xticks([1,2,4,8,12,16,24,32,64])
 plt.xlabel('Number of 1D elements')
 plt.ylabel('Runtime (s)')
