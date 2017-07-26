@@ -47,7 +47,8 @@ previous_xi1 = 0
 
 print previous_xi1
 
-for n in range(n_start,500):
+#for n in range(n_start,500):
+for n in range(5,13):
   xi1 = np.round(n**(1.5))
 
   if (xi1 == previous_xi1):
