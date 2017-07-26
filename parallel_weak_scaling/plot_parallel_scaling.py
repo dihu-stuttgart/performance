@@ -282,6 +282,7 @@ for key in datasets:
   nFE = datasets[key]["value"][7]
   nM = datasets[key]["value"][8]
   nMperFE = float(nM)/nFE
+  n_fibrelines_per_element = 1
   if nMperFE==80:
     n_fibrelines_per_element = 4
   elif nMperFE==120:
@@ -323,6 +324,7 @@ colors = {
   "39o": "co--",     # 1D->3D
   "40o": "co:",      # 3D->1D
   "41o": "bo-",      # file output
+  "22o": "mo-",      # memory consumption
   
   "15-": "k+--",      # total
   "36-": "y+--",      # 0D
@@ -331,6 +333,7 @@ colors = {
   "39-": "c+--",     # 1D->3D
   "40-": "c+:",      # 3D->1D
   "41-": "b+-",      # file output
+  "22-": "mo-",      # memory consumption
 }
 labels = {
   "15o": "total",      # total
@@ -340,6 +343,7 @@ labels = {
   "39o": "interpolation 1D->3D",     # 1D->3D
   "40o": "interpolation 3D->1D",      # 3D->1D
   "41o": "file output",      # file output
+  "22o": "memory consumption",      # memory consumption
 }
 
 #plotkeys = [13, 17, 18, 19, 20]
@@ -528,6 +532,110 @@ ax.set_xscale('log', basey=2)
 
 plt.xlabel('number of 1D elements')
 plt.ylabel('runtime (s)')
+#plt.legend(loc='best')
+plt.grid(which='both')
+
+# twin axes for processes
+ax2 = ax.twiny()
+ax2.set_xlim(ax.get_xlim())
+ax2.set_xscale('log', basey=2)
+
+xtickslist = sorted(list(set(xtickslist)))
+xticks = [item[0] for item in xtickslist]
+xlabels = [int(item[1]) for item in xtickslist]
+
+ax2.set_xticks(xticks)
+ax2.set_xticklabels(xlabels)
+ax2.set_xlabel(r"Number of processes")
+
+plt.title(caption, y=1.1)
+plt.tight_layout()
+plt.savefig(outfile)
+
+# memory consumption
+
+######################
+# create plot Node level (2)
+caption = "Node-level weak scaling, Memory consumption, Hazel Hen,\n x,y,z=(4,2,1), xi=(20,2,3), 120 1D el./3D el. "
+outfile = output_path+SCENARIO+'_weak_scaling_node_120_memory.png'
+plt.figure("Node-level (120) - Memory", figsize=(10,8))
+
+plotdata = collections.OrderedDict()
+xdata = Set()
+xtickslist = []
+plotkeys = Set()
+
+# key is the initially defined sorting key
+for key in datasets:
+  
+  dataset = datasets[key]['value']
+  variances = datasets[key]['variance']
+  nproc = dataset[2]
+  
+  nFE = dataset[7]
+  nM = dataset[8]
+  
+  nMperFE = float(nM)/nFE
+    
+  if nproc > 48 or nMperFE != 120:
+    continue
+    
+  if dataset[102] == 1:    # NumberOfElementsInAtomX=1
+    s = "o"     # fibres subdivided
+  else:
+    s = "-"     # fibres not subdivided
+  
+  xtickslist.append((nM,nproc))
+  
+  # loop over different curves (e.g. different measurements)
+  for plotkey_number in [22]:
+    
+    plotkey = str(plotkey_number) + s
+    
+    # define x value and y value
+    xvalue = nM
+    yvalue = dataset[plotkey_number]/(1024*1024*1024.)
+    yvalue_variance = variances[plotkey_number]/(1024*1024*1024.)**2
+      
+    if plotkey not in plotdata:
+      plotdata[plotkey] = dict()
+      plotdata[plotkey]['value'] = collections.OrderedDict()
+      plotdata[plotkey]['variance'] = collections.OrderedDict()
+      
+    plotdata[plotkey]['value'][xvalue] = yvalue
+    plotdata[plotkey]['variance'][xvalue] = yvalue_variance
+    xdata.add(xvalue)
+    plotkeys.add(plotkey)
+
+xlist = sorted(xdata)
+
+# loop over curves and plot data with given label and color
+for plotkey in plotkeys:
+    
+  xlist = sorted(plotdata[plotkey]["value"])
+  ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
+  yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
+
+  label = None
+  if plotkey in labels:
+    label = labels[plotkey]
+  color = ""
+  if plotkey in colors:
+    color = colors[plotkey]
+  plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
+  
+  
+ax = plt.gca()
+#ax.set_xscale('log', basey=2) 
+#ax.set_yscale('log', basey=10) 
+ax.set_xscale('log', basey=2) 
+#ticks = list(np.linspace(10**3, 10**4, 10)) + list(np.linspace(10**4, 3*10**4, 4))
+#ax.set_xticks(ticks)
+#ax.set_xticklabels([int(i/1000.) for i in ticks])
+
+
+plt.xlabel('number of 1D elements')
+plt.ylabel('memory consumption at end of program (GiB)')
 #plt.legend(loc='best')
 plt.grid(which='both')
 
