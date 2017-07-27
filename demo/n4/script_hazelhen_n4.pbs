@@ -1,8 +1,8 @@
 #!/bin/bash
-#PBS -N weak_scaling_node_level
-#PBS -l nodes=1:ppn=24
-#PBS -l walltime=12:00:00
-##PBS -l walltime=00:30:00
+#PBS -N weak_scaling_n4
+#PBS -l nodes=4:ppn=24
+##PBS -l walltime=1:00:00
+#PBS -l walltime=00:20:00
   
 # Change to the direcotry that the job was submitted from
 cd $PBS_O_WORKDIR
@@ -17,7 +17,7 @@ module load tools/python/2.7.8
 # Launch the parallel job to the allocated compute nodes
 #aprun -n 1 -N 1 ./cuboid > out.txt 2>&1
 while true; do
-  ./run_hazel_node.py
+  ./run_hazel_multi.py 4    # filling is done with -j2 (hyperthreading)
 done
 
 

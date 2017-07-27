@@ -13,7 +13,7 @@ import os
 import domain_decomposition
 
 # set environment variable
-os.environ['OPENCMISS_SCE_FILE'] = 'weak_scaling.sce'
+os.environ['OPENCMISS_SCE_FILE'] = 'weak_scaling_multi.sce'
 
 def check_exit():
   
@@ -26,17 +26,23 @@ def check_exit():
   else:
     print "OK"
 
-def run(p,x,y,z,xi1,ax):
+def run(nproc,x,y,z,ax): # nnodes = number of nodes, nproc = number of processes
   
   ode = 1
   msolver = 1
   precond = 1
   
-  command = "mpirun -n {p} $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x={x} y={y} z={z} xi1={xi1} ax={ax} "\
-            "ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
-            .format(p=int(p), x=int(x), y=int(y), z=int(z), xi1=int(xi1), ax=int(ax), ode=ode, msolver=msolver, mprecond=mprecond)
+  j = "-j1"  # no hyperthreading
+#  if p > 12:
+#    j = "-j2"  # hyperthreading
+#  else:
+#    j = "-j1"  # no hyperthreading
 
-  #print command; return
+  command = "aprun -n {nproc} -N {ppn} {j} $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x={x} y={y} z={z} ax={ax} "\
+            "ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
+            .format(nproc=int(nproc), ppn=int(min(24,int(p))), j=j, x=int(x), y=int(y), z=int(z), ax=int(ax), ode=ode, msolver=msolver, mprecond=mprecond)
+
+  #print command; return 
   print command
 
   # execute command
@@ -46,22 +52,24 @@ def run(p,x,y,z,xi1,ax):
       log.write(command+"\n")
       log.write("start: "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n")
 
-    output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+    subprocess.check_call(command, shell=True)
 
     with open('log.txt','ab') as log:
       log.write("end:   "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n\n")
-      log.write(output+"\n")
   except subprocess.CalledProcessError as exc:
     with open('log.txt', 'ab') as log:
       log.write('Command failed, return code: '+str(exc.returncode)+"\n")
-      log.write(exc.output+"\n\n")
-      log.write(output)
   else:
     with open('log.txt', 'ab') as log:
-      log.write("Command failed\n")
-      log.write(output)
+      log.write("Command successful\n")
 
     pass
+  
+# load modules
+cmd = "module restore /lustre/cray/ws8/ws/icbbnmai-iron/manage/build_release/gcc49.module_snapshot"
+subprocess.check_call(cmd, shell=True)
+
+
 
 n_start = 1   # size of smallest problem to begin with
 last_total = 0
@@ -71,15 +79,27 @@ ode = 1       # 1 explicit Euler, 2 BDF
 msolver = 1   # 1 SOLVER_DIRECT_LU, 2 SOLVER_ITERATIVE_GMRES, 3 SOLVER_ITERATIVE_CONJUGATE_GRADIENT, 4 SOLVER_ITERATIVE_CONJGRAD_SQUARED
 mprecond = 1   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PRECONDITIONER, 4 SOR_PRECONDITIONER, 5 INCOMPLETE_CHOLESKY_PRECONDITIONER, 6 INCOMPLETE_LU_PRECONDITIONER, 7 ADDITIVE_SCHWARZ_PRECONDITIONER
 
-xi1 = 20
-
 initial_x = 12
 initial_y = 2
 initial_z = 8
 
-#for p in range(n_start,13) + [a*12 for a in range(1,6)]:
-#for p in range(1,13) + range(12,25,2):
-for p in range(16,25,2):
+initial_x = 4
+initial_y = 2
+initial_z = 1
+
+#initial_x = 5
+#initial_y = 2
+#initial_z = 2
+
+
+a = 1
+if len(sys.argv) > 1:
+	a = int(sys.argv[1]);
+print "number of nodes a = ",a
+
+#for p in range(1,13)+range(12,25,2):
+for p in [a*24]:
+
   
   for fibres_undivided in [True, False]:
     
@@ -145,11 +165,12 @@ for p in range(16,25,2):
     
     error_p = 1.0 - float(used_number_of_processes) / p
     
-    print ""
-    print "p = {} (used: {}), [x,y,z]=[{},{},{}], badness: {}, error nel: {}, error p: {}".\
-    format(p,used_number_of_processes, x,y,z, best_badness,1.0 - float(x*y*z) / total, error_p)
+    
+    print "p =",p," (used:",used_number_of_processes,"), x,y,z=[",x,y,z,"] badness: ",best_badness,", error nel: ",1.0 - float(x*y*z) / total,", error p:",error_p
+#    print "p = {} (used: {}), [x,y,z]=[{},{},{}], badness: {}, error nel: {}, error p: {}".\
+#    format(p,used_number_of_processes, x,y,z, best_badness,1.0 - float(x*y*z) / total, error_p)
   
   
     check_exit()
-    run(used_number_of_processes,x,y,z,xi1,ax)
+    run(used_number_of_processes,x,y,z,ax)
     
