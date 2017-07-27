@@ -25,7 +25,7 @@ def check_exit():
 
 def run(p,x,y,z,xi1,ax,ode,msolver,mprecond):
   
-  command = "mpirun -n {p} $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x={x} y={y} z={z} xi1={xi1} ax={ax} "\
+  command = "mpirun -n {p} $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x={x} y={y} z={z} xi1={xi1} ax={ax} ay=2 az=2 "\
             "ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
             .format(p=int(p), x=int(x), y=int(y), z=int(z), xi1=int(xi1), ax=int(ax), ode=ode, msolver=msolver, mprecond=mprecond)
 
@@ -40,20 +40,15 @@ def run(p,x,y,z,xi1,ax,ode,msolver,mprecond):
       log.write("start: "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n")
 
     subprocess.check_call(command, stderr=subprocess.STDOUT, shell=True)
-    output = ""
 
     with open('log.txt','ab') as log:
       log.write("end:   "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n\n")
-      log.write(output+"\n")
   except subprocess.CalledProcessError as exc:
     with open('log.txt', 'ab') as log:
       log.write('Command failed, return code: '+str(exc.returncode)+"\n")
-      log.write(exc.output+"\n\n")
-      log.write(output)
   else:
     with open('log.txt', 'ab') as log:
-      log.write("Command failed\n")
-      log.write(output)
+      log.write("Command succeeded\n")
 
     pass
 
@@ -65,10 +60,12 @@ ode = 1       # 1 explicit Euler, 2 BDF
 msolver = 1   # 1 SOLVER_DIRECT_LU, 2 SOLVER_ITERATIVE_GMRES, 3 SOLVER_ITERATIVE_CONJUGATE_GRADIENT, 4 SOLVER_ITERATIVE_CONJGRAD_SQUARED
 mprecond = 1   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PRECONDITIONER, 4 SOR_PRECONDITIONER, 5 INCOMPLETE_CHOLESKY_PRECONDITIONER, 6 INCOMPLETE_LU_PRECONDITIONER, 7 ADDITIVE_SCHWARZ_PRECONDITIONER
 
-for pp in [2, 4, 8, 16, 32]:          # 2*number fibre subdivisions 
+for pp in [1,2,4,8,16]:          # 2*number fibre subdivisions 
   for n in range(n_start,1000):
   #for pp in [16]:
     total = pp**(n+1)
+    if pp == 1:
+      total = 2**(n+1)
 
     if total > 65536:
       break
@@ -76,8 +73,8 @@ for pp in [2, 4, 8, 16, 32]:          # 2*number fibre subdivisions
     x = pp
     xi1 = total/pp
     
-    y = 1
-    z = 1
+    y = 2
+    z = 2
 
     total = x*y*z
     ax = 1
