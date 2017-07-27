@@ -24,9 +24,8 @@
 # fibres are parallel to X axis
 
 NumberGlobalXElements = 1       # number of finite elasticty elements in x-direction, alias x
-NumberGlobalYElements = 1       # number of finite elasticty elements in y-direction, alias y
-NumberGlobalZElements = 1       # number of finite elasticty elements in z-direction, alias z
-
+NumberGlobalYElements = 2       # number of finite elasticty elements in y-direction, alias y
+NumberGlobalZElements = 2       # number of finite elasticty elements in z-direction, alias z
 NumberOfNodesInXi1 = 1          # number of bioelectric nodes per 3D FE element in direction of fibre (X direction), alias xi1
 NumberOfNodesInXi2 = 2          # number of fibres per FE element in Y direction, alias xi2
 NumberOfNodesInXi3 = 2          # number of fibres per FE element in Z direction, alias xi3
@@ -41,7 +40,7 @@ DebuggingOutput = F
 DebuggingOnlyRunShortPartOfSimulation = F    # abort simulation after first stimulation
 
 # ------------- numerics -------------------
-TimeStop = 3.0                  # total simulated time
+TimeStop = 1.0                  # total simulated time
 ODETimeStep = 0.0001            # timestep size for 0D problem
 PDETimeStep = 0.005    ! 0.005 # timestep size for 1D problem
 ElasticityTimeStep = 0.10000000001  # timestep size for 3D problem
@@ -76,7 +75,9 @@ NewtonTolerance = 1.E-8                       # abs. and rel. tolerance of 3D pr
 
 # ------------- physical parameters ------------------
 
-StimValue = 20000.0             # current value with which fibres are stimulated
+StimValue = 20000.0             # total current value with which fibres are stimulated, will be distributed over stimulated nodes
+PhysicalStimulationLength = 0.0  # length of neuromuscular junction, length of line segment where stimulus is applied [cm] (set to 0 to always use 1 node)
+
 
 # physical dimension
 PhysicalLength = 3.0
