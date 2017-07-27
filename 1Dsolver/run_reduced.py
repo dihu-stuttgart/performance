@@ -36,7 +36,7 @@ def run(xi1,ode,msolver,mprecond):
     pass
 
 
-n_start = 1   # size of smallest problem to begin with
+n_start = 4   # size of smallest problem to begin with
 last_total = 0
 f = 1
 a = 1
@@ -47,25 +47,25 @@ previous_xi1 = 0
 
 print previous_xi1
 
-#for n in range(n_start,500):
-for n in range(5,13):
+for n in range(n_start,200):
+#for n in range(5,13):
   xi1 = np.round(n**(1.5))
 
   if (xi1 == previous_xi1):
     continue
   previous_xi1 = xi1
   
-  # CG
+  # LU, GMRES, CG
   precond = 1
-  for msolver in [1, 2, 4]:
+  for msolver in [1, 2, 3]:
     check_exit()
     run(xi1,ode,msolver,precond)
 
   # CG with different preconditioners
-  msolver = 3
+  #msolver = 3
   
-  for precond in range(1,8):
-    check_exit()
-    run(xi1,ode,msolver,precond)
+  #for precond in range(1,8):
+  #  check_exit()
+  #  run(xi1,ode,msolver,precond)
 
   
