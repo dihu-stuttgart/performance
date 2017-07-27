@@ -13,7 +13,7 @@ import os
 import domain_decomposition
 
 # set environment variable
-os.environ['OPENCMISS_SCE_FILE'] = 'weak_scaling_multi.sce'
+os.environ['OPENCMISS_SCE_FILE'] = 'weak_scaling_multi_fast.sce'
 
 def check_exit():
   
@@ -101,7 +101,7 @@ print "number of nodes a = ",a
 for p in [a*24]:
 
   
-  for fibres_undivided in [True, False]:
+  for fibres_undivided in [True]:
     
     ax = 1
     ay = 1

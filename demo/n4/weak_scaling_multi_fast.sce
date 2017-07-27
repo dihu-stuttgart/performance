@@ -82,7 +82,7 @@ NewtonTolerance = 1.E-8                       # abs. and rel. tolerance of 3D pr
 
 # ------------- physical parameters ------------------
 
-StimValue = 2000.0             # total current value with which fibres are stimulated, will be distributed over stimulated nodes
+StimValue = 800.0             # total current value with which fibres are stimulated, will be distributed over stimulated nodes
 PhysicalStimulationLength = 0.0  # length of neuromuscular junction, length of line segment where stimulus is applied [cm] (set to 0 to always use 1 node)
 
 # physical dimension [cm]
@@ -91,7 +91,7 @@ PhysicalWidth = 3.0
 PhysicalHeight = 1.5
 
 OldTomoMechanics = T            # whether to use the old mechanical description of Thomas Heidlauf that works also in parallel (deprecated, T=ModelType 0, F=ModelType 1)
-ModelType = 0                   # which physical model to use
+ModelType = 2                   # which physical model to use
 
 # ModelType
 # 0 "MultiPhysStrain", no. 3a, OldTomoMechanics, old model of Thomas Heidlauf, that worked in parallel from the beginning
