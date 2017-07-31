@@ -13,6 +13,8 @@ SCENARIO='cuboid'
 #sys.path.insert(0, src_path+"/evaluation")
 import format as fo
 
+paper_version = True
+
 # determine if plots are shown
 show_plots = True
 if len(sys.argv) >= 2:
@@ -24,7 +26,7 @@ outlier_bottom = 0
   
 # read csv file
 #report_filename = "serial_scaling_solvers.csv"
-report_filename = "duration.00000.csv"
+report_filename = "gmres_lu_cg.csv"
 
 
 caption = u'Runtime over problem size'
@@ -234,11 +236,7 @@ def extract_data(data):
       new_data[index] = float(new_data[index])     if isfloat(new_data[index])    else 0.0
       
     # define sorting key
-    
-    block = 2**int(max(1,np.log2(new_data[8])-2))
-    
-    
-    key = "{:04d}|{:01d}|{:01d}".format(int(new_data[8]/block)*block, new_data[99], new_data[100])
+    key = "{:04d}|{:01d}|{:01d}".format(new_data[8], new_data[99], new_data[100])
       
     # store extracted values
     if key not in datasets:
@@ -354,7 +352,8 @@ for key in datasets:
 
 #plt.rcParams.update({'font.size': 23})
 plt.rcParams.update({'font.size': 16})
-plt.rcParams['lines.linewidth'] = 4
+plt.rcParams['lines.linewidth'] = 3
+plt.rcParams['lines.markersize'] = 8
 output_path = ""
 plotdata = collections.OrderedDict()
 xdata = Set()
@@ -405,20 +404,21 @@ xlist = sorted(xdata)
 
 ######################
 # plot serial scaling
-plt.figure(2, figsize=(10,8))
+plt.figure(2, figsize=(11,9))
 
 # 13 duration main sim
 # 17 ODE
 # 18 Parabolic
 # 19 FE
 # 20 FE before Main Sim
+# possible markers: . , o v ^ < > 1 2 3 4 8 s p P * h H + x X D d | _ (see https://matplotlib.org/api/markers_api.html)
 colors = {
   13: "ko-",
-  15: "ko-",
-  17: "yo-",
-  "parabolic1|1": "c-",
-  "parabolic2|1": "r-",
-  "parabolic3|1": "m-",
+  15: "ko-",    # total
+  17: "yd-",    # 0D solver
+  "parabolic1|1": "cv-",   # LU
+  "parabolic2|1": "r*-",   # GMRES
+  "parabolic3|1": "ms-",   # CG
   "parabolic3|2": "ro:",
   "parabolic3|3": "r+-",
   "parabolic3|4": "r+--",
@@ -432,11 +432,11 @@ colors = {
 }
 labels = {
   13: "Duration main simulation",
-  15: "Total runtime",
-  17: "0D model solver",
-  "parabolic1|1": "1D model solver (LU)",
-  "parabolic2|1": "1D model solver (GMRES)",
-  "parabolic3|1": "1D model solver (CG)",
+  15: "total runtime",
+  17: "solver 0D model",
+  "parabolic1|1": "solver 1D model (LU)",
+  "parabolic2|1": "solver 1D model (GMRES)",
+  "parabolic3|1": "solver 1D model (CG)",
   "parabolic3|2": "Parabolic solver (CG, Jacobi)",
   "parabolic3|3": "Parabolic solver (CG, Block Jacobi)",
   "parabolic3|4": "Parabolic solver (CG, SOR)",
@@ -449,6 +449,12 @@ labels = {
   96: "File output",
 }
 
+# source: https://stackoverflow.com/questions/17930473/how-to-make-my-pylab-poly1dfit-pass-through-zero
+def fit_poly_through_origin(x, y, n=1):
+    a = x[:, np.newaxis] ** np.arange(1, n+1)
+    coeff = np.linalg.lstsq(a, y)[0]
+    return np.concatenate((coeff, [0]))
+
 print "plotkeys: ",plotkeys
 
 plotkeys = [15, 17, "parabolic2|1", "parabolic3|1", "parabolic1|1"]
@@ -460,6 +466,24 @@ for plotkey in plotkeys:
   yerr = [y for y in plotdata[plotkey]['variance'].values()]
 
   plt.errorbar(xlist, ylist, fmt=colors[plotkey], yerr=yerr, label=labels[plotkey])
+
+  # fit to line through the origin for total runtime
+  if plotkey == 15:
+      
+    x_fit = np.array(xlist[int(len(xlist)*0.1):])
+    y_fit = np.array(ylist[int(len(xlist)*0.1):])
+    
+    fit_params = fit_poly_through_origin(x_fit, y_fit)    # through origin
+    #fit_params = np.polyfit(x_fit,y_fit,1)               # not necessarily through origin
+    
+    fit_function = np.poly1d(fit_params)
+    print "plotkey={}, fitted line: {}*x + {}".format(plotkey,fit_params[0],fit_params[1])
+    
+    # plot function
+    x = np.linspace(10, 4e3, 100000)
+    #x = [10, 4e3]
+    y = fit_function(x)
+    plt.plot(x, y, "k--", label="fitted linear curve")
   
 ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
@@ -479,9 +503,10 @@ plt.grid(which='both')
 #ax2.set_xticklabels([1,2,4,8,12,16,24,32,64])
 #ax2.set_xlabel(r"Number of processes")
 
-plt.title(caption)
+if not paper_version:
+  plt.title(caption)
 plt.tight_layout()
-plt.savefig(output_path+SCENARIO+'_serial_scaling.png')
+plt.savefig(output_path+SCENARIO+'_serial_scaling_reduced.png')
 
 if show_plots:
   plt.show()
