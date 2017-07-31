@@ -31,6 +31,11 @@ NumberOfNodesInXi1 = 20         # number of bioelectric elements (i.e. number no
 NumberOfNodesInXi2 = 2          # number of fibres per FE element in Y direction, alias xi2
 NumberOfNodesInXi3 = 3          # number of fibres per FE element in Z direction, alias xi3
 
+NumberOfNodesInXi1 = 3         # number of bioelectric elements (i.e. number nodes+1) per 3D FE element in direction of fibre (X direction), alias xi1
+NumberOfNodesInXi2 = 2          # number of fibres per FE element in Y direction, alias xi2
+NumberOfNodesInXi3 = 2          # number of fibres per FE element in Z direction, alias xi3
+
+
 NumberOfInSeriesFibres = 1      # number of fibres that are in a series and mechanically connected. This is not completely tested, set to 1, alias f
 
 NumberOfElementsInAtomX = 1     # x-size of an non-decomposable "atom" of finite elasticity elements, that are guaranteed to be on the same subdomain, alias ax
