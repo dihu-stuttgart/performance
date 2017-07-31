@@ -24,10 +24,10 @@ outlier_bottom = 0
   
 # read csv file
 #report_filename = "serial_scaling_solvers.csv"
-report_filename = "duration.00000.csv"
+report_filename = "1Dsolver_helium.csv"
 
 
-caption = u'Serial scaling, cuboid muscle, neon'
+caption = u'Serial scaling, cuboid muscle, helium'
 #caption = u'Weak scaling, cuboid muscle, helium'
 #caption = u'Weak scaling, cuboid muscle, bwunicluster'
 
