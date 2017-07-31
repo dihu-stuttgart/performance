@@ -32,14 +32,14 @@ def run(p,x,y,z,xi1,ax):
   msolver = 1
   precond = 1
   
-  if p > 12:
+  if p > 24:
     j = "-j2"  # hyperthreading
   else:
     j = "-j1"  # no hyperthreading
 
-  command = "aprun -n {p} -N {p} {j} $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x={x} y={y} z={z} xi1={xi1} ax={ax} "\
+  command = "aprun -n {p} -N {ppn} {j} $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x={x} y={y} z={z} xi1={xi1} ax={ax} "\
             "ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
-            .format(p=int(p), j=j, x=int(x), y=int(y), z=int(z), xi1=int(xi1), ax=int(ax), ode=ode, msolver=msolver, mprecond=mprecond)
+            .format(p=int(p), ppn=int(min(48,int(p))), j=j, x=int(x), y=int(y), z=int(z), xi1=int(xi1), ax=int(ax), ode=ode, msolver=msolver, mprecond=mprecond)
 
   #print command; return 
   print command
@@ -51,20 +51,16 @@ def run(p,x,y,z,xi1,ax):
       log.write(command+"\n")
       log.write("start: "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n")
 
-    output = subprocess.check_output(command, stderr=subprocess.STDOUT, shell=True)
+    subprocess.check_call(command, shell=True)
 
     with open('log.txt','ab') as log:
       log.write("end:   "+datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S")+"\n\n")
-      log.write(output+"\n")
   except subprocess.CalledProcessError as exc:
     with open('log.txt', 'ab') as log:
       log.write('Command failed, return code: '+str(exc.returncode)+"\n")
-      log.write(exc.output+"\n\n")
-      log.write(output)
   else:
     with open('log.txt', 'ab') as log:
-      log.write("Command failed\n")
-      log.write(output)
+      log.write("Command successful\n")
 
     pass
   
@@ -88,7 +84,13 @@ initial_x = 12
 initial_y = 2
 initial_z = 8
 
-for p in range(1,13)+range(12,25,2):
+initial_x = 4
+initial_y = 2
+initial_z = 1
+
+for p in range(1,13)+range(12,25,2)+range(24,49,4):
+#for p in range(16,25,2):
+
   
   for fibres_undivided in [True, False]:
     
@@ -110,9 +112,9 @@ for p in range(1,13)+range(12,25,2):
     best_badness = 100000000
     
     # loop over all possible combinations for x,y,z and find the best according to an error (badness)
-    for x in range(int(0.5*initial_x*factor), int(2*initial_x*factor)):
-      for y in range(int(0.5*initial_y*factor), int(2*initial_y*factor)):
-        for z in range(int(0.5*initial_z*factor), int(2*initial_z*factor)):
+    for x in range(max(1,int(0.5*initial_x*factor)), int(2*initial_x*factor)):
+      for y in range(max(1,int(0.5*initial_y*factor)), int(2*initial_y*factor)):
+        for z in range(max(1,int(0.5*initial_z*factor)), int(2*initial_z*factor)):
           
           
           if fibres_undivided:

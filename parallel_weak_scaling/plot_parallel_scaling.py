@@ -13,14 +13,19 @@ SCENARIO='cuboid'
 #sys.path.insert(0, src_path+"/evaluation")
 import format as fo
 
+paper_version = True
+
 # determine if plots are shown
 show_plots = True
 if len(sys.argv) >= 2:
   show_plots = False
   
-remove_outlier = True
-outlier_top = 1
-outlier_bottom = 2
+remove_outlier_absolute = True
+outlier_number_top = 10
+outlier_number_bottom = 0
+remove_outlier_relative = True
+outlier_fraction_top = 0.3
+outlier_fraction_bottom = 0
   
 # read csv file
 #report_filename = "serial_scaling_solvers.csv"
@@ -214,9 +219,14 @@ def extract_data(data):
       n = len(value_list)
       
       #print "i={}, value_list for {}: {}".format(i, key, value_list)
+      if ("0002" in key or "0003" in key) and i==37:
+        print "i={}, value_list for {}: {}".format(i, key, value_list)
+        
       
-      if n > outlier_bottom+outlier_top and remove_outlier:
-        value_list = value_list[outlier_bottom:-outlier_top]
+      if n > outlier_number_bottom+outlier_number_top and remove_outlier_absolute:
+        value_list = value_list[outlier_number_bottom:-outlier_number_top]
+      if n > 0 and remove_outlier_relative:
+        value_list = value_list[int(outlier_fraction_bottom*len(value_list)):-int(outlier_fraction_top*len(value_list))]
         
       # compute mean and standard deviation
       result[i] = np.mean(value_list)
@@ -316,32 +326,34 @@ plt.rcParams.update({'font.size': 16})
 plt.rcParams['lines.linewidth'] = 2
 output_path = ""
 
+# possible markers: . , o v ^ < > 1 2 3 4 8 s p P * h H + x X D d | _ (see https://matplotlib.org/api/markers_api.html)
+
 colors = {
   "15o": "ko-",      # total
-  "36o": "yo-",      # 0D
-  "37o": "ro-",      # 1D
-  "38o": "go-",      # 3D
-  "39o": "co--",     # 1D->3D
-  "40o": "co:",      # 3D->1D
-  "41o": "bo-",      # file output
+  "36o": "yd-",      # 0D
+  "37o": "rv-",      # 1D
+  "38o": "gs-",      # 3D
+  "39o": "bp-",     # 1D->3D
+  "40o": "c<-",      # 3D->1D
+  "41o": "bx-",      # file output
   "22o": "mo-",      # memory consumption
   
-  "15-": "k+--",      # total
-  "36-": "y+--",      # 0D
-  "37-": "r+--",      # 1D
-  "38-": "g+--",      # 3D
-  "39-": "c+--",     # 1D->3D
-  "40-": "c+:",      # 3D->1D
-  "41-": "b+-",      # file output
+  "15-": "ko--",      # total
+  "36-": "yd--",      # 0D
+  "37-": "rv--",      # 1D
+  "38-": "gs--",      # 3D
+  "39-": "bp--",     # 1D->3D
+  "40-": "c<--",      # 3D->1D
+  "41-": "bx-",      # file output
   "22-": "mo-",      # memory consumption
 }
 labels = {
   "15o": "total",      # total
-  "36o": "0D solver",      # 0D
-  "37o": "1D solver",      # 1D
-  "38o": "3D solver",      # 3D
-  "39o": "interpolation 1D->3D",     # 1D->3D
-  "40o": "interpolation 3D->1D",      # 3D->1D
+  "36o": "solver 0D model",      # 0D
+  "37o": "solver 1D model",      # 1D
+  "38o": "solver 3D model",      # 3D
+  "39o": u"homogenization, 1D to 3D",     # 1D->3D
+  "40o": u"interpolation, 3D to 1D",      # 3D->1D
   "41o": "file output",      # file output
   "22o": "memory consumption",      # memory consumption
 }
@@ -454,7 +466,11 @@ plt.savefig(outfile)
 # create plot Node level (2)
 caption = "Node-level weak scaling, Hazel Hen,\n x,y,z=(4,2,1), xi=(20,2,3), 120 1D el./3D el. "
 outfile = output_path+SCENARIO+'_weak_scaling_node_120.png'
-plt.figure("Node-level (120)", figsize=(10,8))
+plt.figure("Node-level (120)", figsize=(14,8))
+
+plt.rcParams.update({'font.size': 16})
+plt.rcParams['lines.linewidth'] = 3
+plt.rcParams['lines.markersize'] = 8
 
 plotdata = collections.OrderedDict()
 xdata = Set()
@@ -484,7 +500,7 @@ for key in datasets:
   xtickslist.append((nM,nproc))
   
   # loop over different curves (e.g. different measurements)
-  for plotkey_number in [15, 36, 37, 38, 39, 40, 41]:
+  for plotkey_number in [15, 36, 37, 38, 39, 40]:
     
     plotkey = str(plotkey_number) + s
     
@@ -506,6 +522,7 @@ for key in datasets:
 xlist = sorted(xdata)
 
 # loop over curves and plot data with given label and color
+plotkeys = sorted(plotkeys)
 for plotkey in plotkeys:
     
   xlist = sorted(plotdata[plotkey]["value"])
@@ -521,18 +538,23 @@ for plotkey in plotkeys:
   plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
   
   
+plt.subplots_adjust(right=0.58, top=0.84)
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+
 ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
 ax.set_yscale('log', basey=10) 
 ax.set_xscale('log', basey=2) 
+ax.set_xlim([9*10**2, 5*10**4])
 #ticks = list(np.linspace(10**3, 10**4, 10)) + list(np.linspace(10**4, 3*10**4, 4))
 #ax.set_xticks(ticks)
 #ax.set_xticklabels([int(i/1000.) for i in ticks])
 
 
-plt.xlabel('number of 1D elements')
-plt.ylabel('runtime (s)')
+plt.xlabel('Number of 1D elements')
+plt.ylabel('Runtime (s)')
 #plt.legend(loc='best')
+
 plt.grid(which='both')
 
 # twin axes for processes
@@ -541,6 +563,21 @@ ax2.set_xlim(ax.get_xlim())
 ax2.set_xscale('log', basey=2)
 
 xtickslist = sorted(list(set(xtickslist)))
+
+# only leave certain values for number of processes
+show_processes = [1, 2, 3, 4, 6, 8, 10, 14, 18, 24, 28, 36, 48]
+xtickslist_new = list()
+for item in xtickslist:
+  
+  # omit number of process values that are already present in xtickslist_new
+  if item[1] in [itema[1] for itema in xtickslist_new]:
+    continue
+  
+  # if the current number of process value is in show_processes, add it to xtickslist_new
+  if item[1] in show_processes:
+    xtickslist_new.append(item)
+
+xtickslist = list(xtickslist_new)
 xticks = [item[0] for item in xtickslist]
 xlabels = [int(item[1]) for item in xtickslist]
 
@@ -548,8 +585,10 @@ ax2.set_xticks(xticks)
 ax2.set_xticklabels(xlabels)
 ax2.set_xlabel(r"Number of processes")
 
-plt.title(caption, y=1.1)
-plt.tight_layout()
+
+if not paper_version:
+  plt.title(caption, y=1.1)
+  plt.tight_layout()
 plt.savefig(outfile)
 
 # memory consumption

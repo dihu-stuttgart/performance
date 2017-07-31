@@ -27,9 +27,9 @@ NumberGlobalXElements = 1       # number of finite elasticty elements in x-direc
 NumberGlobalYElements = 1       # number of finite elasticty elements in y-direction, alias y
 NumberGlobalZElements = 1       # number of finite elasticty elements in z-direction, alias z
 
-NumberOfNodesInXi1 = 10          # number of bioelectric nodes per 3D FE element in direction of fibre (X direction), alias xi1
-NumberOfNodesInXi2 = 2          # number of fibres per FE element in Y direction, alias xi2
-NumberOfNodesInXi3 = 3          # number of fibres per FE element in Z direction, alias xi3
+NumberOfNodesInXi1 = 3          # number of bioelectric nodes per 3D FE element in direction of fibre (X direction), alias xi1
+NumberOfNodesInXi2 = 1          # number of fibres per FE element in Y direction, alias xi2
+NumberOfNodesInXi3 = 1          # number of fibres per FE element in Z direction, alias xi3
 
 NumberOfInSeriesFibres = 1      # number of fibres that are in a series and mechanically connected. This is not completely tested, set to 1, alias f
 NumberOfElementsInAtomicPortionPerDomain = 1    # defines unsplittable blocks of 3D FE elements for the decomposition on multiple processes, alias a
@@ -41,7 +41,7 @@ DebuggingOutput = F
 DebuggingOnlyRunShortPartOfSimulation = F    # abort simulation after first stimulation
 
 # ------------- numerics -------------------
-TimeStop = 3.0                  # total simulated time
+TimeStop = 1.0                  # total simulated time
 ODETimeStep = 0.0001            # timestep size for 0D problem
 PDETimeStep = 0.005    ! 0.005 # timestep size for 1D problem
 ElasticityTimeStep = 0.10000000001  # timestep size for 3D problem
@@ -71,12 +71,15 @@ MonodomainPreconditionerId = 1  # 1D problem, preconditioner
 # 7 ADDITIVE_SCHWARZ_PRECONDITIONER
 
 NewtonMaximumNumberOfIterations = 500         # 3D solver maximum number of iterations
-ElasticityLoopMaximumNumberOfIterations = 5   # number of load increments in pre-stretch simulation
+ElasticityLoopMaximumNumberOfIterations = 1   # number of load increments in pre-stretch simulation
 NewtonTolerance = 1.E-8                       # abs. and rel. tolerance of 3D problem newton solver
 
 # ------------- physical parameters ------------------
 
-StimValue = 20000.0             # current value with which fibres are stimulated
+StimValue = 20000.0             # total current value with which fibres are stimulated, will be distributed over stimulated nodes
+PhysicalStimulationLength = 0.0  # length of neuromuscular junction, length of line segment where stimulus is applied [cm] (set to 0 to always use 1 node)
+
+
 
 # physical dimension
 PhysicalLength = 3.0

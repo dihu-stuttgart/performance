@@ -2,13 +2,17 @@
 #PBS -N weak_scaling_node_level
 #PBS -l nodes=1:ppn=24
 #PBS -l walltime=12:00:00
-##PBS -l walltime=00:10:00
+##PBS -l walltime=00:30:00
   
 # Change to the direcotry that the job was submitted from
 cd $PBS_O_WORKDIR
 
+export OPENCMISS_REL_DIR=/zhome/academic/HLRS/cbm/icbbnmai/opencmiss/examples/cuboid/build_release/Fortran
+export OPENCMISS_INPUT_DIR=/zhome/academic/HLRS/cbm/icbbnmai/opencmiss/examples/cuboid/input
+
 # load modules
 module restore /lustre/cray/ws8/ws/icbbnmai-iron/manage/build_release/gcc49.module_snapshot
+module load tools/python/2.7.8
 
 # Launch the parallel job to the allocated compute nodes
 #aprun -n 1 -N 1 ./cuboid > out.txt 2>&1

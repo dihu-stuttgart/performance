@@ -78,7 +78,8 @@ initial_y = 2
 initial_z = 8
 
 #for p in range(n_start,13) + [a*12 for a in range(1,6)]:
-for p in range(1,13) + range(12,25,2):
+#for p in range(1,13) + range(12,25,2):
+for p in range(16,25,2):
   
   for fibres_undivided in [True, False]:
     
