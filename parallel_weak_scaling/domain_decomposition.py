@@ -127,58 +127,142 @@ def number_of_processes(p,x,y,z,ax,ay,az,debug=False):
     print "nSubdomains: {},{},{}={} ".format(nSubdomainsX, nSubdomainsY, nSubdomainsZ, nSubdomainsX*nSubdomainsY*nSubdomainsZ)
 
   # adjust number of subdomains such that total number is <= number of domains (ideally '=')
-  while (nSubdomainsX*nSubdomainsY*nSubdomainsZ > NumberOfDomains):
-    diffX = nSubdomainsX - nSubdomainsXFloat
-    diffY = nSubdomainsY - nSubdomainsYFloat
-    diffZ = nSubdomainsZ - nSubdomainsZFloat
+  
+  def GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX, nSubdomainsY, nSubdomainsZ):
+    debug = False
+    nAtomsPerSubdomainX = int(np.ceil(float(nAtomsX) / nSubdomainsX))
+    nAtomsPerSubdomainY = int(np.ceil(float(nAtomsY) / nSubdomainsY))
+    nAtomsPerSubdomainZ = int(np.ceil(float(nAtomsZ) / nSubdomainsZ))
+    nAtomsPerSubdomain = nAtomsPerSubdomainX*nAtomsPerSubdomainY*nAtomsPerSubdomainZ
+
+    if debug:
+      print "nAtomsPerSubdomain:{},{},{}, total:{}".format(nAtomsPerSubdomainX,nAtomsPerSubdomainY,nAtomsPerSubdomainZ,nAtomsPerSubdomain)
+
+    # decrease number of subdomains to exclude now empty subdomains
+    nEmptySubdomainsX = int(float(nAtomsPerSubdomainX*nSubdomainsX - nAtomsX) / nAtomsPerSubdomainX)
+    nEmptySubdomainsY = int(float(nAtomsPerSubdomainY*nSubdomainsY - nAtomsY) / nAtomsPerSubdomainY)
+    nEmptySubdomainsZ = int(float(nAtomsPerSubdomainZ*nSubdomainsZ - nAtomsZ) / nAtomsPerSubdomainZ)
+
+    nEmptySubdomains = nSubdomainsX*nSubdomainsY*nSubdomainsZ - (nSubdomainsX-nEmptySubdomainsX)*(nSubdomainsY-nEmptySubdomainsY)*(nSubdomainsZ-nEmptySubdomainsZ)
+
+    if debug:
+      print "nEmptySubdomains:{},{},{}, total:{}".format(nEmptySubdomainsX,nEmptySubdomainsY,nEmptySubdomainsZ, nEmptySubdomains)
+
+    nSubdomainsX -= nEmptySubdomainsX
+    nSubdomainsY -= nEmptySubdomainsY
+    nSubdomainsZ -= nEmptySubdomainsZ
+    nSubdomains = nSubdomainsX*nSubdomainsY*nSubdomainsZ
+
+    return nSubdomains
+
+  
+  if nSubdomainsX*nSubdomainsY*nSubdomainsZ > NumberOfDomains:
+    DiffNumberOfDomainsXDecreased = NumberOfDomains - GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX-1, nSubdomainsY, nSubdomainsZ)
+    DiffNumberOfDomainsYDecreased = NumberOfDomains - GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX, nSubdomainsY-1, nSubdomainsZ)
+    DiffNumberOfDomainsZDecreased = NumberOfDomains - GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX, nSubdomainsY, nSubdomainsZ-1)
+    DiffNumberOfDomainsXYDecreased = NumberOfDomains - GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX-1, nSubdomainsY-1, nSubdomainsZ)
+    DiffNumberOfDomainsXZDecreased = NumberOfDomains - GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX-1, nSubdomainsY, nSubdomainsZ-1)
+    DiffNumberOfDomainsYZDecreased = NumberOfDomains - GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX, nSubdomainsY-1, nSubdomainsZ-1)
+    DiffNumberOfDomainsXYZDecreased = NumberOfDomains - GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX-1, nSubdomainsY-1, nSubdomainsZ-1)
+
+    if DiffNumberOfDomainsXDecreased < 0:
+      DiffNumberOfDomainsXDecreased = sys.maxint
+    if DiffNumberOfDomainsYDecreased < 0:
+      DiffNumberOfDomainsYDecreased = sys.maxint
+    if DiffNumberOfDomainsZDecreased < 0:
+      DiffNumberOfDomainsZDecreased = sys.maxint
+    if DiffNumberOfDomainsXYDecreased < 0:
+      DiffNumberOfDomainsXYDecreased = sys.maxint
+    if DiffNumberOfDomainsXZDecreased < 0:
+      DiffNumberOfDomainsXZDecreased = sys.maxint
+    if DiffNumberOfDomainsYZDecreased < 0:
+      DiffNumberOfDomainsYZDecreased = sys.maxint
+    if DiffNumberOfDomainsXYZDecreased < 0:
+      DiffNumberOfDomainsXYZDecreased = sys.maxint
     
-    if diffX >= diffY and diffX >= diffZ:
-      if nSubdomainsX != 1:
-        nSubdomainsX -= 1
-      elif diffY >= diffZ:
-        if nSubdomainsY != 1:
-          nSubdomainsY -= 1
-        else:
-          nSubdomainsZ -= 1
-      else:
-        if nSubdomainsZ != 1:
-          nSubdomainsZ -= 1
-        else:
-          nSubdomainsY -= 1
-          
-    elif diffY >= diffZ:    # diffY >= diffZ, diffY > diffX
-      if nSubdomainsY != 1:
-        nSubdomainsY -= 1
-      else:
-        if diffX >= diffZ:
-          if nSubdomainsX != 1:
-            nSubdomainsX -= 1
-          else:
-            nSubdomainsZ -= 1
-        else:
-          if nSubdomainsZ != 1:
-            nSubdomainsZ -= 1
-          else:
-            nSubdomainsX -= 1
+    MinDiffNumberOfDomains = min(DiffNumberOfDomainsXDecreased, min(DiffNumberOfDomainsYDecreased,\
+      min(DiffNumberOfDomainsZDecreased, min(DiffNumberOfDomainsXYDecreased, min(DiffNumberOfDomainsXZDecreased,\
+      min(DiffNumberOfDomainsYZDecreased, DiffNumberOfDomainsXYZDecreased))))))
+      
+    if MinDiffNumberOfDomains == DiffNumberOfDomainsXDecreased:
+      nSubdomainsX = nSubdomainsX-1
+    
+    elif MinDiffNumberOfDomains == DiffNumberOfDomainsYDecreased:
+      nSubdomainsY = nSubdomainsY-1
+    
+    elif MinDiffNumberOfDomains == DiffNumberOfDomainsZDecreased:
+      nSubdomainsZ = nSubdomainsZ-1
+    
+    elif MinDiffNumberOfDomains == DiffNumberOfDomainsXYDecreased:
+      nSubdomainsX = nSubdomainsX-1
+      nSubdomainsY = nSubdomainsY-1
+    
+    elif MinDiffNumberOfDomains == DiffNumberOfDomainsXZDecreased:
+      nSubdomainsX = nSubdomainsX-1
+      nSubdomainsZ = nSubdomainsZ-1
+    
+    elif MinDiffNumberOfDomains == DiffNumberOfDomainsYZDecreased:
+      nSubdomainsY = nSubdomainsY-1
+      nSubdomainsZ = nSubdomainsZ-1
+    
+    elif MinDiffNumberOfDomains == DiffNumberOfDomainsXYZDecreased:
+      nSubdomainsX = nSubdomainsX-1
+      nSubdomainsY = nSubdomainsY-1
+      nSubdomainsZ = nSubdomainsZ-1
+    
+    else:
+      while (nSubdomainsX*nSubdomainsY*nSubdomainsZ > NumberOfDomains):
+        diffX = nSubdomainsX - nSubdomainsXFloat
+        diffY = nSubdomainsY - nSubdomainsYFloat
+        diffZ = nSubdomainsZ - nSubdomainsZFloat
         
-    else:       # diffZ > diffY, diffZ >= diffX
-      if nSubdomainsZ != 1:
-        nSubdomainsZ -= 1
-      else:
-        if diffX >= diffY:
+        if diffX >= diffY and diffX >= diffZ:
           if nSubdomainsX != 1:
             nSubdomainsX -= 1
+          elif diffY >= diffZ:
+            if nSubdomainsY != 1:
+              nSubdomainsY -= 1
+            else:
+              nSubdomainsZ -= 1
           else:
-            nSubdomainsY -= 1
-        else:
+            if nSubdomainsZ != 1:
+              nSubdomainsZ -= 1
+            else:
+              nSubdomainsY -= 1
+              
+        elif diffY >= diffZ:    # diffY >= diffZ, diffY > diffX
           if nSubdomainsY != 1:
             nSubdomainsY -= 1
           else:
-            nSubdomainsX -= 1
-    
-    if debug:  
-      print "diff:{},{},{}, nSubdomains: {},{},{}={} ".format(diffX,diffY,diffZ, nSubdomainsX, nSubdomainsY, nSubdomainsZ, nSubdomainsX*nSubdomainsY*nSubdomainsZ)
-    
+            if diffX >= diffZ:
+              if nSubdomainsX != 1:
+                nSubdomainsX -= 1
+              else:
+                nSubdomainsZ -= 1
+            else:
+              if nSubdomainsZ != 1:
+                nSubdomainsZ -= 1
+              else:
+                nSubdomainsX -= 1
+            
+        else:       # diffZ > diffY, diffZ >= diffX
+          if nSubdomainsZ != 1:
+            nSubdomainsZ -= 1
+          else:
+            if diffX >= diffY:
+              if nSubdomainsX != 1:
+                nSubdomainsX -= 1
+              else:
+                nSubdomainsY -= 1
+            else:
+              if nSubdomainsY != 1:
+                nSubdomainsY -= 1
+              else:
+                nSubdomainsX -= 1
+        
+        if debug:  
+          print "diff:{},{},{}, nSubdomains: {},{},{}={} ".format(diffX,diffY,diffZ, nSubdomainsX, nSubdomainsY, nSubdomainsZ, nSubdomainsX*nSubdomainsY*nSubdomainsZ)
+        
   if debug:
     print "nSubdomains: {},{},{}={} ".format(nSubdomainsX, nSubdomainsY, nSubdomainsZ, nSubdomainsX*nSubdomainsY*nSubdomainsZ)
 
@@ -189,6 +273,9 @@ def number_of_processes(p,x,y,z,ax,ay,az,debug=False):
   nAtomsPerSubdomainY = int(np.ceil(float(nAtomsY) / nSubdomainsY))
   nAtomsPerSubdomainZ = int(np.ceil(float(nAtomsZ) / nSubdomainsZ))
   nAtomsPerSubdomain = nAtomsPerSubdomainX*nAtomsPerSubdomainY*nAtomsPerSubdomainZ
+
+  if debug:
+    print "nAtomsPerSubdomain:{},{},{}, total:{}".format(nAtomsPerSubdomainX,nAtomsPerSubdomainY,nAtomsPerSubdomainZ,nAtomsPerSubdomain)
 
   # decrease number of subdomains to exclude now empty subdomains
   nEmptySubdomainsX = int(float(nAtomsPerSubdomainX*nSubdomainsX - nAtomsX) / nAtomsPerSubdomainX)
