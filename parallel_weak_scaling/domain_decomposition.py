@@ -158,7 +158,7 @@ def number_of_processes(p,x,y,z,ax,ay,az,debug=False):
     return nSubdomains
 
   
-  if nSubdomainsX*nSubdomainsY*nSubdomainsZ > NumberOfDomains:
+  if GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX, nSubdomainsY, nSubdomainsZ) > NumberOfDomains:
     DiffNumberOfDomainsXDecreased = NumberOfDomains - GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX-1, nSubdomainsY, nSubdomainsZ)
     DiffNumberOfDomainsYDecreased = NumberOfDomains - GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX, nSubdomainsY-1, nSubdomainsZ)
     DiffNumberOfDomainsZDecreased = NumberOfDomains - GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX, nSubdomainsY, nSubdomainsZ-1)
@@ -232,7 +232,7 @@ def number_of_processes(p,x,y,z,ax,ay,az,debug=False):
     else:
       if debug:
         print "it does not help to decrease X,Y or Z by 1, start iterative procedure"
-      while (nSubdomainsX*nSubdomainsY*nSubdomainsZ > NumberOfDomains):
+      while (GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX, nSubdomainsY, nSubdomainsZ) > NumberOfDomains):
         diffX = nSubdomainsX - nSubdomainsXFloat
         diffY = nSubdomainsY - nSubdomainsYFloat
         diffZ = nSubdomainsZ - nSubdomainsZFloat
