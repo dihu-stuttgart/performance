@@ -130,6 +130,8 @@ def number_of_processes(p,x,y,z,ax,ay,az,debug=False):
   
   def GetNumberOfUsedSubdomains(nAtomsX, nAtomsY, nAtomsZ, nSubdomainsX, nSubdomainsY, nSubdomainsZ):
     debug = False
+    if nSubdomainsX <= 0 or nSubdomainsY <= 0 or nSubdomainsZ <= 0:
+      return sys.maxint
     nAtomsPerSubdomainX = int(np.ceil(float(nAtomsX) / nSubdomainsX))
     nAtomsPerSubdomainY = int(np.ceil(float(nAtomsY) / nSubdomainsY))
     nAtomsPerSubdomainZ = int(np.ceil(float(nAtomsZ) / nSubdomainsZ))
@@ -184,33 +186,52 @@ def number_of_processes(p,x,y,z,ax,ay,az,debug=False):
       min(DiffNumberOfDomainsZDecreased, min(DiffNumberOfDomainsXYDecreased, min(DiffNumberOfDomainsXZDecreased,\
       min(DiffNumberOfDomainsYZDecreased, DiffNumberOfDomainsXYZDecreased))))))
       
-    if MinDiffNumberOfDomains == DiffNumberOfDomainsXDecreased:
+    if debug:
+      print "diffs: x:{}, y:{}, z:{}, xy:{}, xz:{}, yz:{}, xyz:{}".format(DiffNumberOfDomainsXDecreased, DiffNumberOfDomainsYDecreased, DiffNumberOfDomainsZDecreased, DiffNumberOfDomainsXYDecreased, DiffNumberOfDomainsXZDecreased, DiffNumberOfDomainsYZDecreased, DiffNumberOfDomainsXYZDecreased)
+
+    if MinDiffNumberOfDomains == DiffNumberOfDomainsXDecreased and MinDiffNumberOfDomains != sys.maxint:
+      if debug:
+        print "best to decrease X by 1" 
       nSubdomainsX = nSubdomainsX-1
     
-    elif MinDiffNumberOfDomains == DiffNumberOfDomainsYDecreased:
+    elif MinDiffNumberOfDomains == DiffNumberOfDomainsYDecreased and MinDiffNumberOfDomains != sys.maxint:
+      if debug:
+        print "best to decrease Y by 1"
       nSubdomainsY = nSubdomainsY-1
     
-    elif MinDiffNumberOfDomains == DiffNumberOfDomainsZDecreased:
+    elif MinDiffNumberOfDomains == DiffNumberOfDomainsZDecreased and MinDiffNumberOfDomains != sys.maxint:
+      if debug:
+        print "best to decrease Z by 1"
       nSubdomainsZ = nSubdomainsZ-1
     
-    elif MinDiffNumberOfDomains == DiffNumberOfDomainsXYDecreased:
+    elif MinDiffNumberOfDomains == DiffNumberOfDomainsXYDecreased and MinDiffNumberOfDomains != sys.maxint:
+      if debug:
+        print "best to decresae X and Y by 1"
       nSubdomainsX = nSubdomainsX-1
       nSubdomainsY = nSubdomainsY-1
     
-    elif MinDiffNumberOfDomains == DiffNumberOfDomainsXZDecreased:
+    elif MinDiffNumberOfDomains == DiffNumberOfDomainsXZDecreased and MinDiffNumberOfDomains != sys.maxint:
+      if debug:
+        print "best to decrease X and Z by 1"
       nSubdomainsX = nSubdomainsX-1
       nSubdomainsZ = nSubdomainsZ-1
     
-    elif MinDiffNumberOfDomains == DiffNumberOfDomainsYZDecreased:
+    elif MinDiffNumberOfDomains == DiffNumberOfDomainsYZDecreased and MinDiffNumberOfDomains != sys.maxint:
+      if debug:
+        print "best to decrease Y and Z by 1"
       nSubdomainsY = nSubdomainsY-1
       nSubdomainsZ = nSubdomainsZ-1
     
-    elif MinDiffNumberOfDomains == DiffNumberOfDomainsXYZDecreased:
+    elif MinDiffNumberOfDomains == DiffNumberOfDomainsXYZDecreased and MinDiffNumberOfDomains != sys.maxint:
+      if debug:
+        print "best to decrease X, Y and Z by 1"
       nSubdomainsX = nSubdomainsX-1
       nSubdomainsY = nSubdomainsY-1
       nSubdomainsZ = nSubdomainsZ-1
     
     else:
+      if debug:
+        print "it does not help to decrease X,Y or Z by 1, start iterative procedure"
       while (nSubdomainsX*nSubdomainsY*nSubdomainsZ > NumberOfDomains):
         diffX = nSubdomainsX - nSubdomainsXFloat
         diffY = nSubdomainsY - nSubdomainsYFloat
