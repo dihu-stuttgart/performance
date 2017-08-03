@@ -88,9 +88,9 @@ initial_y = 2
 initial_z = 8
 
 # total 96
-initial_x = 8
+initial_x = 6
 initial_y = 4
-initial_z = 3
+initial_z = 2
 
 #initial_x = 5
 #initial_y = 2
@@ -147,7 +147,7 @@ for p in [a*24]:
           error_p = 1.0 - float(used_number_of_processes) / p
           
           # compute badness value as weighted sum of squared errors
-          badness = c1 * error_total**2 + c2 * (error_x**2 + error_y**2 + error_z**2) + c3 * error_p**2
+          badness = c1 * error_total**2 + c2 * (2*error_x**2 + error_y**2 + error_z**2) + c3 * error_p**2
 
           # if badness is the lowest so far, store values
           if badness < best_badness:
@@ -175,7 +175,10 @@ for p in [a*24]:
 #    print "p = {} (used: {}), [x,y,z]=[{},{},{}], badness: {}, error nel: {}, error p: {}".\
 #    format(p,used_number_of_processes, x,y,z, best_badness,1.0 - float(x*y*z) / total, error_p)
   
-  
+    # check if parametrization works 
+    final_number_of_processes = domain_decomposition.number_of_processes(used_number_of_processes,x,y,z,ax,ay,az)
+    print "final number of processes: ",final_number_of_processes," (should equal",used_number_of_processes,")"
+ 
     check_exit()
     run(used_number_of_processes,x,y,z,ax)
     
