@@ -106,7 +106,8 @@ print "number of nodes a = ",a
 for p in [a*24]:
 
   
-  for fibres_undivided in [True, False]:
+  #for fibres_undivided in [True, False]:
+  if True:
     
     ax = 1
     ay = 1
@@ -130,29 +131,33 @@ for p in [a*24]:
       for y in range(int(0.5*initial_y*factor), int(2*initial_y*factor)):
         for z in range(int(0.5*initial_z*factor), int(2*initial_z*factor)):
           
+          badness = 0          
+          for fibres_undivided in [True, False]:
+
+            if fibres_undivided:
+              ax = x
+            else:
+              ax = 1
           
-          if fibres_undivided:
-            ax = x
+	          # compute relative error to desired total number
+            error_total = 1.0 - float(x*y*z) / total
           
-          # compute relative error to desired total number
-          error_total = 1.0 - float(x*y*z) / total
+	          # compute relative errors to desired relations
+            error_x = 1.0 - float(x) / (initial_x*factor)
+            error_y = 1.0 - float(y) / (initial_y*factor)
+            error_z = 1.0 - float(z) / (initial_z*factor)
+	          
+	          # compute relative error to number of processes
+            used_number_of_processes = domain_decomposition.number_of_processes(p,x,y,z,ax,ay,az)
+            error_p = 1.0 - float(used_number_of_processes) / p
           
-          # compute relative errors to desired relations
-          error_x = 1.0 - float(x) / (initial_x*factor)
-          error_y = 1.0 - float(y) / (initial_y*factor)
-          error_z = 1.0 - float(z) / (initial_z*factor)
+	          # compute badness value as weighted sum of squared errors
+            badness += c1 * error_total**2 + c3 * error_p**2
           
-          # compute relative error to number of processes
-          used_number_of_processes = domain_decomposition.number_of_processes(p,x,y,z,ax,ay,az)
-          error_p = 1.0 - float(used_number_of_processes) / p
-          
-          # compute badness value as weighted sum of squared errors
-          badness = c1 * error_total**2 + c3 * error_p**2
-          
-          if fibres_undivided:   # elongated partitions
-            badness += c2 * (10*error_x**2 + error_y**2 + error_z**2)
-          else:  # fibres divided
-            badness += c2 * (error_x**2 + error_y**2 + error_z**2)
+            if fibres_undivided:   # elongated partitions
+              badness += c2 * (10*error_x**2 + error_y**2 + error_z**2)
+            else:  # fibres divided
+              badness += c2 * (error_x**2 + error_y**2 + error_z**2)
 
 
           # if badness is the lowest so far, store values
@@ -171,12 +176,14 @@ for p in [a*24]:
 
     # use found values
     [used_number_of_processes,x,y,z] = best
-    if fibres_undivided:
-      ax = x
-    
     error_p = 1.0 - float(used_number_of_processes) / p
     
-    
+  for fibres_undivided in [True, False]:
+    if fibres_undivided:
+      ax = x
+    else:
+      ax = 1
+
     print "p =",p," (used:",used_number_of_processes,"), x,y,z=[",x,y,z,"] badness: ",best_badness,", error nel: ",1.0 - float(x*y*z) / total,", error p:",error_p
 #    print "p = {} (used: {}), [x,y,z]=[{},{},{}], badness: {}, error nel: {}, error p: {}".\
 #    format(p,used_number_of_processes, x,y,z, best_badness,1.0 - float(x*y*z) / total, error_p)
