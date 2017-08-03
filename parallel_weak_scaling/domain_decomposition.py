@@ -56,9 +56,9 @@ def number_of_processes(p,x,y,z,ax,ay,az,debug=False):
   
   # if number of atoms is limited in z direction, begin with partioning in z direction
   if float(NumberGlobalZElements) / OptimalSideLength >= nAtomsZ - 1e-3:
-    nSubdomainsZFloat = min(float(NumberGlobalZElements) / OptimalSideLength, nAtomsZ)
+    nSubdomainsZFloat = float(min(float(NumberGlobalZElements) / OptimalSideLength, nAtomsZ))
     if debug:
-      print "nAtomsZ={}, OptimalSideLength={}, z={}, z/Opt={}, nSubdomainsZFloat={}".format(nAtomsZ, OptimalSideLength, NumberGlobalZElements, float(NumberGlobalZElements) / OptimalSideLength, nSubdomainsZFloat)
+      print "YES, nAtomsZ={}, OptimalSideLength={}, z={}, z/Opt={}, nSubdomainsZFloat={}".format(nAtomsZ, OptimalSideLength, NumberGlobalZElements, float(NumberGlobalZElements) / OptimalSideLength, nSubdomainsZFloat)
 
     OptimalSideLength = (nSubdomainsZFloat * NumberGlobalXElements * NumberGlobalYElements / NumberOfDomains)**(1./2)
     if debug:
@@ -74,7 +74,7 @@ def number_of_processes(p,x,y,z,ax,ay,az,debug=False):
 
   # begin partioning in  x direction
   else:
-    nSubdomainsXFloat = min(float(NumberGlobalXElements) / OptimalSideLength, nAtomsX)
+    nSubdomainsXFloat = float(min(float(NumberGlobalXElements) / OptimalSideLength, nAtomsX))
     # now if nAtomX is smaller than the optimal nSubdomainsXFloat, we must take nAtomX instead
     # nSubdomainsXFloat is given
     # nSubdomainsYFloat = NumberGlobalYElements / OptimalSideLength
@@ -85,11 +85,11 @@ def number_of_processes(p,x,y,z,ax,ay,az,debug=False):
     # 
 
     if debug:
-      print "nAtomsX={}, OptimalSideLength={}, x={}, x/Opt={}, nSubdomainsXFloat={}".format(nAtomsX, OptimalSideLength, NumberGlobalXElements, float(NumberGlobalXElements) / OptimalSideLength, nSubdomainsXFloat)
+      print "NO, nAtomsX={}, OptimalSideLength={}, x={}, x/Opt={}, nSubdomainsXFloat={}".format(nAtomsX, OptimalSideLength, NumberGlobalXElements, float(NumberGlobalXElements) / OptimalSideLength, nSubdomainsXFloat)
 
     OptimalSideLength = (nSubdomainsXFloat * NumberGlobalYElements * NumberGlobalZElements / NumberOfDomains)**(1./2)
     if debug:
-      print "new OptimalSideLength={}".format(OptimalSideLength)
+      print "new OptimalSideLength={}=sqrt({}*{}*{}/{})".format(OptimalSideLength, nSubdomainsXFloat, NumberGlobalYElements, NumberGlobalZElements, NumberOfDomains)
 
     if abs(OptimalSideLength) < 1e-8:
       #print "warning: OptimalSideLength is zero! p,x,y,z,ax,ay,az=",p,x,y,z,ax,ay,az
