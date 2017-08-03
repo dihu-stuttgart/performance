@@ -26,7 +26,7 @@ def check_exit():
   else:
     print "OK"
 
-def run(nproc,x,y,z,ax): # nnodes = number of nodes, nproc = number of processes
+def run(nproc,pretended_p,x,y,z,ax): # nnodes = number of nodes, nproc = number of processes, pretended_p = number of proc. to start domain decomposition with
   
   ode = 1
   msolver = 1
@@ -39,8 +39,8 @@ def run(nproc,x,y,z,ax): # nnodes = number of nodes, nproc = number of processes
 #    j = "-j1"  # no hyperthreading
 
   command = "aprun -n {nproc} -N {ppn} {j} $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x={x} y={y} z={z} ax={ax} "\
-            "ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
-            .format(nproc=int(nproc), ppn=int(min(24,int(p))), j=j, x=int(x), y=int(y), z=int(z), ax=int(ax), ode=ode, msolver=msolver, mprecond=mprecond)
+            "PretendedNumberOfDomains={pretended_p} ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
+            .format(nproc=int(nproc), ppn=int(min(24,int(p))), j=j, x=int(x), y=int(y), z=int(z), ax=int(ax), pretended_p=pretended_p, ode=ode, msolver=msolver, mprecond=mprecond)
 
   #print command; return 
   print command
@@ -180,5 +180,5 @@ for p in [a*24]:
     print "final number of processes: ",final_number_of_processes," (should equal",used_number_of_processes,")"
  
     check_exit()
-    run(used_number_of_processes,x,y,z,ax)
+    run(used_number_of_processes,p,x,y,z,ax)
     
