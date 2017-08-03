@@ -67,7 +67,10 @@ def run(nproc,x,y,z,ax): # nnodes = number of nodes, nproc = number of processes
   
 # load modules
 cmd = "module restore /lustre/cray/ws8/ws/icbbnmai-iron/manage/build_release/gcc49.module_snapshot"
-subprocess.check_call(cmd, shell=True)
+try:
+  subprocess.check_call(cmd, shell=True)
+except:
+  print "not on hazel hen!"
 
 
 
@@ -79,13 +82,15 @@ ode = 1       # 1 explicit Euler, 2 BDF
 msolver = 1   # 1 SOLVER_DIRECT_LU, 2 SOLVER_ITERATIVE_GMRES, 3 SOLVER_ITERATIVE_CONJUGATE_GRADIENT, 4 SOLVER_ITERATIVE_CONJGRAD_SQUARED
 mprecond = 1   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PRECONDITIONER, 4 SOR_PRECONDITIONER, 5 INCOMPLETE_CHOLESKY_PRECONDITIONER, 6 INCOMPLETE_LU_PRECONDITIONER, 7 ADDITIVE_SCHWARZ_PRECONDITIONER
 
+# total 192
 initial_x = 12
 initial_y = 2
 initial_z = 8
 
-initial_x = 4
-initial_y = 2
-initial_z = 1
+# total 96
+initial_x = 8
+initial_y = 4
+initial_z = 3
 
 #initial_x = 5
 #initial_y = 2
