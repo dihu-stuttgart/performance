@@ -147,7 +147,13 @@ for p in [a*24]:
           error_p = 1.0 - float(used_number_of_processes) / p
           
           # compute badness value as weighted sum of squared errors
-          badness = c1 * error_total**2 + c2 * (2*error_x**2 + error_y**2 + error_z**2) + c3 * error_p**2
+          badness = c1 * error_total**2 + c3 * error_p**2
+          
+          if fibres_undivided:   # elongated partitions
+            badness += c2 * (10*error_x**2 + error_y**2 + error_z**2)
+          else:  # fibres divided
+            badness += c2 * (error_x**2 + error_y**2 + error_z**2)
+
 
           # if badness is the lowest so far, store values
           if badness < best_badness:
