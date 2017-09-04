@@ -1,11 +1,11 @@
-# Scenario name: default values
-# Date: 24.4.17, 6.7.17, 4.9.17
+# Scenario name: reference values for paper
+# Date: 4.9.17
 # Author: Benjamin Maier
 # dihu-stuttgart/iron version: ff094bc63f78483265e44b295520c38a7884bedc  (branch stable)
 # dihu-stuttgart/iron-examples version: b677ac233f668294bf50c597103239d0ac49a625 (branch stable)
 #
-# Designated number of Processors: variable
-# Estimated run time (walltime): 1h
+# Designated number of Processors: 1
+# Estimated run time (walltime):
 #
 # Scenario file for cuboid example
 #
