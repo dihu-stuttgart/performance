@@ -10,7 +10,7 @@ import time
 import os
 
 # set environment variable
-os.environ['OPENCMISS_SCE_FILE'] = '1Dsolver.sce'
+os.environ['OPENCMISS_SCE_FILE'] = 'standard.sce'
 
 def check_exit():
   
@@ -25,7 +25,7 @@ def check_exit():
 
 def run(xi1,ode,msolver,mprecond):   
   print "xi1={0}".format(int(xi1))
-  command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR xi1={} ODESolverId={} MonodomainSolverId={} MonodomainPreconditionerId={}"\
+  command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR xi1={} ODESolverId={} MonodomainSolverId={} MonodomainPreconditionerId={} TimeStop=1 StimPeriod=1"\
   .format(int(xi1), int(ode), int(msolver), int(mprecond))
 
   #print command
@@ -48,13 +48,16 @@ previous_xi1 = 0
 print previous_xi1
 
 #for n in range(n_start,500):
-for n in range(5,13):
-  xi1 = np.round(n**(1.5))
+for n in range(12,130):
+  xi1 = np.round(1.5**n)
 
   if (xi1 == previous_xi1):
     continue
   previous_xi1 = xi1
   
+#  if xi1 > 100:
+#    break
+
   run(xi1,ode,2,1)
   continue
 
