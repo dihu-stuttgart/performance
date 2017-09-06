@@ -47,20 +47,18 @@ previous_xi1 = 0
 
 print previous_xi1
 
-#for n in range(n_start,500):
-for n in range(12,130):
+for n in range(5,21):
   xi1 = np.round(1.5**n)
 
   if (xi1 == previous_xi1):
     continue
   previous_xi1 = xi1
   
-#  if xi1 > 100:
-#    break
-
+  # GMRES
   run(xi1,ode,2,1)
   continue
 
+  # other solvers 
   # CG
   precond = 1
   for msolver in [1, 2, 4]:
