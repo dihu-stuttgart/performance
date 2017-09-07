@@ -264,10 +264,15 @@ def extract_data(data):
         if value != 0:
           value_list.append(value)
       
+      if len(value_list) > 0:
+        print "key=",key, ",len=",len(value_list)
+      
       # remove outlier
       value_list = sorted(value_list)
       n = len(value_list)
       
+      #if i==15:
+        #print "key=",key,"i=",i,"n=",n
       #print "i={}, value_list for {}: {}".format(i, key, value_list)
       
       if n > outlier_bottom+outlier_top and remove_outlier:
@@ -404,7 +409,7 @@ xlist = sorted(xdata)
 
 ######################
 # plot serial scaling
-plt.figure(2, figsize=(11,9))
+plt.figure(2, figsize=(8,6))
 
 # 13 duration main sim
 # 17 ODE
@@ -417,7 +422,7 @@ colors = {
   15: "ko-",    # total
   17: "yd-",    # 0D solver
   "parabolic1|1": "cv-",   # LU
-  "parabolic2|1": "r*-",   # GMRES
+  "parabolic2|1": "ro-",   # GMRES
   "parabolic3|1": "ms-",   # CG
   "parabolic3|2": "ro:",
   "parabolic3|3": "r+-",
@@ -434,9 +439,9 @@ labels = {
   13: "Duration main simulation",
   15: "total runtime",
   17: "solver 0D model",
-  "parabolic1|1": "solver 1D model (LU)",
-  "parabolic2|1": "solver 1D model (GMRES)",
-  "parabolic3|1": "solver 1D model (CG)",
+  "parabolic1|1": "LU",
+  "parabolic2|1": "GMRES",
+  "parabolic3|1": "CG",
   "parabolic3|2": "Parabolic solver (CG, Jacobi)",
   "parabolic3|3": "Parabolic solver (CG, Block Jacobi)",
   "parabolic3|4": "Parabolic solver (CG, SOR)",
@@ -458,6 +463,7 @@ def fit_poly_through_origin(x, y, n=1):
 print "plotkeys: ",plotkeys
 
 plotkeys = [15, 17, "parabolic2|1", "parabolic3|1", "parabolic1|1"]
+plotkeys = ["parabolic2|1", "parabolic3|1", "parabolic1|1"]
 
 for plotkey in plotkeys:
     
@@ -491,7 +497,7 @@ ax.set_yscale('log', basey=10)
 ax.set_xscale('log', basey=10) 
 ax.set_xlim([10, 4e3])
 #ax.set_xticks([1,2,4,8,12,16,24,32,64])
-plt.xlabel('Number of 1D elements')
+plt.xlabel('Number of Nodes per fibre, $s_x$')
 plt.ylabel('Runtime (s)')
 plt.legend(loc='best')
 plt.grid(which='both')
@@ -506,7 +512,7 @@ plt.grid(which='both')
 if not paper_version:
   plt.title(caption)
 plt.tight_layout()
-plt.savefig(output_path+SCENARIO+'_serial_scaling_reduced.png')
+plt.savefig(output_path+SCENARIO+'_1D_solver.png')
 
 if show_plots:
   plt.show()
