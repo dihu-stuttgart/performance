@@ -10,7 +10,7 @@ import time
 import os
 
 # set environment variable
-os.environ['OPENCMISS_SCE_FILE'] = '1Dsolver.sce'
+os.environ['OPENCMISS_SCE_FILE'] = 'thomas_variant.sce'
 
 def check_exit():
   
@@ -25,8 +25,8 @@ def check_exit():
 
 def run(xi1,ode,msolver,mprecond):   
   print "xi1={0}".format(int(xi1))
-  command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR xi1={} ODESolverId={} MonodomainSolverId={} MonodomainPreconditionerId={} -citations petsc-cite-{}.bib"\
-  .format(int(xi1), int(ode), int(msolver), int(mprecond), int(msolver))
+  command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR xi1={} ODESolverId={} MonodomainSolverId={} MonodomainPreconditionerId={} TimeStop=1 StimPeriod=1"\
+  .format(int(xi1), int(ode), int(msolver), int(mprecond))
 
   #print command
   try:
@@ -36,7 +36,7 @@ def run(xi1,ode,msolver,mprecond):
     pass
 
 
-n_start = 4   # size of smallest problem to begin with
+n_start = 1   # size of smallest problem to begin with
 last_total = 0
 f = 1
 a = 1
@@ -47,25 +47,29 @@ previous_xi1 = 0
 
 print previous_xi1
 
-for n in range(n_start,200):
-#for n in range(5,13):
-  xi1 = np.round(n**(1.5))
+for n in range(5,21):
+  xi1 = np.round(1.5**n)
 
   if (xi1 == previous_xi1):
     continue
   previous_xi1 = xi1
   
-  # LU, GMRES, CG
+  # GMRES
+  run(xi1,ode,2,1)
+  continue
+
+  # other solvers 
+  # CG
   precond = 1
-  for msolver in [1, 2, 3]:
+  for msolver in [1, 2, 4]:
     check_exit()
     run(xi1,ode,msolver,precond)
 
   # CG with different preconditioners
-  #msolver = 3
+  msolver = 3
   
-  #for precond in range(1,8):
-  #  check_exit()
-  #  run(xi1,ode,msolver,precond)
+  for precond in range(1,8):
+    check_exit()
+    run(xi1,ode,msolver,precond)
 
   

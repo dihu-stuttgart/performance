@@ -10,7 +10,7 @@ import time
 import os
 
 # set environment variable
-os.environ['OPENCMISS_SCE_FILE'] = '1Dsolver.sce'
+os.environ['OPENCMISS_SCE_FILE'] = 'standard.sce'
 
 def check_exit():
   
@@ -23,10 +23,9 @@ def check_exit():
   else:
     print "OK"
 
-def run(xi1,ode,msolver,mprecond):   
-  print "xi1={0}".format(int(xi1))
-  command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR xi1={} ODESolverId={} MonodomainSolverId={} MonodomainPreconditionerId={} -citations petsc-cite-{}.bib"\
-  .format(int(xi1), int(ode), int(msolver), int(mprecond), int(msolver))
+def run(ode,dt):   
+  command = "mkdir -p {ode}_{dt} && cd {ode}_{dt} && $OPENCMISS_REL_DIR/cuboid ../$OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR ODESolverId={ode} ODETimeStep={dt} && cd -"\
+  .format(ode=int(ode), dt=dt)
 
   #print command
   try:
@@ -34,38 +33,17 @@ def run(xi1,ode,msolver,mprecond):
     subprocess.check_call(command, shell=True)
   except:
     pass
-
-
-n_start = 4   # size of smallest problem to begin with
-last_total = 0
+    
 f = 1
 a = 1
-ode = 1       # 1 explicit Euler, 2 BDF
+ode = 1       # 1 explicit Euler, 2 BDF, 5  Improved Euler (Heun)
 msolver = 1   # 1 SOLVER_DIRECT_LU, 2 SOLVER_ITERATIVE_GMRES, 3 SOLVER_ITERATIVE_CONJUGATE_GRADIENT, 4 SOLVER_ITERATIVE_CONJGRAD_SQUARED
 precond = 1   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PRECONDITIONER, 4 SOR_PRECONDITIONER, 5 INCOMPLETE_CHOLESKY_PRECONDITIONER, 6 INCOMPLETE_LU_PRECONDITIONER, 7 ADDITIVE_SCHWARZ_PRECONDITIONER
-previous_xi1 = 0
 
-print previous_xi1
 
-for n in range(n_start,200):
-#for n in range(5,13):
-  xi1 = np.round(n**(1.5))
+# standard time step 1e-4
+# reference time step 1e-5
 
-  if (xi1 == previous_xi1):
-    continue
-  previous_xi1 = xi1
-  
-  # LU, GMRES, CG
-  precond = 1
-  for msolver in [1, 2, 3]:
-    check_exit()
-    run(xi1,ode,msolver,precond)
-
-  # CG with different preconditioners
-  #msolver = 3
-  
-  #for precond in range(1,8):
-  #  check_exit()
-  #  run(xi1,ode,msolver,precond)
-
-  
+for dt_0D in [1e-5, 1e-4, 1e-3, 1e-2]:
+  for ode in [1,5]:
+    run(ode,dt_0D)
