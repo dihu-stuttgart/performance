@@ -50,6 +50,8 @@ ODETimeStep = 0.0001            # timestep size for 0D problem
 PDETimeStep = 0.0005            # timestep size for 1D problem
 ElasticityTimeStep = 0.1        # timestep size for 3D problem
 
+OdeNSteps = 1                   # number of timesteps for ODESolver (overrides ODETimeStep)
+
 # splitting
 SplittingType = 0               # 0 = Godunov splitting, 1 = Strang splitting (note: you should also set ODESolverId to 5)
 
