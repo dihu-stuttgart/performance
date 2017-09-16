@@ -27,7 +27,7 @@ outlier_bottom = 2
   
 # read csv file
 report_filename = "paper_multi_node.csv"
-report_filename = "a.csv"
+report_filename = "c.csv"
 
 
 caption = u'Nodel-level weak scaling, Hazel Hen'
