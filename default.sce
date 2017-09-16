@@ -50,8 +50,11 @@ ODETimeStep = 0.0001            # timestep size for 0D problem
 PDETimeStep = 0.0005            # timestep size for 1D problem
 ElasticityTimeStep = 0.1        # timestep size for 3D problem
 
+# splitting
+SplittingType = 0               # 0 = Godunov splitting, 1 = Strang splitting (note: you should also set ODESolverId to 5)
+
 # solvers
-ODESolverId = 1                 # 0D problem, ODE solver type: 1=explicit Euler, 2=BDF
+ODESolverId = 1                 # 0D problem, ODE solver type: 1=explicit Euler, 5=Heun (use with Strang splitting!)
 MonodomainSolverId = 2          # 1D problem, solver
 MonodomainPreconditionerId = 1  # 1D problem, preconditioner
 
