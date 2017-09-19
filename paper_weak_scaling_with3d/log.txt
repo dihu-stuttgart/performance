@@ -1,0 +1,122 @@
+
+
+
+-------- new command ------------------------------------------
+aprun -n 48 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=4 y=12 z=8 px=1 py=6 pz=8 ex=4 ey=2 ez=1 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:26:26
+end:   19.09.2017 15:27:03
+
+Command successful
+
+
+
+-------- new command ------------------------------------------
+aprun -n 48 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=4 y=12 z=8 px=2 py=6 pz=4 ex=2 ey=2 ez=2 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:27:03
+end:   19.09.2017 15:27:57
+
+Command successful
+
+
+
+-------- new command ------------------------------------------
+aprun -n 48 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=4 y=12 z=8 px=1 py=6 pz=8 ex=4 ey=2 ez=1 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:29:13
+end:   19.09.2017 15:29:51
+
+Command successful
+
+
+
+-------- new command ------------------------------------------
+aprun -n 48 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=4 y=12 z=8 px=2 py=6 pz=4 ex=2 ey=2 ez=2 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:29:51
+
+
+
+-------- new command ------------------------------------------
+aprun -n 24 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=2 y=12 z=8 px=1 py=6 pz=4 ex=2 ey=2 ez=2 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:30:01
+
+
+
+-------- new command ------------------------------------------
+aprun -n 96 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=4 y=12 z=16 px=1 py=12 pz=8 ex=4 ey=1 ez=2 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:30:01
+Command failed, return code: 137
+
+
+
+-------- new command ------------------------------------------
+aprun -n 96 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=4 y=12 z=16 px=2 py=6 pz=8 ex=2 ey=2 ez=2 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:30:23
+end:   19.09.2017 15:30:30
+
+Command successful
+
+
+
+-------- new command ------------------------------------------
+aprun -n 24 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=2 y=12 z=8 px=1 py=6 pz=4 ex=2 ey=2 ez=2 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:30:30
+end:   19.09.2017 15:30:41
+
+Command successful
+
+
+
+-------- new command ------------------------------------------
+aprun -n 48 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=4 y=12 z=8 px=1 py=6 pz=8 ex=4 ey=2 ez=1 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:30:43
+end:   19.09.2017 15:31:01
+
+Command successful
+
+
+
+-------- new command ------------------------------------------
+aprun -n 24 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=2 y=12 z=8 px=1 py=6 pz=4 ex=2 ey=2 ez=2 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:31:04
+end:   19.09.2017 15:31:19
+
+Command successful
+
+
+
+-------- new command ------------------------------------------
+aprun -n 48 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=4 y=12 z=8 px=2 py=6 pz=4 ex=2 ey=2 ez=2 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:31:19
+end:   19.09.2017 15:31:20
+
+Command successful
+
+
+
+-------- new command ------------------------------------------
+aprun -n 96 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=4 y=12 z=16 px=1 py=12 pz=8 ex=4 ey=1 ez=2 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:31:21
+end:   19.09.2017 15:31:34
+
+Command successful
+
+
+
+-------- new command ------------------------------------------
+aprun -n 24 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=2 y=12 z=8 px=1 py=6 pz=4 ex=2 ey=2 ez=2 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:31:34
+Command failed, return code: 137
+
+
+
+-------- new command ------------------------------------------
+aprun -n 96 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=4 y=12 z=16 px=2 py=6 pz=8 ex=2 ey=2 ez=2 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:31:37
+end:   19.09.2017 15:32:05
+
+Command successful
+
+
+
+-------- new command ------------------------------------------
+aprun -n 24 -N 24 -j1 $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x=2 y=12 z=8 px=1 py=6 pz=4 ex=2 ey=2 ez=2 ODESolverId=1 MonodomainSolverId=2 MonodomainPreconditionerId=1
+start: 19.09.2017 15:32:07
