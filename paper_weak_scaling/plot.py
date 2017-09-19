@@ -14,7 +14,7 @@ SCENARIO='cuboid'
 import format as fo
 
 paper_version = True
-paper_no_legend = True
+paper_no_legend = False
 
 # determine if plots are shown
 show_plots = True
@@ -27,7 +27,7 @@ outlier_bottom = 2
   
 # read csv file
 report_filename = "paper_multi_node.csv"
-report_filename = "c.csv"
+report_filename = "d.csv"
 
 
 caption = u'Nodel-level weak scaling, Hazel Hen'
@@ -214,9 +214,16 @@ def extract_data(data):
       value_list = sorted(value_list)
       n = len(value_list)
       
-      if (i == 37):
-        print "key=",key,", i=",i,",value_list:",value_list,",value:", value
-      #print "i={}, value_list for {}: {}".format(i, key, value_list)
+      if (i == 37 and "48" in key):
+      #  print "key=",key,", i=",i,",value_list:",value_list,",value:", value
+        print "i={}, value_list for {}: {}".format(i, key, value_list)
+      
+      if i==37 and "48" in key:
+        value_list2 = []
+        for value in value_list:
+          if value < 5:
+            value_list2 += [value]
+        value_list = value_list2
       
       if n > outlier_bottom+outlier_top and remove_outlier:
         value_list = value_list[outlier_bottom:-outlier_top]
@@ -356,11 +363,11 @@ labels = {
 ######################
 # create plot multi node
 caption = "Multi-node weak scaling, Hazel Hen,\n xi=(3,2,2), 12 1D el./3D el. "
-outfile = output_path+SCENARIO+'_weak_scaling.png'
+outfile = output_path+SCENARIO+'_paper_weak_scaling.png'
 if paper_no_legend:
   plt.figure("multi-node (12)", figsize=(8,8))
 else:
-  plt.figure("multi-node (12)", figsize=(14,8))
+  plt.figure("multi-node (12)", figsize=(8,8))
 
 output_path = ""
 plotdata = collections.OrderedDict()
@@ -432,17 +439,18 @@ ax.set_yscale('log', basey=10)
 #ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
 #ax.set_xticks(ticks)
 #ax.set_xticklabels([int(i/1000.) for i in ticks])
-
-if not paper_no_legend:
-  plt.subplots_adjust(right=0.58, top=0.84)
-  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
-
 #ax.set_xticks(np.linspace(000,60000,5))
 
 plt.xlabel('Number of 1D elements')
 plt.ylabel('Runtime (s)')
 #plt.legend(loc='best')
 plt.grid(which='both')
+
+if not paper_no_legend:
+  print "legend"
+  #plt.subplots_adjust(right=0.58, top=0.84)
+  #plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+  plt.legend(loc='best')
 
 # twin axes for processes
 ax2 = ax.twiny()
@@ -453,7 +461,7 @@ xtickslist = sorted(list(set(xtickslist)))
 xtickslist = [(item[0],int(np.ceil(item[1]/24.))) for item in xtickslist]
 
 # only leave certain values for number of processes
-show_processes = [1, 2, 3, 4, 6, 8]
+show_processes = [1, 2, 3, 4, 6, 8, 16, 32]
 xtickslist_new = list()
 for item in xtickslist:
   
@@ -483,197 +491,198 @@ plt.savefig(outfile)
 
 ######################
 # create plot multi node, memory
-caption = "Multi-node weak scaling, memory consumption, Hazel Hen,\n x,y,z=(4,2,1), xi=(3,2,2), 12 1D el./3D el. "
-outfile = output_path+SCENARIO+'_weak_scaling_multi_equal_memory.png'
-plt.figure("multi-node (12), memory", figsize=(8,7))
+if True:
+  caption = "Multi-node weak scaling, memory consumption, Hazel Hen,\n x,y,z=(4,2,1), xi=(3,2,2), 12 1D el./3D el. "
+  outfile = output_path+SCENARIO+'_paper_weak_scaling_memory.png'
+  plt.figure("multi-node (12), memory", figsize=(8,7))
 
-output_path = ""
-plotdata = collections.OrderedDict()
-xdata = Set()
-plotkeys = Set()
+  output_path = ""
+  plotdata = collections.OrderedDict()
+  xdata = Set()
+  plotkeys = Set()
 
-# key is the initially defined sorting key
-for key in datasets:
-  
-  dataset = datasets[key]['value']
-  variances = datasets[key]['variance']
-  nproc = dataset[2]
-  
-  nFE = dataset[7]
-  nM = dataset[8]
-  
-  # compute ghost layer size
-  
-# 102:  "NumberOfElementsInAtomX",
-# 103:  "NumberOfElementsInAtomY",
-# 104:  "NumberOfElementsInAtomZ",
-# 105:  "nSubdomainsX",
-# 106:  "nSubdomainsY",
-# 107:  "nSubdomainsZ",
-  nx = dataset[105]
-  ny = dataset[106]
-  nz = dataset[107]
-  x = dataset[3]
-  y = dataset[4]
-  z = dataset[5]
-  
-  subdomain_shape_x = np.ceil(x/nx)
-  subdomain_shape_y = np.ceil(y/ny)
-  subdomain_shape_z = np.ceil(z/nz)
-  
-  remainder_subdomain_shape_x = (1-nx)*subdomain_shape_x + x
-  remainder_subdomain_shape_y = (1-ny)*subdomain_shape_y + y
-  remainder_subdomain_shape_z = (1-nz)*subdomain_shape_z + z
-  
-  single_full_ghost_layer_size = subdomain_shape_x*subdomain_shape_y*2 + subdomain_shape_x*subdomain_shape_z*2 + subdomain_shape_y*subdomain_shape_z*2
-  single_remainder_ghost_layer_size_xplus = remainder_subdomain_shape_x*subdomain_shape_y*2 + remainder_subdomain_shape_x*subdomain_shape_z*2 + subdomain_shape_y*subdomain_shape_z*2
-  single_remainder_ghost_layer_size_yplus = subdomain_shape_x*remainder_subdomain_shape_y*2 + subdomain_shape_x*subdomain_shape_z*2 + remainder_subdomain_shape_y*subdomain_shape_z*2
-  single_remainder_ghost_layer_size_zplus = subdomain_shape_x*subdomain_shape_y*2 + subdomain_shape_x*remainder_subdomain_shape_z*2 + subdomain_shape_y*remainder_subdomain_shape_z*2
-   
-  single_remainder_ghost_layer_size_xyplus = remainder_subdomain_shape_x*remainder_subdomain_shape_y*2 + remainder_subdomain_shape_x*subdomain_shape_z*2 + remainder_subdomain_shape_y*subdomain_shape_z*2
-  single_remainder_ghost_layer_size_xzplus = remainder_subdomain_shape_x*subdomain_shape_y*2 + remainder_subdomain_shape_x*remainder_subdomain_shape_z*2 + subdomain_shape_y*remainder_subdomain_shape_z*2
-  single_remainder_ghost_layer_size_yzplus = subdomain_shape_x*remainder_subdomain_shape_y*2 + subdomain_shape_x*remainder_subdomain_shape_z*2 + remainder_subdomain_shape_y*remainder_subdomain_shape_z*2
-  
-  single_remainder_ghost_layer_size_xyzplus = remainder_subdomain_shape_x*remainder_subdomain_shape_y*2 + remainder_subdomain_shape_x*remainder_subdomain_shape_z*2 + remainder_subdomain_shape_y*remainder_subdomain_shape_z*2  
+  # key is the initially defined sorting key
+  for key in datasets:
     
-  total_ghostlayer_elements = single_full_ghost_layer_size * (nx-1)*(ny-1)*(nz-1)\
-    + single_remainder_ghost_layer_size_xplus * (ny-1)*(nz-1)\
-    + single_remainder_ghost_layer_size_yplus * (nx-1)*(nz-1)\
-    + single_remainder_ghost_layer_size_zplus * (nx-1)*(ny-1)\
-    + single_remainder_ghost_layer_size_xyplus * (nz-1)\
-    + single_remainder_ghost_layer_size_xzplus * (ny-1)\
-    + single_remainder_ghost_layer_size_yzplus * (nx-1)\
-    + single_remainder_ghost_layer_size_xyzplus * 1\
-  
-  
-  print ""
-  print "ghostlayers"
-  print "n subdomains: ",nx,ny,nz, ", xyz=",x,y,z
-  print "subdomain shape: ", subdomain_shape_x,subdomain_shape_y,subdomain_shape_z
-  print "remainder shape: ",remainder_subdomain_shape_x, remainder_subdomain_shape_y, remainder_subdomain_shape_z
-  
-  print "sum: ", single_full_ghost_layer_size," * ",(nx-1)*(ny-1)*(nz-1),\
-  "+",single_remainder_ghost_layer_size_xplus," * ",(ny-1)*(nz-1),\
-  "+",single_remainder_ghost_layer_size_yplus," * ",(nx-1)*(nz-1),\
-  "+",single_remainder_ghost_layer_size_zplus," * ",(nx-1)*(ny-1),\
-  "+",single_remainder_ghost_layer_size_xyplus," * ",(nz-1),\
-  "+",single_remainder_ghost_layer_size_xzplus," * ",(ny-1),\
-  "+",single_remainder_ghost_layer_size_yzplus," * ",(nx-1),\
-  "+",single_remainder_ghost_layer_size_xyzplus," * ",1
-  
-  ghostlayer_size_per_process = total_ghostlayer_elements / nproc
-  
-  
-  print "ghostlayer_size_per_process:",ghostlayer_size_per_process
-  
-  nMperFE = float(nM)/nFE
-  if nMperFE != 12 or nproc == 72:
-    continue
-  
-  if dataset[105] == 1:
-    s = "-"     # pillars, fibres not subdivided
-  else:
-    s = "o"     # cubic
-  
-  if s=="-":
-    xtickslist.append((nM,nproc))
-  
-  # loop over different curves (e.g. different measurements)
-  for plotkey_number in [22,"ghost"]:
+    dataset = datasets[key]['value']
+    variances = datasets[key]['variance']
+    nproc = dataset[2]
     
-    if plotkey_number == 22:
-      plotkey = str(22) + s
+    nFE = dataset[7]
+    nM = dataset[8]
+    
+    # compute ghost layer size
+    
+  # 102:  "NumberOfElementsInAtomX",
+  # 103:  "NumberOfElementsInAtomY",
+  # 104:  "NumberOfElementsInAtomZ",
+  # 105:  "nSubdomainsX",
+  # 106:  "nSubdomainsY",
+  # 107:  "nSubdomainsZ",
+    nx = dataset[105]
+    ny = dataset[106]
+    nz = dataset[107]
+    x = dataset[3]
+    y = dataset[4]
+    z = dataset[5]
+    
+    subdomain_shape_x = np.ceil(x/nx)
+    subdomain_shape_y = np.ceil(y/ny)
+    subdomain_shape_z = np.ceil(z/nz)
+    
+    remainder_subdomain_shape_x = (1-nx)*subdomain_shape_x + x
+    remainder_subdomain_shape_y = (1-ny)*subdomain_shape_y + y
+    remainder_subdomain_shape_z = (1-nz)*subdomain_shape_z + z
+    
+    single_full_ghost_layer_size = subdomain_shape_x*subdomain_shape_y*2 + subdomain_shape_x*subdomain_shape_z*2 + subdomain_shape_y*subdomain_shape_z*2
+    single_remainder_ghost_layer_size_xplus = remainder_subdomain_shape_x*subdomain_shape_y*2 + remainder_subdomain_shape_x*subdomain_shape_z*2 + subdomain_shape_y*subdomain_shape_z*2
+    single_remainder_ghost_layer_size_yplus = subdomain_shape_x*remainder_subdomain_shape_y*2 + subdomain_shape_x*subdomain_shape_z*2 + remainder_subdomain_shape_y*subdomain_shape_z*2
+    single_remainder_ghost_layer_size_zplus = subdomain_shape_x*subdomain_shape_y*2 + subdomain_shape_x*remainder_subdomain_shape_z*2 + subdomain_shape_y*remainder_subdomain_shape_z*2
+     
+    single_remainder_ghost_layer_size_xyplus = remainder_subdomain_shape_x*remainder_subdomain_shape_y*2 + remainder_subdomain_shape_x*subdomain_shape_z*2 + remainder_subdomain_shape_y*subdomain_shape_z*2
+    single_remainder_ghost_layer_size_xzplus = remainder_subdomain_shape_x*subdomain_shape_y*2 + remainder_subdomain_shape_x*remainder_subdomain_shape_z*2 + subdomain_shape_y*remainder_subdomain_shape_z*2
+    single_remainder_ghost_layer_size_yzplus = subdomain_shape_x*remainder_subdomain_shape_y*2 + subdomain_shape_x*remainder_subdomain_shape_z*2 + remainder_subdomain_shape_y*remainder_subdomain_shape_z*2
+    
+    single_remainder_ghost_layer_size_xyzplus = remainder_subdomain_shape_x*remainder_subdomain_shape_y*2 + remainder_subdomain_shape_x*remainder_subdomain_shape_z*2 + remainder_subdomain_shape_y*remainder_subdomain_shape_z*2  
       
-      # define x value and y value
-      xvalue = nM
-      yvalue = dataset[plotkey_number]/(1024*1024.*1024)
-      yvalue_variance = variances[plotkey_number]/(1024*1024.*1024)**2
-
-    elif plotkey_number == "ghost":
-      plotkey = "ghost" + s
-      xvalue = nM
-      yvalue = ghostlayer_size_per_process
-      yvalue_variance = 0
+    total_ghostlayer_elements = single_full_ghost_layer_size * (nx-1)*(ny-1)*(nz-1)\
+      + single_remainder_ghost_layer_size_xplus * (ny-1)*(nz-1)\
+      + single_remainder_ghost_layer_size_yplus * (nx-1)*(nz-1)\
+      + single_remainder_ghost_layer_size_zplus * (nx-1)*(ny-1)\
+      + single_remainder_ghost_layer_size_xyplus * (nz-1)\
+      + single_remainder_ghost_layer_size_xzplus * (ny-1)\
+      + single_remainder_ghost_layer_size_yzplus * (nx-1)\
+      + single_remainder_ghost_layer_size_xyzplus * 1\
+    
+    
+    print ""
+    print "ghostlayers"
+    print "n subdomains: ",nx,ny,nz, ", xyz=",x,y,z
+    print "subdomain shape: ", subdomain_shape_x,subdomain_shape_y,subdomain_shape_z
+    print "remainder shape: ",remainder_subdomain_shape_x, remainder_subdomain_shape_y, remainder_subdomain_shape_z
+    
+    print "sum: ", single_full_ghost_layer_size," * ",(nx-1)*(ny-1)*(nz-1),\
+    "+",single_remainder_ghost_layer_size_xplus," * ",(ny-1)*(nz-1),\
+    "+",single_remainder_ghost_layer_size_yplus," * ",(nx-1)*(nz-1),\
+    "+",single_remainder_ghost_layer_size_zplus," * ",(nx-1)*(ny-1),\
+    "+",single_remainder_ghost_layer_size_xyplus," * ",(nz-1),\
+    "+",single_remainder_ghost_layer_size_xzplus," * ",(ny-1),\
+    "+",single_remainder_ghost_layer_size_yzplus," * ",(nx-1),\
+    "+",single_remainder_ghost_layer_size_xyzplus," * ",1
+    
+    ghostlayer_size_per_process = total_ghostlayer_elements / nproc
+    
+    
+    print "ghostlayer_size_per_process:",ghostlayer_size_per_process
+    
+    nMperFE = float(nM)/nFE
+    if nMperFE != 12 or nproc == 72:
+      continue
+    
+    if dataset[105] == 1:
+      s = "-"     # pillars, fibres not subdivided
+    else:
+      s = "o"     # cubic
+    
+    if s=="-":
+      xtickslist.append((nM,nproc))
+    
+    # loop over different curves (e.g. different measurements)
+    for plotkey_number in [22,"ghost"]:
+      
+      if plotkey_number == 22:
+        plotkey = str(22) + s
         
-    if plotkey not in plotdata:
-      plotdata[plotkey] = dict()
-      plotdata[plotkey]['value'] = collections.OrderedDict()
-      plotdata[plotkey]['variance'] = collections.OrderedDict()
+        # define x value and y value
+        xvalue = nM
+        yvalue = dataset[plotkey_number]/(1024*1024.*1024)
+        yvalue_variance = variances[plotkey_number]/(1024*1024.*1024)**2
+
+      elif plotkey_number == "ghost":
+        plotkey = "ghost" + s
+        xvalue = nM
+        yvalue = ghostlayer_size_per_process
+        yvalue_variance = 0
+          
+      if plotkey not in plotdata:
+        plotdata[plotkey] = dict()
+        plotdata[plotkey]['value'] = collections.OrderedDict()
+        plotdata[plotkey]['variance'] = collections.OrderedDict()
+        
+      plotdata[plotkey]['value'][xvalue] = yvalue
+      plotdata[plotkey]['variance'][xvalue] = yvalue_variance
+      xdata.add(xvalue)
+      plotkeys.add(plotkey)
+
+
+  # loop over curves and plot data with given label and color
+  plotkeys = sorted(plotkeys)
+  for plotkey in ["22o","22-"]:
       
-    plotdata[plotkey]['value'][xvalue] = yvalue
-    plotdata[plotkey]['variance'][xvalue] = yvalue_variance
-    xdata.add(xvalue)
-    plotkeys.add(plotkey)
+    xlist = sorted(plotdata[plotkey]["value"])
+    ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
+    yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
 
-
-# loop over curves and plot data with given label and color
-plotkeys = sorted(plotkeys)
-for plotkey in ["22o"]:
+    label = None
+    if plotkey in labels:
+      label = labels[plotkey]
+    color = ""
+    if plotkey in colors:
+      color = colors[plotkey]
+    plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
     
-  xlist = sorted(plotdata[plotkey]["value"])
-  ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
-  yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
-
-  label = None
-  if plotkey in labels:
-    label = labels[plotkey]
-  color = ""
-  if plotkey in colors:
-    color = colors[plotkey]
-  plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
-  
-  
-ax = plt.gca()
-#ax.set_xscale('log', basey=2) 
-#ax.set_yscale('log', basey=10)
-#ax.set_xscale('log', basey=2) 
-ticks = list(np.linspace(10**4, 10**5, 10))
-ax.set_xticks(ticks)
-ax.set_xticklabels([int(i) for i in ticks])
-plt.grid(which="major")
+    
+  ax = plt.gca()
+  #ax.set_xscale('log', basey=2) 
+  #ax.set_yscale('log', basey=10)
+  #ax.set_xscale('log', basey=2) 
+  ticks = list(np.linspace(10**4, 10**5, 10))
+  ax.set_xticks(ticks)
+  ax.set_xticklabels([int(i) for i in ticks])
+  plt.grid(which="major")
 
 
-#ax.set_xticks(np.linspace(20000,180000,5))
-ax.set_ylim(0,ax.get_ylim()[1])
-plt.ylabel('Memory consumption per process (GiB)')
+  #ax.set_xticks(np.linspace(20000,180000,5))
+  ax.set_ylim(0,ax.get_ylim()[1])
+  plt.ylabel('Memory consumption per process (GiB)')
 
-ax3 = ax.twinx()
+  ax3 = ax.twinx()
 
-for plotkey in ["ghosto", "ghost-"]:
-  xlist = sorted(plotdata[plotkey]["value"])
-  ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
-  yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
+  for plotkey in ["ghosto", "ghost-"]:
+    xlist = sorted(plotdata[plotkey]["value"])
+    ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
+    yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
 
-  label = None
-  if plotkey in labels:
-    label = labels[plotkey]
-  color = ""
-  if plotkey in colors:
-    color = colors[plotkey]
-  plt.plot(xlist, ylist, color, label=label)
-
-
-#ax3.tick_params('y', colors='k')
+    label = None
+    if plotkey in labels:
+      label = labels[plotkey]
+    color = ""
+    if plotkey in colors:
+      color = colors[plotkey]
+    plt.plot(xlist, ylist, color, label=label)
 
 
-plt.xlabel('Number of 1D elements')
-plt.ylabel('Number of 3D ghost elements')
-plt.legend(loc='best')
-plt.grid(which='both')
+  #ax3.tick_params('y', colors='k')
 
-# twin axes for processes
-ax2 = ax.twiny()
-ax2.set_xlim(ax.get_xlim())
-#ax2.set_xscale('log', basey=2)
 
-ax2.set_xticks(xticks)
-ax2.set_xticklabels(xlabels)
-ax2.set_xlabel(r"Number of nodes (24 processes per node)")
+  plt.xlabel('Number of 1D elements')
+  plt.ylabel('Number of 3D ghost elements')
+  plt.legend(loc='best')
+  plt.grid(which='both')
 
-if not paper_version:
-  plt.title(caption, y=1.1)
-  plt.tight_layout()
-plt.savefig(outfile)
+  # twin axes for processes
+  ax2 = ax.twiny()
+  ax2.set_xlim(ax.get_xlim())
+  #ax2.set_xscale('log', basey=2)
+
+  ax2.set_xticks(xticks)
+  ax2.set_xticklabels(xlabels)
+  ax2.set_xlabel(r"Number of nodes (24 processes per node)")
+
+  if not paper_version:
+    plt.title(caption, y=1.1)
+    plt.tight_layout()
+  plt.savefig(outfile)
 
 if show_plots:
   plt.show()
