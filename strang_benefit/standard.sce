@@ -1,11 +1,11 @@
-# Scenario name: default values
-# Date: 24.4.17, 6.7.17, 4.9.17
+# Scenario name: improvements for paper, to compute speedup
+# Date: 16.9.17
 # Author: Benjamin Maier
-# dihu-stuttgart/iron version: ff094bc63f78483265e44b295520c38a7884bedc  (branch stable)
-# dihu-stuttgart/iron-examples version: b677ac233f668294bf50c597103239d0ac49a625 (branch stable)
+# dihu-stuttgart/iron version: b5feecd8b415dbb6da6d0ddd0fee80e83934503f  (branch BIOELECTRIC_FINITE_ELASTICITY_strang_splitting)
+# dihu-stuttgart/iron-examples version: 3e8758f469ff0642728121280cf18998253bc922 (branch BIOELECTRIC_FINITE_ELASTICITY_strang_splitting)
 #
-# Designated number of Processors: variable
-# Estimated run time (walltime): 1h
+# Designated number of Processors: 1
+# Estimated run time (walltime):
 #
 # Scenario file for cuboid example
 #
@@ -45,18 +45,18 @@ DebuggingOnlyRunShortPartOfSimulation = F    # abort simulation after first stim
 
 # ------------- numerics -------------------
 # time steps
-TimeStop = 10.0                 # total simulated time, note that the real simulated time is always a multiple of StimPeriod
-ODETimeStep = 0.0001            # timestep size for 0D problem
+TimeStop = 1.0                 # total simulated time, note that the real simulated time is always a multiple of StimPeriod
+ODETimeStep = 0.0001            # timestep size for 0D problem (will be overridden by OdeNSteps)
 PDETimeStep = 0.0005            # timestep size for 1D problem
 ElasticityTimeStep = 0.1        # timestep size for 3D problem
 
-OdeNSteps = 1                   # number of timesteps for ODESolver (overrides ODETimeStep)
+OdeNSteps = 1                   # number of timesteps for ODESolver (overrides ODETimeStep if != -1)
 
 # splitting
-SplittingType = 0               # 0 = Godunov splitting, 1 = Strang splitting (note: you should also set ODESolverId to 5)
+SplittingType = 0               # 0 = Godunov splitting, 1 = Strang splitting (note: for 2nd order you should also set ODESolverId to 5)
 
 # solvers
-ODESolverId = 1                 # 0D problem, ODE solver type: 1=explicit Euler, 5=Heun (use with Strang splitting!)
+ODESolverId = 1                 # 0D problem, ODE solver type: 1=explicit Euler, 5=Heun
 MonodomainSolverId = 2          # 1D problem, solver
 MonodomainPreconditionerId = 1  # 1D problem, preconditioner
 
@@ -94,7 +94,7 @@ PhysicalStimulationLength = 0.03125  # length of neuromuscular junction, length 
 
 # stimulation is applied periodic with periodic time PERIODD, length of stimulation burst is stim_stop
 StimDuration = 0.1                   # the duration for which the stimulation is present, former STIM_STOP, a reasonable value is the same as ElastcityTimeStep
-StimPeriod = 10.0                    # the duration between subsequent stimulation spikes, former PERIODD
+StimPeriod = 1.0                    # the duration between subsequent stimulation spikes, former PERIODD
 
 # physical dimension [cm]
 PhysicalLength = 1.0
