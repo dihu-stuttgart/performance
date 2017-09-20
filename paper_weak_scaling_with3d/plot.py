@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+# with 3D problem
+
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,7 +17,7 @@ SCENARIO='cuboid'
 import format as fo
 
 paper_version = True
-paper_no_legend = True
+paper_no_legend = False
 
 # determine if plots are shown
 show_plots = True
@@ -27,7 +30,7 @@ outlier_bottom = 2
   
 # read csv file
 report_filename = "paper_multi_node.csv"
-report_filename = "b.csv"
+report_filename = "c.csv"
 
 
 caption = u'Nodel-level weak scaling, Hazel Hen'
@@ -159,6 +162,9 @@ def extract_data(data):
     if len(dataset) < 17:
       print "Warning: invalid data set"
       continue
+      
+    if dataset[0] < "19.09.2017 16:38:55" and dataset[2] == 192:
+      continue
     
     # copy dataset to new_data
     new_data = dataset
@@ -214,7 +220,15 @@ def extract_data(data):
       value_list = sorted(value_list)
       n = len(value_list)
       
-      if (i == 37):
+      if i==37 and "192" in key:
+        value_list2 = []
+        for value in value_list:
+          if value < 100:
+            value_list2 += [value]
+        value_list = value_list2
+      
+      
+      if (i == 0 and "192" in key):
         print "key=",key,", i=",i,",value_list:",value_list,",value:", value
       #print "i={}, value_list for {}: {}".format(i, key, value_list)
       
@@ -356,9 +370,9 @@ labels = {
 ######################
 # create plot multi node
 caption = "Multi-node weak scaling, Hazel Hen,\n xi=(3,2,2), 12 1D el./3D el. "
-outfile = output_path+SCENARIO+'_weak_scaling.png'
+outfile = output_path+SCENARIO+'_weak_scaling_with_3d.png'
 if paper_no_legend:
-  plt.figure("multi-node (12)", figsize=(8,8))
+  plt.figure("multi-node (12)", figsize=(10,8))
 else:
   plt.figure("multi-node (12)", figsize=(14,8))
 
@@ -388,7 +402,7 @@ for key in datasets:
   xtickslist.append((nM,nproc))
   
   # loop over different curves (e.g. different measurements)
-  for plotkey_number in [15, 36, 37]:
+  for plotkey_number in [15, 36, 37, 38]:
     
     plotkey = str(plotkey_number) + s
     
@@ -426,8 +440,9 @@ for plotkey in plotkeys:
   
   
 ax = plt.gca()
-#ax.set_xscale('log', basey=2) 
+ax.set_xscale('log', basey=2) 
 ax.set_yscale('log', basey=10) 
+ax.set_xlim([2e3,1e5])
 #ax.set_xscale('log', basey=2) 
 #ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
 #ax.set_xticks(ticks)
@@ -447,13 +462,13 @@ plt.grid(which='both')
 # twin axes for processes
 ax2 = ax.twiny()
 ax2.set_xlim(ax.get_xlim())
-#ax2.set_xscale('log', basey=2)
+ax2.set_xscale('log', basey=2)
 
 xtickslist = sorted(list(set(xtickslist)))
 xtickslist = [(item[0],int(np.ceil(item[1]/24.))) for item in xtickslist]
 
 # only leave certain values for number of processes
-show_processes = [1, 2, 3, 4, 6, 8]
+show_processes = [1, 2, 3, 4, 6, 8, 16, 32, 64]
 xtickslist_new = list()
 for item in xtickslist:
   
@@ -470,6 +485,8 @@ xticks = [item[0] for item in xtickslist]
 xlabels = [item[1] for item in xtickslist]
 #xlabels = [int(np.ceil(item[1]/24.)) for item in xtickslist]
 
+print "xticks:",xticks
+
 ax2.set_xticks(xticks)
 ax2.set_xticklabels(xlabels)
 ax2.set_xlabel(r"Number of nodes (24 processes per node)")
@@ -478,7 +495,7 @@ if not paper_version:
   plt.title(caption, y=1.1)
   plt.tight_layout()
   
-plt.tight_layout()
+#plt.tight_layout()
 plt.savefig(outfile)
 
 ######################
@@ -545,26 +562,26 @@ for key in datasets:
     + single_remainder_ghost_layer_size_yzplus * (nx-1)\
     + single_remainder_ghost_layer_size_xyzplus * 1\
   
-  
-  print ""
-  print "ghostlayers"
-  print "n subdomains: ",nx,ny,nz, ", xyz=",x,y,z
-  print "subdomain shape: ", subdomain_shape_x,subdomain_shape_y,subdomain_shape_z
-  print "remainder shape: ",remainder_subdomain_shape_x, remainder_subdomain_shape_y, remainder_subdomain_shape_z
-  
-  print "sum: ", single_full_ghost_layer_size," * ",(nx-1)*(ny-1)*(nz-1),\
-  "+",single_remainder_ghost_layer_size_xplus," * ",(ny-1)*(nz-1),\
-  "+",single_remainder_ghost_layer_size_yplus," * ",(nx-1)*(nz-1),\
-  "+",single_remainder_ghost_layer_size_zplus," * ",(nx-1)*(ny-1),\
-  "+",single_remainder_ghost_layer_size_xyplus," * ",(nz-1),\
-  "+",single_remainder_ghost_layer_size_xzplus," * ",(ny-1),\
-  "+",single_remainder_ghost_layer_size_yzplus," * ",(nx-1),\
-  "+",single_remainder_ghost_layer_size_xyzplus," * ",1
+  if False:
+    print ""
+    print "ghostlayers"
+    print "n subdomains: ",nx,ny,nz, ", xyz=",x,y,z
+    print "subdomain shape: ", subdomain_shape_x,subdomain_shape_y,subdomain_shape_z
+    print "remainder shape: ",remainder_subdomain_shape_x, remainder_subdomain_shape_y, remainder_subdomain_shape_z
+    
+    print "sum: ", single_full_ghost_layer_size," * ",(nx-1)*(ny-1)*(nz-1),\
+    "+",single_remainder_ghost_layer_size_xplus," * ",(ny-1)*(nz-1),\
+    "+",single_remainder_ghost_layer_size_yplus," * ",(nx-1)*(nz-1),\
+    "+",single_remainder_ghost_layer_size_zplus," * ",(nx-1)*(ny-1),\
+    "+",single_remainder_ghost_layer_size_xyplus," * ",(nz-1),\
+    "+",single_remainder_ghost_layer_size_xzplus," * ",(ny-1),\
+    "+",single_remainder_ghost_layer_size_yzplus," * ",(nx-1),\
+    "+",single_remainder_ghost_layer_size_xyzplus," * ",1
   
   ghostlayer_size_per_process = total_ghostlayer_elements / nproc
   
   
-  print "ghostlayer_size_per_process:",ghostlayer_size_per_process
+  #print "ghostlayer_size_per_process:",ghostlayer_size_per_process
   
   nMperFE = float(nM)/nFE
   if nMperFE != 12 or nproc == 72:

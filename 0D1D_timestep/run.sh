@@ -1,4 +1,4 @@
 #!/bin/bash
 
-./single.py 0 5 200
+./single.py 0 10 200
 

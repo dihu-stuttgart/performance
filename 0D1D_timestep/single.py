@@ -3,13 +3,13 @@
 
 import sys
 import numpy as np
-#import matplotlib.pyplot as plt
 import subprocess
 import datetime
 import time
 import os
 import socket
 import csv
+import compute_error
 import exnode_reader
 
 # set environment variable
@@ -62,22 +62,18 @@ def run(splitting_type,n_0D,n_1D):
     duration_1D_solve = data[47]
     duration_total = data[15]
 
-  # compute errors
-  error = 0
+  # compute error
   reference_folder = "0_5_200"
-  vm_reference = exnode_reader.parse_file(reference_folder+"/MainTime_M_2_10.part0.exnode", [["Vm",1]])
-  vm_measurement = exnode_reader.parse_file(folder+"/MainTime_M_2_10.part0.exnode", [["Vm",1]])
-  error = np.linalg.norm(vm_measurement - vm_reference) / len(vm_measurement)
+  error = compute_error.compute_error(reference_folder, folder)
  
   # write to file
-  output_report = "accuracy.csv"
+  output_report = "error.csv"
   with open(output_report, "ab") as f:
     f.write("{date};{hostname};{splitting_type};{n_0D};{n_1D};{error};{duration_0D};{duration_1D};{duration_0D_solve};{duration_1D_solve};{duration_total}\n".\
             format(date=time.strftime("%d.%m.%Y %H:%M:%S"), hostname=socket.gethostname(), splitting_type=splitting_type, \
             n_0D=n_0D, n_1D=n_1D, error=error, \
             duration_0D=duration_0D, duration_1D=duration_1D, duration_0D_solve=duration_0D_solve, duration_1D_solve=duration_1D_solve, duration_total=duration_total))
  
-print "start"
 if len(sys.argv) > 3:
   splitting_type = int(sys.argv[1])
   n_0D = int(sys.argv[2])

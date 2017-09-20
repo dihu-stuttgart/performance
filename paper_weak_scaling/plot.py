@@ -4,6 +4,7 @@ import sys
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
+import random
 import collections
 import copy
 from sets import Set
@@ -178,7 +179,8 @@ def extract_data(data):
     nFE = new_data[7]
     nM = new_data[8]
     nMperFE = float(nM)/nFE
-    if new_data[105] == 1:    # nSubdomains=1
+    print new_data[2]
+    if new_data[105] == 1 or (new_data[2] == 24 and random.random()<0.5):    # nSubdomains=1
       s = "-"
     else:
       s = "o"
