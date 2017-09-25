@@ -52,7 +52,7 @@ ElasticityTimeStep = 0.1        # timestep size for 3D problem
 
 # solvers
 ODESolverId = 1                 # 0D problem, ODE solver type: 1=explicit Euler, 2=BDF
-MonodomainSolverId = 2          # 1D problem, solver
+MonodomainSolverId = 1          # 1D problem, solver
 MonodomainPreconditionerId = 1  # 1D problem, preconditioner
 
 # ODESolverId
