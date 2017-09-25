@@ -171,7 +171,7 @@ if True:
 
   for dataset in data:
     
-    if int(dataset[3]) == 2:    # n_0D
+    if int(dataset[3]) == 1:    # n_0D
       if int(dataset[2]) == 0:     # godunov
         xlist_godunov.append(int(dataset[4]))   # n_1D
         ylist_godunov.append(float(dataset[5])) # error
