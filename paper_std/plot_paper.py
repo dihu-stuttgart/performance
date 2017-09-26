@@ -286,7 +286,7 @@ for key in datasets:
 ###############################################################
 #######################################################
 # plot serial scaling
-plt.rcParams.update({'font.size': 16})
+plt.rcParams.update({'font.size': 20})
 plt.rcParams['lines.linewidth'] = 3
 plt.rcParams['lines.markersize'] = 8
 
@@ -393,7 +393,7 @@ ax.set_xlim([1e3, 3e5])
 #ax.set_xticklabels([int(i/1000.) for i in ticks])
 
 if not paper_no_legend:
-  plt.subplots_adjust(right=0.58, top=0.84)
+  plt.subplots_adjust(right=0.57, top=0.84)
   plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 
 #ax.set_xticks(np.linspace(000,60000,5))
