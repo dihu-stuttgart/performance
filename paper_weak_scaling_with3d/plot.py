@@ -322,7 +322,7 @@ if False:
 # plot
 # x-axis: n processes
 # y-axis: total time
-plt.rcParams.update({'font.size': 16})
+plt.rcParams.update({'font.size': 20})
 plt.rcParams['lines.linewidth'] = 3
 plt.rcParams['lines.markersize'] = 8
 
@@ -450,7 +450,7 @@ ax.set_xlim([2e3,1e5])
 
 if not paper_no_legend:
   plt.subplots_adjust(right=0.58, top=0.84)
-  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=20.)
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
@@ -491,6 +491,7 @@ ax2.set_xticks(xticks)
 ax2.set_xticklabels(xlabels)
 ax2.set_xlabel(r"Number of nodes (24 processes per node)")
 
+#plt.gcf().subplots_adjust(right=0.89)
 if not paper_version:
   plt.title(caption, y=1.1)
   plt.tight_layout()
@@ -498,6 +499,144 @@ if not paper_version:
 #plt.tight_layout()
 plt.savefig(outfile)
 
+######################
+# create plot multi node
+caption = "Multi-node weak scaling, parallel efficiency, Hazel Hen,\n xi=(3,2,2), 12 1D el./3D el. "
+outfile = output_path+SCENARIO+'_weak_scaling_with_3d_efficiency.png'
+if paper_no_legend:
+  plt.figure("multi-node efficiency (12)", figsize=(10,8))
+else:
+  plt.figure("multi-node efficiency (12)", figsize=(14,8))
+
+output_path = ""
+plotdata = collections.OrderedDict()
+xdata = Set()
+xtickslist = []
+plotkeys = Set()
+
+yreference_pillar = datasets["24-"]["value"]
+yreference_cube = datasets["24-"]["value"]
+
+# key is the initially defined sorting key
+for key in datasets:
+  
+  dataset = datasets[key]['value']
+  variances = datasets[key]['variance']
+  nproc = dataset[2]
+  
+  nFE = dataset[7]
+  nM = dataset[8]
+  
+  nMperFE = float(nM)/nFE
+    
+  if dataset[105] == 1:
+    s = "-"     # pillars, fibres not subdivided
+    yreference = yreference_pillar
+  else:
+    s = "o"     # cubic
+    yreference = yreference_cube
+    continue
+  
+  xtickslist.append((nM,nproc))
+  
+  # loop over different curves (e.g. different measurements)
+  for plotkey_number in [15, 36, 37, 38]:
+    
+    plotkey = str(plotkey_number) + s
+    
+    # define x value and y value
+    xvalue = nM
+    yvalue = yreference[plotkey_number] / dataset[plotkey_number]
+    yvalue_variance = variances[plotkey_number]
+    yvalue_variance = 0
+      
+    if plotkey not in plotdata:
+      plotdata[plotkey] = dict()
+      plotdata[plotkey]['value'] = collections.OrderedDict()
+      plotdata[plotkey]['variance'] = collections.OrderedDict()
+      
+    plotdata[plotkey]['value'][xvalue] = yvalue
+    plotdata[plotkey]['variance'][xvalue] = yvalue_variance
+    xdata.add(xvalue)
+    plotkeys.add(plotkey)
+
+
+# loop over curves and plot data with given label and color
+plotkeys = sorted(plotkeys)
+for plotkey in plotkeys:
+    
+  xlist = sorted(plotdata[plotkey]["value"])
+  ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
+  yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
+
+  label = None
+  if plotkey in labels:
+    label = labels[plotkey]
+  color = ""
+  if plotkey in colors:
+    color = colors[plotkey]
+  plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
+  
+  
+ax = plt.gca()
+ax.set_xscale('log', basey=2) 
+#ax.set_yscale('log', basey=10) 
+ax.set_xlim([2e3,1e5])
+#ax.set_xscale('log', basey=2) 
+#ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
+#ax.set_xticks(ticks)
+#ax.set_xticklabels([int(i/1000.) for i in ticks])
+
+if not paper_no_legend:
+  plt.subplots_adjust(right=0.58, top=0.84)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=20.)
+
+#ax.set_xticks(np.linspace(000,60000,5))
+
+plt.xlabel('Number of 1D elements')
+plt.ylabel('Parallel efficiency')
+#plt.legend(loc='best')
+plt.grid(which='both')
+
+# twin axes for processes
+ax2 = ax.twiny()
+ax2.set_xlim(ax.get_xlim())
+ax2.set_xscale('log', basey=2)
+
+xtickslist = sorted(list(set(xtickslist)))
+xtickslist = [(item[0],int(np.ceil(item[1]/24.))) for item in xtickslist]
+
+# only leave certain values for number of processes
+show_processes = [1, 2, 3, 4, 6, 8, 16, 32, 64]
+xtickslist_new = list()
+for item in xtickslist:
+  
+  # omit number of process values that are already present in xtickslist_new
+  if item[1] in [itema[1] for itema in xtickslist_new]:
+    continue
+  
+  # if the current number of process value is in show_processes, add it to xtickslist_new
+  if item[1] in show_processes:
+    xtickslist_new.append(item)
+
+xtickslist = list(xtickslist_new)
+xticks = [item[0] for item in xtickslist]
+xlabels = [item[1] for item in xtickslist]
+#xlabels = [int(np.ceil(item[1]/24.)) for item in xtickslist]
+
+print "xticks:",xticks
+
+ax2.set_xticks(xticks)
+ax2.set_xticklabels(xlabels)
+ax2.set_xlabel(r"Number of nodes (24 processes per node)")
+
+#plt.gcf().subplots_adjust(right=0.89)
+if not paper_version:
+  plt.title(caption, y=1.1)
+  plt.tight_layout()
+  
+#plt.tight_layout()
+plt.savefig(outfile)
 ######################
 # create plot multi node, memory
 caption = "Multi-node weak scaling, memory consumption, Hazel Hen,\n x,y,z=(4,2,1), xi=(3,2,2), 12 1D el./3D el. "
@@ -687,6 +826,7 @@ ax2.set_xticks(xticks)
 ax2.set_xticklabels(xlabels)
 ax2.set_xlabel(r"Number of nodes (24 processes per node)")
 
+plt.gcf().subplots_adjust(right=0.89)
 if not paper_version:
   plt.title(caption, y=1.1)
   plt.tight_layout()

@@ -356,9 +356,9 @@ for key in datasets:
 # y-axis: total time
 
 #plt.rcParams.update({'font.size': 23})
-plt.rcParams.update({'font.size': 16})
+plt.rcParams.update({'font.size': 20})
 plt.rcParams['lines.linewidth'] = 3
-plt.rcParams['lines.markersize'] = 8
+plt.rcParams['lines.markersize'] = 5
 output_path = ""
 plotdata = collections.OrderedDict()
 xdata = Set()
@@ -497,9 +497,9 @@ ax.set_yscale('log', basey=10)
 ax.set_xscale('log', basey=10) 
 ax.set_xlim([10, 4e3])
 #ax.set_xticks([1,2,4,8,12,16,24,32,64])
-plt.xlabel('Number of Nodes per fibre, $s_x$')
+plt.xlabel('Number of nodes per fibre, $s_x$')
 plt.ylabel('Runtime (s)')
-plt.legend(loc='best')
+plt.legend(loc='best',fontsize=20)
 plt.grid(which='both')
 
 # twin axes for processes

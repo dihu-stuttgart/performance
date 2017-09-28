@@ -348,9 +348,10 @@ for key in datasets:
 # x-axis: n elements
 # y-axis: total time
 
-plt.rcParams.update({'font.size': 16})
+plt.rcParams.update({'font.size': 20})
 #plt.rcParams.update({'font.size': 16})
-plt.rcParams['lines.linewidth'] = 2
+plt.rcParams['lines.linewidth'] = 3
+plt.rcParams['lines.markersize'] = 8
 output_path = ""
 plotdata = collections.OrderedDict()
 xdata = Set()
@@ -364,20 +365,29 @@ for key in datasets:
   nFE = dataset[7]
   main_sim = dataset[13]
   
+  if nFE > 1e3:
+    continue
+  
   if dataset[9] == 1.0:
     s = "o"   # old
   else:
     s = "-"   # new
-    
-  print "9=",dataset[9]
   
-  for plotkey in [39,40]:
+#  for plotkey in [39,40,"sum"]:
+  for plotkey in [39]:
     
     xvalue = nFE
-    yvalue = dataset[plotkey]
-    yvalue_variance = variances[plotkey]
+    if plotkey == "sum":
+      yvalue = dataset[39] + dataset[40]
+      yvalue_variance = variances[39]+variances[40]
+    else:
+      yvalue = dataset[plotkey]
+      yvalue_variance = variances[plotkey]
+      
       
     plotkey = str(plotkey)+s
+    if "sum" in plotkey:
+      plotkey = s
     
     if plotkey not in plotdata:
       plotdata[plotkey] = dict()
@@ -393,7 +403,7 @@ xlist = sorted(xdata)
 
 ######################
 # plot serial scaling
-plt.figure(2, figsize=(10,8))
+plt.figure(2, figsize=(8,7))
 
 # 13 duration main sim
 # 17 ODE
@@ -406,17 +416,19 @@ colors = {
   "36-": "yd--",      # 0D
   "37-": "rv--",      # 1D
   "38-": "gs--",      # 3D
-  "39-": "bp--",     # 1D->3D
+  "39-": "bp-",     # 1D->3D
   "40-": "c<--",      # 3D->1D
   "41-": "bx--",      # file output
+  "-": "go-",         # sum of interpolation + homogenization
   
   "15o": "ko-",      # total
   "36o": "yd-",      # 0D
   "37o": "rv-",      # 1D
   "38o": "gs-",      # 3D
-  "39o": "bp-",     # 1D->3D
+  "39o": "b+--",     # 1D->3D
   "40o": "c<-",      # 3D->1D
   "41o": "bx-",      # file output
+  "o": "ro--"         # sum of interpolation + homogenization
 }
 
 labels = {
@@ -424,10 +436,13 @@ labels = {
   "36-": "solver 0D model",      # 0D
   "37-": "solver 1D model",      # 1D
   "38-": "solver 3D model",      # 3D
-  "39-": u"homogenization, 1D to 3D",     # 1D->3D
+  "39o": u"old implementation",     # 1D->3D
+  "39-": u"new implementation",     # 1D->3D
   "40-": u"interpolation, 3D to 1D",      # 3D->1D
   "41-": "file output",      # file output
   "22-": "memory consumption",      # memory consumption
+  "o" : "old implementation",
+  "-" : "new implementation"
 }
 
 print "plotkeys: ",plotkeys
@@ -450,11 +465,12 @@ ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
 ax.set_yscale('log', basey=10) 
 ax.set_xscale('log', basey=10) 
+ax.set_xlim(1,2e3)
 #ax.set_xticks([1,2,4,8,12,16,24,32,64])
-plt.xlabel('number of finite elements')
-plt.ylabel('duration (s)')
+plt.xlabel('Number of 3D elements')
+plt.ylabel('Duration (s)')
 plt.legend(loc='best')
-plt.grid(which='both')
+plt.grid(which='minor')
 
 # twin axes for processes
 #ax2 = ax.twiny()
@@ -463,9 +479,9 @@ plt.grid(which='both')
 #ax2.set_xticklabels([1,2,4,8,12,16,24,32,64])
 #ax2.set_xlabel(r"Number of processes")
 
-plt.title(caption, y=1.1)
+#plt.title(caption, y=1.1)
 plt.tight_layout()
-plt.savefig(output_path+SCENARIO+'_serial_scaling.png')
+plt.savefig(output_path+SCENARIO+'_homogenization.png')
 
 if show_plots:
   plt.show()
