@@ -359,6 +359,8 @@ for key in datasets:
     
   if "1st_order" in key:
     s = "-"
+    if "1st_order_gmres" not in key:
+      continue
   else:
     s = "o"
     
@@ -431,14 +433,26 @@ if not paper_version:
 plt.savefig(outfile)
 
 ######################
-# create plot multi node
+# create plot speedup
 caption = "Serial scaling, neon,\n x,y,z=(2,2,2), xi=(xi1,3,3) "
 output_path = ""
 outfile = output_path+SCENARIO+'_improved.png'
 if paper_no_legend:
   plt.figure("speedup (12)", figsize=(8,8))
 else:
-  plt.figure("speedup (12)", figsize=(8,8))
+  plt.figure("speedup (12)", figsize=(12,8))
+
+colors = {
+  "15-": "go--",     # godunov with LU -> GMRES to LU speedup
+  "15.-": "kd-",    # godunov with GMRES -> total speedup
+  "15o": "bo-",     # strang with LU -> godunov to strang speedup
+}
+
+labels = {
+  "15-": "GMRES to LU speedup",
+  "15.-": "total speedup",     
+  "15o": "Godunov to Strang speedup",
+}
 
 output_path = ""
 plotdata = collections.OrderedDict()
@@ -459,12 +473,12 @@ for key in datasets:
   nMperFE = float(nM)/nFE
     
   if "1st_order" in key:
-    s = "-"    # godunov
-    other_s = "o"
-    continue
+    if "gmres" in key:
+      s = ".-"    # godunov with GMRES -> total speedup
+    else:
+      s = "-"     # godunov with LU -> GMRES to LU speedup
   else:
-    s = "o"   # strang
-    other_s = "-"
+    s = "o"   # strang with LU -> godunov to strang speedup
     
   
     
@@ -472,12 +486,26 @@ for key in datasets:
   for plotkey_number in [15]:
     
     plotkey = str(plotkey_number)+s
-    other_plotkey = str(plotkey_number)+other_s
     other_key = "{:04d}".format(int(nM))+"_1st_order"
     
     # define x value and y value
     xvalue = nM*2
-    yvalue = dataset[plotkey_number] / datasets[other_key]['value'][15]
+    
+    if s == "-":    # godunov LU                     # godunov GMRES
+      if "{:04d}".format(int(nM))+"_1st_order_gmres" not in datasets:
+        continue
+      yvalue = datasets["{:04d}".format(int(nM))+"_1st_order_gmres"]['value'][15] / dataset[plotkey_number]   # GMRES to LU speedup
+      
+    elif s == ".-":   # godunov GMRES                # strang LU
+      if "{:04d}".format(int(nM))+"_2nd_order" not in datasets:
+        continue
+      yvalue = dataset[plotkey_number] / datasets["{:04d}".format(int(nM))+"_2nd_order"]['value'][15]   # total speedup
+      
+    else:             # strang LU                    # godunov LU
+      if "{:04d}".format(int(nM))+"_1st_order" not in datasets:
+        continue
+      
+      yvalue = dataset[plotkey_number] / datasets["{:04d}".format(int(nM))+"_1st_order"]['value'][15]   # strang to godunov speedup
     yvalue_variance = variances[plotkey_number]
       
     if plotkey not in plotdata:
@@ -493,7 +521,6 @@ for key in datasets:
 
 # loop over curves and plot data with given label and color
 plotkeys = sorted(plotkeys)
-print "plotkeys: ",plotkeys
 for plotkey in plotkeys:
     
   xlist = sorted(plotdata[plotkey]["value"])
@@ -518,9 +545,133 @@ ax.set_xlim([1e3, 3e5])
 #ax.set_xticks(ticks)
 #ax.set_xticklabels([int(i/1000.) for i in ticks])
 
+if not paper_no_legend:
+  plt.subplots_adjust(right=0.58, top=0.84)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+
+#ax.set_xticks(np.linspace(000,60000,5))
+
+#plt.figtext(0.62,0.5,"solid lines: Strang splitting", size=18)
+#plt.figtext(0.62,0.45,"dashed lines: Godunov splitting", size=18)
+plt.xlabel('Number of 1D elements per fibre, $s_x$')
+plt.ylabel('Speedup')
+#plt.legend(loc='best')
+plt.grid(which='both')
+
+if not paper_version:
+  plt.title(caption, y=1.1)
+  plt.tight_layout()
+  
+#plt.tight_layout()
+plt.savefig(outfile)
+
+######################
+# create plot speedup single
+caption = "Serial scaling, neon,\n x,y,z=(2,2,2), xi=(xi1,3,3) "
+output_path = ""
+outfile = output_path+SCENARIO+'_speedup_single.png'
+if paper_no_legend:
+  plt.figure("speedup_single (12)", figsize=(8,8))
+else:
+  plt.figure("speedup_single (12)", figsize=(8,4))
+
+plt.rcParams.update({'font.size': 16})
+plt.rcParams['lines.linewidth'] = 3
+plt.rcParams['lines.markersize'] = 8
+colors = {
+  "15o": "ko-",
+}
+
+labels = {
+  "15o": "Godunov to Strang speedup",
+}
+
+output_path = ""
+plotdata = collections.OrderedDict()
+xdata = Set()
+xtickslist = []
+plotkeys = Set()
+
+# key is the initially defined sorting key
+for key in datasets:
+  
+  dataset = datasets[key]['value']
+  variances = datasets[key]['variance']
+  nproc = dataset[2]
+  
+  nFE = dataset[7]
+  nM = dataset[8]
+  
+  nMperFE = float(nM)/nFE
+    
+  if "1st_order" in key:
+    if "gmres" in key:
+      continue
+    else:
+      s = "-"     # godunov with LU
+      continue
+  else:
+    s = "o"   # strang with LU
+    
+  
+    
+  # loop over different curves (e.g. different measurements)
+  for plotkey_number in [15]:
+    
+    plotkey = str(plotkey_number)+s
+    other_key = "{:04d}".format(int(nM))+"_1st_order"
+    
+    # define x value and y value
+    xvalue = nM*2
+    
+    if "{:04d}".format(int(nM))+"_1st_order" not in datasets:
+      continue
+    
+    yvalue = dataset[plotkey_number] / datasets["{:04d}".format(int(nM))+"_1st_order"]['value'][15]
+    
+    yvalue_variance = variances[plotkey_number]
+      
+    if plotkey not in plotdata:
+      plotdata[plotkey] = dict()
+      plotdata[plotkey]['value'] = collections.OrderedDict()
+      plotdata[plotkey]['variance'] = collections.OrderedDict()
+      
+    plotdata[plotkey]['value'][xvalue] = yvalue
+    plotdata[plotkey]['variance'][xvalue] = yvalue_variance
+    xdata.add(xvalue)
+    plotkeys.add(plotkey)
+
+
+# loop over curves and plot data with given label and color
+plotkeys = sorted(plotkeys)
+for plotkey in plotkeys:
+    
+  xlist = sorted(plotdata[plotkey]["value"])
+  ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
+  yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
+
+  label = None
+  if plotkey in labels:
+    label = labels[plotkey]
+  color = ""
+  if plotkey in colors:
+    color = colors[plotkey]
+  plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
+  
+  
+ax = plt.gca()
+ax.set_xscale('log', basey=10) 
+#ax.set_yscale('log', basey=10) 
+ax.set_xlim([1e3, 3e5])
+#ax.set_ylim([1.0, 2.0])
+#ax.set_xscale('log', basey=2) 
+#ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
+#ax.set_xticks(ticks)
+#ax.set_xticklabels([int(i/1000.) for i in ticks])
+
 #if not paper_no_legend:
-  #plt.subplots_adjust(right=0.58, top=0.84)
-  #plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+#  plt.subplots_adjust(right=0.58, top=0.84)
+#  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
