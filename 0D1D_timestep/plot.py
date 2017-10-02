@@ -21,9 +21,7 @@ show_plots = True
 if len(sys.argv) >= 2:
   show_plots = False
   
-remove_outlier = True
-outlier_top = 1
-outlier_bottom = 0
+remove_outliers = True
   
 # read csv file
 report_filename = "error2.csv"
@@ -202,7 +200,7 @@ if True:
     if int(dataset[3]) == 1:    # n_0D
       if int(dataset[2]) == 0:     # godunov
         
-        if error > 10*n_1D**-1:
+        if error > 10*n_1D**-1 and remove_outliers:
           continue
         
         xlist_godunov.append(n_1D)   # n_1D
@@ -214,7 +212,7 @@ if True:
         if n_1D > 2**9:    # x limit
           continue
         
-        if error > 100*n_1D**-2:   # y outliers
+        if error > 100*n_1D**-2 and remove_outliers:   # y outliers
           continue
           
         xlist_strang.append(n_1D)   # n_1D
@@ -276,8 +274,8 @@ if True:
   #plt.plot(xlist_strang, [100*x**-2 for x in xlist_strang], 'g--')
 
   ax = plt.gca()
-  ax.set_xscale('log', basex=2)
-  ax.set_yscale('log', basey=2)
+  ax.set_xscale('log', basex=10)
+  ax.set_yscale('log', basey=10)
   #ax.invert_xaxis()
   #ax.set_xlim([1e3, 3e5])
   #ax.set_xscale('log', basey=2) 
@@ -296,7 +294,7 @@ if True:
   plt.xlabel('Number of timesteps per 0.1ms interval')
   plt.ylabel('Error to reference solution')
   #plt.legend(loc='best')
-  plt.grid(which='both')
+  plt.grid(which='major')
 
   if not paper_version:
     plt.title(caption, y=1.1)

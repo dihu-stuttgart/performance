@@ -27,7 +27,7 @@ outlier_bottom = 0
   
 # read csv file
 report_filename = "duration.00000.csv"
-
+report_filename = "b.csv"
 
 caption = u'Runtime over problem size, neon'
 
@@ -495,18 +495,20 @@ for key in datasets:
       if "{:04d}".format(int(nM))+"_1st_order_gmres" not in datasets:
         continue
       yvalue = datasets["{:04d}".format(int(nM))+"_1st_order_gmres"]['value'][15] / dataset[plotkey_number]   # GMRES to LU speedup
+      yvalue = 1./yvalue
       
     elif s == ".-":   # godunov GMRES                # strang LU
       if "{:04d}".format(int(nM))+"_2nd_order" not in datasets:
         continue
       yvalue = dataset[plotkey_number] / datasets["{:04d}".format(int(nM))+"_2nd_order"]['value'][15]   # total speedup
+      yvalue = 1./yvalue
       
     else:             # strang LU                    # godunov LU
       if "{:04d}".format(int(nM))+"_1st_order" not in datasets:
         continue
       
       yvalue = dataset[plotkey_number] / datasets["{:04d}".format(int(nM))+"_1st_order"]['value'][15]   # strang to godunov speedup
-    yvalue_variance = variances[plotkey_number]
+    yvalue_variance = 0
       
     if plotkey not in plotdata:
       plotdata[plotkey] = dict()
