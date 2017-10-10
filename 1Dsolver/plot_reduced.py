@@ -358,7 +358,7 @@ for key in datasets:
 #plt.rcParams.update({'font.size': 23})
 plt.rcParams.update({'font.size': 20})
 plt.rcParams['lines.linewidth'] = 3
-plt.rcParams['lines.markersize'] = 5
+plt.rcParams['lines.markersize'] = 8
 output_path = ""
 plotdata = collections.OrderedDict()
 xdata = Set()
@@ -421,9 +421,9 @@ colors = {
   13: "ko-",
   15: "ko-",    # total
   17: "yd-",    # 0D solver
-  "parabolic1|1": "cv-",   # LU
-  "parabolic2|1": "ro-",   # GMRES
-  "parabolic3|1": "ms-",   # CG
+  "parabolic1|1": "b",   # LU
+  "parabolic2|1": "r",   # GMRES
+  "parabolic3|1": "g",   # CG
   "parabolic3|2": "ro:",
   "parabolic3|3": "r+-",
   "parabolic3|4": "r+--",
@@ -471,7 +471,8 @@ for plotkey in plotkeys:
   ylist = [y for y in plotdata[plotkey]["value"].values()]
   yerr = [y for y in plotdata[plotkey]['variance'].values()]
 
-  plt.errorbar(xlist, ylist, fmt=colors[plotkey], yerr=yerr, label=labels[plotkey])
+  #plt.errorbar(xlist, ylist, fmt=colors[plotkey], yerr=yerr, label=labels[plotkey])
+  plt.plot(xlist, ylist, colors[plotkey], label=labels[plotkey])
 
   # fit to line through the origin for total runtime
   if plotkey == 15:
