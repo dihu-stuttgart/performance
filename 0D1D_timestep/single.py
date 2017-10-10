@@ -32,10 +32,11 @@ def run(splitting_type,n_0D,n_1D):
 
   elasticity_timestep = 0.1
   ode_nsteps = n_0D
-  pde_timestep = elasticity_timestep/n_1D
+  pde_nsteps = n_1D
 
-  command = "mkdir -p {folder} && cd {folder} && $OPENCMISS_REL_DIR/cuboid ../$OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR ODENSteps={ode_nsteps} PDETimeStep={pde_timestep} SplittingType={splitting_type} ODESolverId={ode_solver_id} && cd -"\
-  .format(folder=folder, ode_nsteps=int(ode_nsteps), pde_timestep=pde_timestep, splitting_type=splitting_type, ode_solver_id=1 if splitting_type==0 else 5)
+  #command = "mkdir -p {folder} && cd {folder} && $OPENCMISS_REL_DIR/cuboid ../$OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR ODENSteps={ode_nsteps} PDETimeStep={pde_timestep} SplittingType={splitting_type} ODESolverId={ode_solver_id} && cd -"\
+  command = "mkdir -p {folder} && cd {folder} && $OPENCMISS_REL_DIR/cuboid ../$OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR ODENSteps={ode_nsteps} PDENSteps={pde_nsteps} SplittingType={splitting_type} ODESolverId={ode_solver_id} && cd -"\
+  .format(folder=folder, ode_nsteps=int(ode_nsteps), pde_nsteps=pde_nsteps, splitting_type=splitting_type, ode_solver_id=1 if splitting_type==0 else 5)
 
   #print command
   try:

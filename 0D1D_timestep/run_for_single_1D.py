@@ -41,7 +41,7 @@ print "n_1D=",n_1D
 #  threads = []
 if True:
   #for n_0D in [int(np.round(2**n)) for n in range(10)]:
-  for n_0D in [1,2,4]:
+  for n_0D in [1,2]:
     for splitting_type in [0, 1]:
       run(splitting_type,n_0D,n_1D)
 
