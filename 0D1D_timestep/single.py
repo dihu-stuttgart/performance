@@ -63,7 +63,7 @@ def run(splitting_type,n_0D,n_1D):
     duration_total = data[15]
 
   # compute error
-  reference_folder = "1_1000_10000"
+  reference_folder = "1_1000_1000"
   error = compute_error.compute_error(reference_folder, folder)
  
   # write to file
