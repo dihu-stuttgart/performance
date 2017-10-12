@@ -63,7 +63,7 @@ for n in range(5,21):
   splitting = 0
   ode_n_steps = 1
   pdf_time_step = 0.0005
-  #run(xi1,ode,msolver,splitting,ode_n_steps,pde_time_step,"1st_order")
+  run(xi1,ode,msolver,splitting,ode_n_steps,pde_time_step,"1st_order")
   
   run(xi1,ode,2,splitting,ode_n_steps,pde_time_step,"1st_order_gmres")
   
@@ -72,4 +72,4 @@ for n in range(5,21):
   splitting = 1
   ode_n_steps = 1
   pdf_time_step = 0.0025
-  #run(xi1,ode,msolver,splitting,ode_n_steps,pde_time_step,"2nd_order")
+  run(xi1,ode,msolver,splitting,ode_n_steps,pde_time_step,"2nd_order")
