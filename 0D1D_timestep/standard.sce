@@ -27,7 +27,7 @@ NumberGlobalXElements = 1       # number of finite elasticty elements in x-direc
 NumberGlobalYElements = 1       # number of finite elasticty elements in y-direction, alias y
 NumberGlobalZElements = 1       # number of finite elasticty elements in z-direction, alias z
 
-NumberOfNodesInXi1 = 30         # number of bioelectric elements (i.e. number nodes+1) per 3D FE element in direction of fibre (X direction), alias xi1
+NumberOfNodesInXi1 = 100         # number of bioelectric elements (i.e. number nodes+1) per 3D FE element in direction of fibre (X direction), alias xi1
 NumberOfNodesInXi2 = 1          # number of fibres per FE element in Y direction, alias xi2
 NumberOfNodesInXi3 = 1          # number of fibres per FE element in Z direction, alias xi3
 
@@ -38,14 +38,14 @@ NumberOfElementsInAtomY = 1     # y-size of an non-decomposable "atom" of finite
 NumberOfElementsInAtomZ = 1     # z-size of an non-decomposable "atom" of finite elasticity elements, that are guaranteed to be on the same subdomain, alias az
 
 # ------------- debugging --------------------
-OutputTimeStepStride = 10       # write output *.exnode files every nth timestep
+OutputTimeStepStride = 1       # write output *.exnode files every nth timestep
 EnableExportEMG = F             # if EMG should be output
 DebuggingOutput = F
 DebuggingOnlyRunShortPartOfSimulation = F    # abort simulation after first stimulation
 
 # ------------- numerics -------------------
 # time steps
-TimeStop = 1.0                 # total simulated time, note that the real simulated time is always a multiple of StimPeriod
+TimeStop = 2.0                 # total simulated time, note that the real simulated time is always a multiple of StimPeriod
 ODETimeStep = 0.0001            # timestep size for 0D problem
 PDETimeStep = 0.0005            # timestep size for 1D problem
 ElasticityTimeStep = 0.1        # timestep size for 3D problem
