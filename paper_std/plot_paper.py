@@ -367,7 +367,7 @@ for key in datasets:
 
 # loop over curves and plot data with given label and color
 plotkeys = sorted(plotkeys)
-print "plotkeys: ",plotkeys
+#print "plotkeys: ",plotkeys
 for plotkey in plotkeys:
     
   xlist = sorted(plotdata[plotkey]["value"])
@@ -393,15 +393,16 @@ ax.set_xlim([1e3, 3e5])
 #ax.set_xticklabels([int(i/1000.) for i in ticks])
 
 if not paper_no_legend:
-  plt.subplots_adjust(right=0.57, top=0.84)
-  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+  plt.subplots_adjust(right=0.57, top=0.84, bottom=0.12)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
 plt.xlabel('Number of 1D elements per fibre, $s_x$')
+ax.xaxis.set_label_coords(0.5, -0.1)
 plt.ylabel('Runtime (s)')
 #plt.legend(loc='best')
-plt.grid(which='both')
+plt.grid(which='major')
 
 if not paper_version:
   plt.title(caption, y=1.1)
