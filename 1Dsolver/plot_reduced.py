@@ -264,8 +264,8 @@ def extract_data(data):
         if value != 0:
           value_list.append(value)
       
-      if len(value_list) > 0:
-        print "key=",key, ",len=",len(value_list)
+      #if len(value_list) > 0:
+      #  print "key=",key, ",len=",len(value_list)
       
       # remove outlier
       value_list = sorted(value_list)
@@ -296,33 +296,34 @@ datasets = extract_data(data)
 
 ###############################################################
 # output to console
-print ""
-print "------------- duration -------------------------------------------"
-print "{:10}, {:6}, {:6}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}".\
-format("key", "nproc", "F", "#M", "#FE", "init", "stretch", "init", "main")
-for key in datasets:
-  
+if False:
+  print ""
+  print "------------- duration -------------------------------------------"
   print "{:10}, {:6}, {:6}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}".\
-  format(key, datasets[key]["value"][2], datasets[key]["value"][6], datasets[key]["value"][8], datasets[key]["value"][7], 
-  fo.str_format_seconds(datasets[key]["value"][10]), 
-  fo.str_format_seconds(datasets[key]["value"][11]), 
-  fo.str_format_seconds(datasets[key]["value"][12]), 
-  fo.str_format_seconds(datasets[key]["value"][13]))
-print ""
-print ""
-  
-print "{:10}, {:6}, {:6}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}".\
-format("key", "nproc", "F", "#M", "#FE", "ODE", "Parabolic", "FE", "file output")
-for key in datasets:
-  
+  format("key", "nproc", "F", "#M", "#FE", "init", "stretch", "init", "main")
+  for key in datasets:
+    
+    print "{:10}, {:6}, {:6}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}".\
+    format(key, datasets[key]["value"][2], datasets[key]["value"][6], datasets[key]["value"][8], datasets[key]["value"][7], 
+    fo.str_format_seconds(datasets[key]["value"][10]), 
+    fo.str_format_seconds(datasets[key]["value"][11]), 
+    fo.str_format_seconds(datasets[key]["value"][12]), 
+    fo.str_format_seconds(datasets[key]["value"][13]))
+  print ""
+  print ""
+    
   print "{:10}, {:6}, {:6}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}".\
-  format(key, datasets[key]["value"][2], datasets[key]["value"][6], datasets[key]["value"][8],  datasets[key]["value"][7], 
-  fo.str_format_seconds(datasets[key]["value"][17]), 
-  fo.str_format_seconds(datasets[key]["value"][18]), 
-  fo.str_format_seconds(datasets[key]["value"][19]), 
-  fo.str_format_seconds(datasets[key]["value"][96]))
-  
-  
+  format("key", "nproc", "F", "#M", "#FE", "ODE", "Parabolic", "FE", "file output")
+  for key in datasets:
+    
+    print "{:10}, {:6}, {:6}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}".\
+    format(key, datasets[key]["value"][2], datasets[key]["value"][6], datasets[key]["value"][8],  datasets[key]["value"][7], 
+    fo.str_format_seconds(datasets[key]["value"][17]), 
+    fo.str_format_seconds(datasets[key]["value"][18]), 
+    fo.str_format_seconds(datasets[key]["value"][19]), 
+    fo.str_format_seconds(datasets[key]["value"][96]))
+    
+    
 if False:
   print ""
   print "--------- timing -------------------------"
@@ -332,23 +333,23 @@ if False:
       print "   ", str(item).ljust(2), descriptions[item].ljust(50), ": ", datasets[key]["value"][item]
 
 
-  
-print ""
-print "------------- n iterations -------------------------------------------"
-print "{:10}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}".\
-format("key", "F", "#M", "Parabolic", "Newton", "p. n. iter", "min", "max", "n. n. iter", "min", "max" )
-for key in datasets:
-  
+    
+  print ""
+  print "------------- n iterations -------------------------------------------"
   print "{:10}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}".\
-  format(key, datasets[key]["value"][6], datasets[key]["value"][8], 
-  datasets[key]["value"][23],
-  datasets[key]["value"][24],
-  datasets[key]["value"][25],
-  datasets[key]["value"][26],
-  datasets[key]["value"][27],
-  datasets[key]["value"][28],
-  datasets[key]["value"][29],
-  datasets[key]["value"][30])
+  format("key", "F", "#M", "Parabolic", "Newton", "p. n. iter", "min", "max", "n. n. iter", "min", "max" )
+  for key in datasets:
+    
+    print "{:10}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}".\
+    format(key, datasets[key]["value"][6], datasets[key]["value"][8], 
+    datasets[key]["value"][23],
+    datasets[key]["value"][24],
+    datasets[key]["value"][25],
+    datasets[key]["value"][26],
+    datasets[key]["value"][27],
+    datasets[key]["value"][28],
+    datasets[key]["value"][29],
+    datasets[key]["value"][30])
 ###############################################################
 #######################################################
 # plot
@@ -409,7 +410,7 @@ xlist = sorted(xdata)
 
 ######################
 # plot serial scaling
-plt.figure(2, figsize=(8,6))
+plt.figure(2, figsize=(12,6))
 
 # 13 duration main sim
 # 17 ODE
@@ -496,12 +497,16 @@ ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
 ax.set_yscale('log', basey=10) 
 ax.set_xscale('log', basey=10) 
-ax.set_xlim([10, 4e3])
+ax.set_xlim([8, 4e3])
 #ax.set_xticks([1,2,4,8,12,16,24,32,64])
 plt.xlabel('Number of nodes per fibre, $s_x$')
+ax.xaxis.set_label_coords(0.5, -0.13)
 plt.ylabel('Runtime (s)')
-plt.legend(loc='best',fontsize=20)
-plt.grid(which='both')
+
+plt.subplots_adjust(right=0.57, bottom=0.15)
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
+
+plt.grid(which='major')
 
 # twin axes for processes
 #ax2 = ax.twiny()
@@ -512,7 +517,7 @@ plt.grid(which='both')
 
 if not paper_version:
   plt.title(caption)
-plt.tight_layout()
+#plt.tight_layout()
 plt.savefig(output_path+SCENARIO+'_1D_solver.png')
 
 if show_plots:
