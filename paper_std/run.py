@@ -25,7 +25,7 @@ def check_exit():
 
 def run(xi1,ode,msolver,mprecond):   
   print "xi1={0}".format(int(xi1))
-  command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR xi1={} ODESolverId={} MonodomainSolverId={} MonodomainPreconditionerId={} TimeStop=1 StimPeriod=1"\
+  command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR xi1={} ODESolverId={} MonodomainSolverId={} MonodomainPreconditionerId={} TimeStop=3 StimPeriod=1"\
   .format(int(xi1), int(ode), int(msolver), int(mprecond))
 
   #print command
