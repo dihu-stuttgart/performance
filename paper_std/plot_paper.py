@@ -27,6 +27,7 @@ outlier_bottom = 0
   
 # read csv file
 report_filename = "paper_std.csv"
+report_filename = "duration.00000.csv"
 
 
 caption = u'Runtime over problem size, neon'
