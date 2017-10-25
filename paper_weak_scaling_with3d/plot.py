@@ -494,6 +494,7 @@ print "xticks:",xticks
 ax2.set_xticks(xticks)
 ax2.set_xticklabels(xlabels)
 ax2.set_xlabel(r"Number of nodes (24 processes per node)")
+ax2.xaxis.set_label_coords(0.5, 1.08)
 
 #plt.gcf().subplots_adjust(right=0.89)
 if not paper_version:
@@ -830,6 +831,8 @@ ax2.set_xlim(ax.get_xlim())
 ax2.set_xticks(xticks)
 ax2.set_xticklabels(xlabels)
 ax2.set_xlabel(r"Number of nodes (24 processes per node)")
+ax2.xaxis.set_label_coords(0.5, 1.08)
+
 
 plt.gcf().subplots_adjust(right=0.89)
 if not paper_version:
