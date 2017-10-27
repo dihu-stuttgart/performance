@@ -28,6 +28,7 @@ outlier_bottom = 0
 # read csv file
 report_filename = "duration.00000.csv"
 report_filename = "d.csv"
+report_filename = "e.csv"
 
 caption = u'Runtime over problem size, neon'
 
@@ -414,7 +415,7 @@ ax.set_xlim([1e3, 3e5])
 
 if not paper_no_legend:
   plt.subplots_adjust(right=0.58, top=0.84)
-  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
@@ -549,7 +550,7 @@ ax.set_xlim([1e3, 3e5])
 
 if not paper_no_legend:
   plt.subplots_adjust(right=0.58, top=0.84)
-  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
@@ -639,7 +640,7 @@ for key in datasets:
       plotdata[plotkey]['variance'] = collections.OrderedDict()
       
     plotdata[plotkey]['value'][xvalue] = yvalue
-    plotdata[plotkey]['variance'][xvalue] = yvalue_variance
+    plotdata[plotkey]['variance'][xvalue] = 0
     xdata.add(xvalue)
     plotkeys.add(plotkey)
 

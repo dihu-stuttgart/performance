@@ -26,6 +26,7 @@ remove_outliers = True
 # read csv file
 report_filename = "error2.csv"
 report_filename = "error6.csv"
+report_filename = "error.csv"
 
 print "report file: {}".format(report_filename)
 data = []
