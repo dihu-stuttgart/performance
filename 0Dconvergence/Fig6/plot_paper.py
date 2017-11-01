@@ -23,8 +23,8 @@ plt.rcParams['lines.markersize'] = 10
 
 plt.plot(data1[:,3], (abs((data1[:,2]+23.5219216213)/23.5219216213)), 'bo', label=r"Godunov")
 plt.plot(data3[:,3], (abs((data3[:,2]+23.5219216213)/23.5219216213)), 'go', label=r"Strang")
-plt.plot(data1[:,3], data1[:,3]/240., 'b-', label=r"Slope 1")
-plt.plot(data1[:,3], data1[:,4]+0.4*data1[:,4], 'g-', label=r"Slope 2")
+plt.plot(data1[:,3], data1[:,3]/240., 'b-', label=r"slope=1")
+plt.plot(data1[:,3], data1[:,4]+0.4*data1[:,4], 'g-', label=r"slope=2")
 
 ax = plt.gca()
 ax.set_xscale('log', basey=10) 
@@ -169,7 +169,7 @@ if not paper_no_legend:
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
-plt.xlabel('Number of 1D elements per fibre, $s_x$')
+plt.xlabel('Number of 1D elements per fiber, $s_x$')
 ax.xaxis.set_label_coords(0.5, -0.1)
 plt.ylabel('Runtime (s)')
 #plt.legend(loc='best')
