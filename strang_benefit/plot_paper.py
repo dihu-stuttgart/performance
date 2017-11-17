@@ -27,7 +27,8 @@ outlier_bottom = 0
   
 # read csv file
 report_filename = "duration.00000.csv"
-
+report_filename = "d.csv"
+report_filename = "e.csv"
 
 caption = u'Runtime over problem size, neon'
 
@@ -414,7 +415,7 @@ ax.set_xlim([1e3, 3e5])
 
 if not paper_no_legend:
   plt.subplots_adjust(right=0.58, top=0.84)
-  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
@@ -495,18 +496,20 @@ for key in datasets:
       if "{:04d}".format(int(nM))+"_1st_order_gmres" not in datasets:
         continue
       yvalue = datasets["{:04d}".format(int(nM))+"_1st_order_gmres"]['value'][15] / dataset[plotkey_number]   # GMRES to LU speedup
+      #yvalue = 1./yvalue
       
     elif s == ".-":   # godunov GMRES                # strang LU
       if "{:04d}".format(int(nM))+"_2nd_order" not in datasets:
         continue
       yvalue = dataset[plotkey_number] / datasets["{:04d}".format(int(nM))+"_2nd_order"]['value'][15]   # total speedup
+      #yvalue = 1./yvalue
       
     else:             # strang LU                    # godunov LU
       if "{:04d}".format(int(nM))+"_1st_order" not in datasets:
         continue
       
-      yvalue = dataset[plotkey_number] / datasets["{:04d}".format(int(nM))+"_1st_order"]['value'][15]   # strang to godunov speedup
-    yvalue_variance = variances[plotkey_number]
+      yvalue = datasets["{:04d}".format(int(nM))+"_1st_order"]['value'][15] / dataset[plotkey_number]  # godunov to strang speedup
+    yvalue_variance = 0
       
     if plotkey not in plotdata:
       plotdata[plotkey] = dict()
@@ -547,7 +550,7 @@ ax.set_xlim([1e3, 3e5])
 
 if not paper_no_legend:
   plt.subplots_adjust(right=0.58, top=0.84)
-  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
@@ -627,7 +630,7 @@ for key in datasets:
     if "{:04d}".format(int(nM))+"_1st_order" not in datasets:
       continue
     
-    yvalue = dataset[plotkey_number] / datasets["{:04d}".format(int(nM))+"_1st_order"]['value'][15]
+    yvalue = datasets["{:04d}".format(int(nM))+"_1st_order"]['value'][15] / dataset[plotkey_number]
     
     yvalue_variance = variances[plotkey_number]
       
@@ -637,7 +640,7 @@ for key in datasets:
       plotdata[plotkey]['variance'] = collections.OrderedDict()
       
     plotdata[plotkey]['value'][xvalue] = yvalue
-    plotdata[plotkey]['variance'][xvalue] = yvalue_variance
+    plotdata[plotkey]['variance'][xvalue] = 0
     xdata.add(xvalue)
     plotkeys.add(plotkey)
 

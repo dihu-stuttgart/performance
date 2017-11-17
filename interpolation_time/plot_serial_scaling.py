@@ -403,7 +403,7 @@ xlist = sorted(xdata)
 
 ######################
 # plot serial scaling
-plt.figure(2, figsize=(8,7))
+plt.figure(2, figsize=(12,7))
 
 # 13 duration main sim
 # 17 ODE
@@ -436,7 +436,7 @@ labels = {
   "36-": "solver 0D model",      # 0D
   "37-": "solver 1D model",      # 1D
   "38-": "solver 3D model",      # 3D
-  "39o": u"old implementation",     # 1D->3D
+  "39o": u"Heidlauf et al. 2013",     # 1D->3D
   "39-": u"new implementation",     # 1D->3D
   "40-": u"interpolation, 3D to 1D",      # 3D->1D
   "41-": "file output",      # file output
@@ -459,18 +459,23 @@ for plotkey in plotkeys:
   if plotkey in labels:
     label = labels[plotkey]
     
-  plt.errorbar(xlist, ylist, fmt=colors[plotkey], yerr=yerr, label=label)
+  #plt.errorbar(xlist, ylist, fmt=colors[plotkey], yerr=yerr, label=label)
+  plt.plot(xlist, ylist, colors[plotkey], label=label)
   
 ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
 ax.set_yscale('log', basey=10) 
 ax.set_xscale('log', basey=10) 
-ax.set_xlim(1,2e3)
+ax.set_xlim(0.5,2e3)
 #ax.set_xticks([1,2,4,8,12,16,24,32,64])
 plt.xlabel('Number of 3D elements')
+ax.xaxis.set_label_coords(0.5, -0.1)
 plt.ylabel('Duration (s)')
-plt.legend(loc='best')
-plt.grid(which='minor')
+
+plt.subplots_adjust(right=0.57, bottom=0.15)
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
+
+plt.grid(which='major')
 
 # twin axes for processes
 #ax2 = ax.twiny()
@@ -480,7 +485,7 @@ plt.grid(which='minor')
 #ax2.set_xlabel(r"Number of processes")
 
 #plt.title(caption, y=1.1)
-plt.tight_layout()
+#plt.tight_layout()
 plt.savefig(output_path+SCENARIO+'_homogenization.png')
 
 if show_plots:
