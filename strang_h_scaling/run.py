@@ -49,7 +49,7 @@ pde_time_step = 0.0005
 
 # loop over runs
 previous_xi1 = 0
-for n in range(21,121):
+for n in range(1,121):
   # compute value for xi (number of 1D elements per 3D element per fibre)
   xi1 = np.round(1.5**n)
 
@@ -62,16 +62,22 @@ for n in range(21,121):
   ode = 1
   splitting = 0
   ode_n_steps = 1
-  pde_n_steps = 724
+#  pde_n_steps = 724
+
+  # pde_n_steps/724 = (xi/100)^2
+  pde_n_steps = max(int((xi1/100.0)**2*724), 1)
 #  pde_time_step = 0.0005
   run(xi1,ode,msolver,splitting,ode_n_steps,pde_n_steps,"1st_order")
   
   run(xi1,ode,2,splitting,ode_n_steps,pde_n_steps,"1st_order_gmres")
   
   # run with strang splitting
+  # pde_n_steps=0.1/dt=128: xi=100
+  # pde_n_stteps/128 = xi/100    =>    pde_n_steps = xi/100*128
   ode = 5
   splitting = 1
   ode_n_steps = 1
-  pde_n_steps = 128
+#  pde_n_steps = 128
+  pde_n_steps = max(int(xi1/100.0*128), 1)
 #  pde_time_step = 0.0025
   run(xi1,ode,msolver,splitting,ode_n_steps,pde_n_steps,"2nd_order")
