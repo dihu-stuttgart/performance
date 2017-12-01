@@ -27,8 +27,6 @@ outlier_bottom = 0
   
 # read csv file
 report_filename = "duration.00000.csv"
-report_filename = "d.csv"
-report_filename = "e.csv"
 
 caption = u'Runtime over problem size, neon'
 
@@ -407,7 +405,7 @@ for plotkey in plotkeys:
 ax = plt.gca()
 ax.set_xscale('log', basey=10) 
 ax.set_yscale('log', basey=10) 
-ax.set_xlim([1e3, 3e5])
+#ax.set_xlim([1e3, 3e5])
 #ax.set_xscale('log', basey=2) 
 #ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
 #ax.set_xticks(ticks)
@@ -542,7 +540,7 @@ for plotkey in plotkeys:
 ax = plt.gca()
 ax.set_xscale('log', basey=10) 
 #ax.set_yscale('log', basey=10) 
-ax.set_xlim([1e3, 3e5])
+#ax.set_xlim([1e3, 3e5])
 #ax.set_xscale('log', basey=2) 
 #ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
 #ax.set_xticks(ticks)
@@ -665,7 +663,7 @@ for plotkey in plotkeys:
 ax = plt.gca()
 ax.set_xscale('log', basey=10) 
 #ax.set_yscale('log', basey=10) 
-ax.set_xlim([1e3, 3e5])
+#ax.set_xlim([1e3, 3e5])
 #ax.set_ylim([1.0, 2.0])
 #ax.set_xscale('log', basey=2) 
 #ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
