@@ -23,13 +23,13 @@
 # orientation: X = Xi1 = length, Y = Xi2 = width, Z = Xi3 = height
 # fibres are parallel to X axis
 
-NumberGlobalXElements = 2       # number of finite elasticty elements in x-direction, alias x
-NumberGlobalYElements = 2       # number of finite elasticty elements in y-direction, alias y
-NumberGlobalZElements = 2       # number of finite elasticty elements in z-direction, alias z
+NumberGlobalXElements = 1       # number of finite elasticty elements in x-direction, alias x
+NumberGlobalYElements = 1       # number of finite elasticty elements in y-direction, alias y
+NumberGlobalZElements = 1       # number of finite elasticty elements in z-direction, alias z
 
-NumberOfNodesInXi1 = 16         # number of bioelectric elements (i.e. number nodes+1) per 3D FE element in direction of fibre (X direction), alias xi1
-NumberOfNodesInXi2 = 3          # number of fibres per FE element in Y direction, alias xi2
-NumberOfNodesInXi3 = 3          # number of fibres per FE element in Z direction, alias xi3
+NumberOfNodesInXi1 = 100         # number of bioelectric elements (i.e. number nodes+1) per 3D FE element in direction of fibre (X direction), alias xi1
+NumberOfNodesInXi2 = 1          # number of fibres per FE element in Y direction, alias xi2
+NumberOfNodesInXi3 = 1          # number of fibres per FE element in Z direction, alias xi3
 
 NumberOfInSeriesFibres = 1      # number of fibres that are in a series and mechanically connected. This is not completely tested, set to 1, alias f
 
@@ -45,7 +45,7 @@ DebuggingOnlyRunShortPartOfSimulation = F    # abort simulation after first stim
 
 # ------------- numerics -------------------
 # time steps
-TimeStop = 1.0                 # total simulated time, note that the real simulated time is always a multiple of StimPeriod
+TimeStop = 2.0                 # total simulated time, note that the real simulated time is always a multiple of StimPeriod
 ODETimeStep = 0.0001            # timestep size for 0D problem (will be overridden by OdeNSteps)
 PDETimeStep = 0.0005            # timestep size for 1D problem
 ElasticityTimeStep = 0.1        # timestep size for 3D problem
