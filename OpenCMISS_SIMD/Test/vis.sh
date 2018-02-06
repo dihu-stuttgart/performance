@@ -1,0 +1,23 @@
+echo "Visualizing measurements:"
+gnuplot vis1_1.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis1_2.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis1_3.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis1_3zoom.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis1_3b.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis1_4.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis1_5.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot timeOCV.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot timeV1.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot timeV3.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis2_1.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis2_2.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis2_3.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis2_3b.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis2_4.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis2_5.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot vis12_5.g  &> mumpitz && cat mumpitz | grep -v "0.dat"
+gnuplot visSpeedUp.g
+gnuplot visSpeedUp2.g
+rm -rf mumpitz
+echo "Saved graphs as 'Result_Test1_X.eps'"
+echo "     ... and as 'Result_Test2_X.eps'."
