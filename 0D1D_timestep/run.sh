@@ -1,4 +1,11 @@
-
-for n in 1 2 3 4 6 8 12 16 24 32 48 64 96 128 192 256 384 512 1024 2048 4096 8192 16384 32768 65536; do
-  ./run_for_single_1D.py ${n} & 
+i=0
+last_n=-1
+while [ $i -lt 33 ]; do
+  n=$(python -c "import numpy as np; print int(np.sqrt(2)**($i))")
+  if [ "$last_n" -ne "$n" ]; then
+    echo $n
+    ./run_for_single_1D.py ${n} & 
+  fi
+  last_n=$n
+  let i+=1
 done

@@ -353,10 +353,14 @@ colors = {
 }
 
 labels = {
-  "15o": "total",      # total
-  "36o": "solver 0D model",      # 0D
-  "37o": "solver 1D model",      # 1D
-  "38o": "solver 3D model",      # 3D
+  "15o": "total (cubes)",      # total
+  "36o": "solver 0D model (cubes)",      # 0D
+  "37o": "solver 1D model (cubes)",      # 1D
+  "38o": "solver 3D model (cubes)",      # 3D
+  "15-": "total (pillars)",      # total
+  "36-": "solver 0D model (pillars)",      # 0D
+  "37-": "solver 1D model (pillars)",      # 1D
+  "38-": "solver 3D model (pillars)",      # 3D
   "39o": u"homogenization, 1D to 3D",     # 1D->3D
   "40o": u"interpolation, 3D to 1D",      # 3D->1D
   "41o": "file output",      # file output
@@ -450,14 +454,14 @@ ax.set_xlim([2e3,1e5])
 
 if not paper_no_legend:
   plt.subplots_adjust(right=0.58, top=0.84)
-  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=20.)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=20., frameon=False)
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
 plt.xlabel('Number of 1D elements')
 plt.ylabel('Runtime (s)')
 #plt.legend(loc='best')
-plt.grid(which='both')
+plt.grid(which='major')
 
 # twin axes for processes
 ax2 = ax.twiny()
@@ -490,6 +494,7 @@ print "xticks:",xticks
 ax2.set_xticks(xticks)
 ax2.set_xticklabels(xlabels)
 ax2.set_xlabel(r"Number of nodes (24 processes per node)")
+ax2.xaxis.set_label_coords(0.5, 1.08)
 
 #plt.gcf().subplots_adjust(right=0.89)
 if not paper_version:
@@ -596,7 +601,7 @@ if not paper_no_legend:
 plt.xlabel('Number of 1D elements')
 plt.ylabel('Parallel efficiency')
 #plt.legend(loc='best')
-plt.grid(which='both')
+plt.grid(which='major')
 
 # twin axes for processes
 ax2 = ax.twiny()
@@ -813,9 +818,10 @@ for plotkey in ["ghosto", "ghost-"]:
 
 
 plt.xlabel('Number of 1D elements')
+ax.xaxis.set_label_coords(0.5, -0.08)
 plt.ylabel('Number of 3D ghost elements')
 plt.legend(loc='best')
-plt.grid(which='both')
+plt.grid(which='major')
 
 # twin axes for processes
 ax2 = ax.twiny()
@@ -825,6 +831,8 @@ ax2.set_xlim(ax.get_xlim())
 ax2.set_xticks(xticks)
 ax2.set_xticklabels(xlabels)
 ax2.set_xlabel(r"Number of nodes (24 processes per node)")
+ax2.xaxis.set_label_coords(0.5, 1.08)
+
 
 plt.gcf().subplots_adjust(right=0.89)
 if not paper_version:

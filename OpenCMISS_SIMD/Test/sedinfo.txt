@@ -1,0 +1,38 @@
+sed: Unbekannte Option »--info«
+Aufruf: sed [OPTION]... {Skript-falls-kein-anderes-Skript} [Eingabe-Datei]...
+
+  -n, --quiet, --silent
+                 verhindert die automatische Ausgabe des Arbeitspuffers
+  -e skript, --expression=skript
+                 hängt `skript' an die auszuführenden Befehle an
+  -f skript-Datei, --file=skript-Datei
+                 hängt den Inhalt von `Skript-Datei' an die
+                 auszuführenden Befehle an
+  --follow-symlinks
+                 symbolischen Verknüpfungen bei Verwendung von -i folgen
+  -i[SUFFIX], --in-place[=SUFFIX]
+                 edit files in place (makes backup if SUFFIX supplied)
+  -l N, --line-length=N
+                 gibt die gewünschte Zeilenumbruchlänge für den `l'-Befehl an
+  --posix
+                 schaltet alle GNU-Funktions-Erweiterungen ab.
+  -r, --regexp-extended
+                 verwendet die erweiterten reg. Ausdrücke für das Skript.
+  -s, --separate
+                 die Dateien werden getrennt und nicht als einzige
+                 zusammenhängende Quelle betrachtet.
+  -u, --unbuffered
+                 lade nur kleinste Datenmengen aus den Eingabedateien
+                 und schreibe die Ausgabepuffer häufiger zurück.
+  -z, --null-data
+                 separate lines by NUL characters
+      --help     nur diese Hilfe anzeigen und dann beenden
+      --version  nur die Versionsinfo ausgeben und dann beenden
+
+Falls kein -e, --expression, -f oder --file als Option angegeben ist, 
+wird das erste Argument, das keine Option ist als sed-Skript verwendet.
+Alle restlichen Argumente werden als Eingabedateinamen behandelt.
+Falls keine Eingabedateien angegeben sind, wird von der Standardeingabe gelesen.
+
+GNU-sed-Homepage: <http://www.gnu.org/software/sed/>.
+Allgemeine Hilfe zu GNU-Software: <http://www.gnu.org/gethelp/>.

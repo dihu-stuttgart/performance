@@ -18,7 +18,7 @@ os.environ['OPENCMISS_SCE_FILE'] = 'standard.sce'
 
 
 # executes cuboid
-def run(xi1,ode,msolver,splitting,ode_n_steps,pde_time_step,scenario_name):
+def run(xi1,ode,msolver,splitting,ode_n_steps,pde_n_steps,scenario_name):
   """
   xi1: number of 1D elements per 3D element per fibre
   ode: ode solver type, 1=euler, 5=heun
@@ -30,8 +30,8 @@ def run(xi1,ode,msolver,splitting,ode_n_steps,pde_time_step,scenario_name):
   """
   
   print "xi1={0}".format(int(xi1))
-  command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR xi1={} ODESolverId={} MonodomainSolverId={} SplittingType={} OdeNSteps={} PDETimeStep={} ScenarioName={}"\
-  .format(int(xi1), int(ode), int(msolver), int(splitting), int(ode_n_steps), pde_time_step, scenario_name)
+  command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR xi1={} ODESolverId={} MonodomainSolverId={} SplittingType={} OdeNSteps={} PdeNSteps={} ScenarioName={}"\
+  .format(int(xi1), int(ode), int(msolver), int(splitting), int(ode_n_steps), int(pde_n_steps), scenario_name)
 
   #print command
   try:
@@ -49,7 +49,7 @@ pde_time_step = 0.0005
 
 # loop over runs
 previous_xi1 = 0
-for n in range(5,21):
+for n in range(21,121):
   # compute value for xi (number of 1D elements per 3D element per fibre)
   xi1 = np.round(1.5**n)
 
@@ -61,11 +61,17 @@ for n in range(5,21):
   # run with godunov splitting
   ode = 1
   splitting = 0
-  ode_n_steps = 5
-  run(xi1,ode,msolver,splitting,ode_n_steps,pde_time_step,"1st_order")
+  ode_n_steps = 1
+  pde_n_steps = 724
+#  pde_time_step = 0.0005
+  run(xi1,ode,msolver,splitting,ode_n_steps,pde_n_steps,"1st_order")
+  
+  run(xi1,ode,2,splitting,ode_n_steps,pde_n_steps,"1st_order_gmres")
   
   # run with strang splitting
   ode = 5
   splitting = 1
   ode_n_steps = 1
-  run(xi1,ode,msolver,splitting,ode_n_steps,pde_time_step,"2nd_order")
+  pde_n_steps = 128
+#  pde_time_step = 0.0025
+  run(xi1,ode,msolver,splitting,ode_n_steps,pde_n_steps,"2nd_order")

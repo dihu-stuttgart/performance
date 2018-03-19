@@ -26,7 +26,8 @@ outlier_top = 1
 outlier_bottom = 0
   
 # read csv file
-report_filename = "paper_std.csv"
+report_filename = "paper_std2.csv"
+#report_filename = "duration.00000.csv"
 
 
 caption = u'Runtime over problem size, neon'
@@ -367,7 +368,7 @@ for key in datasets:
 
 # loop over curves and plot data with given label and color
 plotkeys = sorted(plotkeys)
-print "plotkeys: ",plotkeys
+#print "plotkeys: ",plotkeys
 for plotkey in plotkeys:
     
   xlist = sorted(plotdata[plotkey]["value"])
@@ -386,22 +387,23 @@ for plotkey in plotkeys:
 ax = plt.gca()
 ax.set_xscale('log', basey=10) 
 ax.set_yscale('log', basey=10) 
-ax.set_xlim([1e3, 3e5])
+#ax.set_xlim([1e3, 3e5])
 #ax.set_xscale('log', basey=2) 
 #ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
 #ax.set_xticks(ticks)
 #ax.set_xticklabels([int(i/1000.) for i in ticks])
 
 if not paper_no_legend:
-  plt.subplots_adjust(right=0.57, top=0.84)
-  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
+  plt.subplots_adjust(right=0.57, top=0.84, bottom=0.12)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
 plt.xlabel('Number of 1D elements per fibre, $s_x$')
+ax.xaxis.set_label_coords(0.5, -0.1)
 plt.ylabel('Runtime (s)')
 #plt.legend(loc='best')
-plt.grid(which='both')
+plt.grid(which='major')
 
 if not paper_version:
   plt.title(caption, y=1.1)
