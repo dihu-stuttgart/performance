@@ -26,8 +26,8 @@ outlier_top = 1
 outlier_bottom = 0
   
 # read csv file
-report_filename = "paper_std2.csv"
-#report_filename = "duration.00000.csv"
+#report_filename = "paper_std2.csv"
+report_filename = "duration.00000.csv"
 
 
 caption = u'Runtime over problem size, neon'
@@ -319,7 +319,7 @@ labels = {
 # create plot multi node
 caption = "Serial scaling, neon,\n x,y,z=(2,2,2), xi=(xi1,3,3) "
 output_path = ""
-outfile = output_path+SCENARIO+'_serial_scaling_std.png'
+outfile = output_path+SCENARIO+'_serial_scaling_improvements.png'
 if paper_no_legend:
   plt.figure("serial scaling std (12)", figsize=(8,8))
 else:
@@ -393,7 +393,9 @@ ax.set_yscale('log', basey=10)
 #ax.set_xticks(ticks)
 #ax.set_xticklabels([int(i/1000.) for i in ticks])
 
-if not paper_no_legend:
+if paper_no_legend:
+  plt.subplots_adjust(bottom=0.12)
+else:
   plt.subplots_adjust(right=0.57, top=0.84, bottom=0.12)
   plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
 
