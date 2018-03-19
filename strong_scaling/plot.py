@@ -30,6 +30,7 @@ outlier_bottom = 2
   
 # read csv file
 report_filename = "duration.csv"
+report_filename = "strong_scaling.csv"
 
 
 caption = u'strong scaling, Hazel Hen'
@@ -182,7 +183,7 @@ def extract_data(data):
     nFE = new_data[7]
     nM = new_data[8]
     nMperFE = float(nM)/nFE
-    key = "{}".format(new_data[2])
+    key = "{}{}".format(new_data[2],"cubes" if new_data[102]==1 else "pillars")
       
     # store extracted values
     if key not in datasets:
@@ -310,13 +311,13 @@ labels = {
 #plotkeys = [13, 17, 18, 19, 20]
 
 ######################
-# create plot multi node
-caption = "Multi-node weak scaling, Hazel Hen,\n xi=(3,2,2), 12 1D el./3D el. "
+# create plot cubes
+caption = "Multi-node strong scaling cubes, Hazel Hen,\n xi=(3,2,2), 12 1D el./3D el. "
 outfile = output_path+SCENARIO+'_strong_scaling.png'
 if paper_no_legend:
-  plt.figure("multi-node (12)", figsize=(10,8))
+  plt.figure("multi-node cubes", figsize=(10,8))
 else:
-  plt.figure("multi-node (12)", figsize=(14,8))
+  plt.figure("multi-node cubes", figsize=(14,8))
 
 output_path = ""
 plotdata = collections.OrderedDict()
@@ -326,6 +327,106 @@ plotkeys = Set()
 
 # key is the initially defined sorting key
 for key in datasets:
+  
+  if "cubes" not in key:
+    continue
+  dataset = datasets[key]['value']
+  variances = datasets[key]['variance']
+  nproc = dataset[2]
+  
+  nFE = dataset[7]
+  nM = dataset[8]
+  
+  nMperFE = float(nM)/nFE
+    
+  xtickslist.append((nM,nproc))
+  
+  # loop over different curves (e.g. different measurements)
+  for plotkey_number in [15, 36, 37, 38]:
+    
+    plotkey = plotkey_number
+    
+    # define x value and y value
+    xvalue = nproc
+    yvalue = dataset[plotkey_number]
+    yvalue_variance = variances[plotkey_number]
+      
+    if plotkey not in plotdata:
+      plotdata[plotkey] = dict()
+      plotdata[plotkey]['value'] = collections.OrderedDict()
+      plotdata[plotkey]['variance'] = collections.OrderedDict()
+      
+    plotdata[plotkey]['value'][xvalue] = yvalue
+    plotdata[plotkey]['variance'][xvalue] = yvalue_variance
+    xdata.add(xvalue)
+    plotkeys.add(plotkey)
+
+
+# loop over curves and plot data with given label and color
+plotkeys = sorted(plotkeys)
+for plotkey in plotkeys:
+    
+  xlist = sorted(plotdata[plotkey]["value"])
+  ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
+  yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
+
+  label = None
+  if plotkey in labels:
+    label = labels[plotkey]
+  color = ""
+  if plotkey in colors:
+    color = colors[plotkey]
+  plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
+  
+  
+ax = plt.gca()
+#ax.set_xscale('log', basey=2) 
+ax.set_yscale('log', basey=10) 
+#ax.set_xlim([2e3,1e5])
+#ax.set_xscale('log', basey=2) 
+#ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
+#ax.set_xticks(ticks)
+#ax.set_xticklabels([int(i/1000.) for i in ticks])
+
+if not paper_no_legend:
+  plt.subplots_adjust(right=0.58, top=0.84)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=20.)
+
+#ax.set_xticks(np.linspace(000,60000,5))
+
+plt.xlabel('Number of processes')
+plt.ylabel('Runtime (s)')
+#plt.legend(loc='best')
+plt.grid(which='both')
+
+#plt.gcf().subplots_adjust(right=0.89)
+if not paper_version:
+  plt.title(caption, y=1.1)
+  plt.tight_layout()
+  
+#plt.tight_layout()
+plt.savefig(outfile)
+
+######################
+# create plot pillars
+caption = "Multi-node strong scaling pillars, Hazel Hen,\n xi=(3,2,2), 12 1D el./3D el. "
+outfile = output_path+SCENARIO+'_strong_scaling.png'
+if paper_no_legend:
+  plt.figure("multi-node pillars", figsize=(10,8))
+else:
+  plt.figure("multi-node pillars", figsize=(14,8))
+
+output_path = ""
+plotdata = collections.OrderedDict()
+xdata = Set()
+xtickslist = []
+plotkeys = Set()
+
+# key is the initially defined sorting key
+for key in datasets:
+  
+  if "pillars" not in key:
+    continue
   
   dataset = datasets[key]['value']
   variances = datasets[key]['variance']
@@ -403,6 +504,7 @@ if not paper_version:
   
 #plt.tight_layout()
 plt.savefig(outfile)
+
 
 if show_plots:
   plt.show()
