@@ -1,8 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-# with 3D problem
-
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
@@ -26,14 +23,14 @@ if len(sys.argv) >= 2:
   
 remove_outlier = True
 outlier_top = 1
-outlier_bottom = 2
+outlier_bottom = 0
   
 # read csv file
-report_filename = "duration.csv"
-report_filename = "strong_scaling.csv"
+#report_filename = "paper_std2.csv"
+report_filename = "duration.00000.csv"
 
 
-caption = u'strong scaling, Hazel Hen'
+caption = u'Runtime over problem size, neon'
 
 print "report file: {}".format(report_filename)
 data = []
@@ -140,12 +137,10 @@ descriptions = {
  108:  "ModelType",
 }
 
-
 max_index = 109
 
 float_indices = range(10, 21) + range(31, 66) + range(90, 99) 
 string_indices = [0, 1]
-
 
 # all other are int_indices
 int_indices = list(set(range(max_index)) - set(float_indices) - set(string_indices))
@@ -161,9 +156,6 @@ def extract_data(data):
     if len(dataset) < 17:
       print "Warning: invalid data set"
       continue
-      
-    if dataset[0] < "19.09.2017 16:38:55" and dataset[2] == 192:
-      continue
     
     # copy dataset to new_data
     new_data = dataset
@@ -178,12 +170,8 @@ def extract_data(data):
     for index in float_indices:
       new_data[index] = float(new_data[index])     if isfloat(new_data[index])    else 0.0
       
-    # define sorting key, defines one unique data point (x-axis value without the y-axis value)
-      
-    nFE = new_data[7]
-    nM = new_data[8]
-    nMperFE = float(nM)/nFE
-    key = "{}{}".format(new_data[2],"cubes" if new_data[102]==1 else "pillars")
+    # define sorting key
+    key = "{:04d}".format(new_data[8])
       
     # store extracted values
     if key not in datasets:
@@ -211,20 +199,15 @@ def extract_data(data):
         if value != 0:
           value_list.append(value)
       
+      if len(value_list) > 0:
+        print "key=",key, ",len=",len(value_list)
+      
       # remove outlier
       value_list = sorted(value_list)
       n = len(value_list)
       
-      if i==37 and "192" in key:
-        value_list2 = []
-        for value in value_list:
-          if value < 100:
-            value_list2 += [value]
-        value_list = value_list2
-      
-      
-      if (i == 0 and "192" in key):
-        print "key=",key,", i=",i,",value_list:",value_list,",value:", value
+      #if i==15:
+        #print "key=",key,"i=",i,"n=",n
       #print "i={}, value_list for {}: {}".format(i, key, value_list)
       
       if n > outlier_bottom+outlier_top and remove_outlier:
@@ -250,22 +233,30 @@ datasets = extract_data(data)
 # output to console
 print ""
 print "------------- duration -------------------------------------------"
-print "{:10}, {:6}, {:6}, {:6}, {:10}, {:10}, {:10}, {:13}, {:10}, {:10}, {:10}".\
-format("key", "nproc", "#M", "#FE", "total", "total: 0D", "1D", "3D", "solve: 0D", "1D", "3D")
+print "{:10}, {:6}, {:6}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}".\
+format("key", "nproc", "F", "#M", "#FE", "init", "stretch", "init", "main")
 for key in datasets:
   
-  print "{:10}, {:6}, {:6d}, {:6d}, {:10}, {:10}, {:10}, {:13}, {:10}, {:10}, {:10}".\
-  format(key, datasets[key]["value"][2], int(datasets[key]["value"][8]), int(datasets[key]["value"][7]), 
-  fo.str_format_seconds(datasets[key]["value"][15]),
-  fo.str_format_seconds(datasets[key]["value"][36]),
-  fo.str_format_seconds(datasets[key]["value"][37]),
-  fo.str_format_seconds(datasets[key]["value"][38]),
-  fo.str_format_seconds(datasets[key]["value"][43]),
-  fo.str_format_seconds(datasets[key]["value"][47]),
-  fo.str_format_seconds(datasets[key]["value"][50]),
-  )
+  print "{:10}, {:6}, {:6}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}".\
+  format(key, datasets[key]["value"][2], datasets[key]["value"][6], datasets[key]["value"][8], datasets[key]["value"][7], 
+  fo.str_format_seconds(datasets[key]["value"][10]), 
+  fo.str_format_seconds(datasets[key]["value"][11]), 
+  fo.str_format_seconds(datasets[key]["value"][12]), 
+  fo.str_format_seconds(datasets[key]["value"][13]))
 print ""
 print ""
+  
+print "{:10}, {:6}, {:6}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}".\
+format("key", "nproc", "F", "#M", "#FE", "ODE", "Parabolic", "FE", "file output")
+for key in datasets:
+  
+  print "{:10}, {:6}, {:6}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}".\
+  format(key, datasets[key]["value"][2], datasets[key]["value"][6], datasets[key]["value"][8],  datasets[key]["value"][7], 
+  fo.str_format_seconds(datasets[key]["value"][17]), 
+  fo.str_format_seconds(datasets[key]["value"][18]), 
+  fo.str_format_seconds(datasets[key]["value"][19]), 
+  fo.str_format_seconds(datasets[key]["value"][96]))
+  
   
 if False:
   print ""
@@ -276,11 +267,26 @@ if False:
       print "   ", str(item).ljust(2), descriptions[item].ljust(50), ": ", datasets[key]["value"][item]
 
 
+  
+print ""
+print "------------- n iterations -------------------------------------------"
+print "{:10}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}".\
+format("key", "F", "#M", "Parabolic", "Newton", "p. n. iter", "min", "max", "n. n. iter", "min", "max" )
+for key in datasets:
+  
+  print "{:10}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}".\
+  format(key, datasets[key]["value"][6], datasets[key]["value"][8], 
+  datasets[key]["value"][23],
+  datasets[key]["value"][24],
+  datasets[key]["value"][25],
+  datasets[key]["value"][26],
+  datasets[key]["value"][27],
+  datasets[key]["value"][28],
+  datasets[key]["value"][29],
+  datasets[key]["value"][30])
 ###############################################################
 #######################################################
-# plot
-# x-axis: n processes
-# y-axis: total time
+# plot serial scaling
 plt.rcParams.update({'font.size': 20})
 plt.rcParams['lines.linewidth'] = 3
 plt.rcParams['lines.markersize'] = 8
@@ -292,32 +298,32 @@ colors = {
   36: "yd-",      # 0D
   37: "rv-",      # 1D
   38: "gs-",      # 3D
-  39: "bp-",     # 1D->3D
+  39: "bp-",      # 1D->3D
   40: "c<-",      # 3D->1D
   41: "bx-",      # file output
-  22: "mo-",      # memory consumption  
+  22: "mo-",      # memory consumption
 }
 
 labels = {
-  15: "total",      # total
+  15: "total",                # total
   36: "solver 0D model",      # 0D
   37: "solver 1D model",      # 1D
   38: "solver 3D model",      # 3D
   39: u"homogenization, 1D to 3D",     # 1D->3D
   40: u"interpolation, 3D to 1D",      # 3D->1D
-  41: "file output",      # file output
-  22: "memory consumption",      # memory consumption
+  41: "file output",          # file output
+  22: "memory consumption",   # memory consumption
 }
-#plotkeys = [13, 17, 18, 19, 20]
 
 ######################
-# create plot cubes
-caption = "Multi-node strong scaling cubes, Hazel Hen,\n xi=(3,2,2), 12 1D el./3D el. "
-outfile = output_path+SCENARIO+'_strong_scaling.png'
+# create plot multi node
+caption = "Serial scaling, neon,\n x,y,z=(2,2,2), xi=(xi1,3,3) "
+output_path = ""
+outfile = output_path+SCENARIO+'_serial_scaling_improvements.png'
 if paper_no_legend:
-  plt.figure("multi-node cubes", figsize=(10,8))
+  plt.figure("serial scaling std (12)", figsize=(8,8))
 else:
-  plt.figure("multi-node cubes", figsize=(14,8))
+  plt.figure("serial scaling std (12)", figsize=(14,8))
 
 output_path = ""
 plotdata = collections.OrderedDict()
@@ -328,8 +334,6 @@ plotkeys = Set()
 # key is the initially defined sorting key
 for key in datasets:
   
-  if "cubes" not in key:
-    continue
   dataset = datasets[key]['value']
   variances = datasets[key]['variance']
   nproc = dataset[2]
@@ -339,17 +343,17 @@ for key in datasets:
   
   nMperFE = float(nM)/nFE
     
-  xtickslist.append((nM,nproc))
-  
   # loop over different curves (e.g. different measurements)
-  for plotkey_number in [15, 36, 37, 38]:
+  for plotkey_number in [15, 36, 37, 38, 39, 40]:
     
     plotkey = plotkey_number
     
     # define x value and y value
-    xvalue = nproc
+    xvalue = nM*2
     yvalue = dataset[plotkey_number]
     yvalue_variance = variances[plotkey_number]
+      
+    print labels[plotkey_number],":",yvalue
       
     if plotkey not in plotdata:
       plotdata[plotkey] = dict()
@@ -364,6 +368,7 @@ for key in datasets:
 
 # loop over curves and plot data with given label and color
 plotkeys = sorted(plotkeys)
+#print "plotkeys: ",plotkeys
 for plotkey in plotkeys:
     
   xlist = sorted(plotdata[plotkey]["value"])
@@ -380,131 +385,34 @@ for plotkey in plotkeys:
   
   
 ax = plt.gca()
-#ax.set_xscale('log', basey=2) 
+ax.set_xscale('log', basey=10) 
 ax.set_yscale('log', basey=10) 
-#ax.set_xlim([2e3,1e5])
+#ax.set_xlim([1e3, 3e5])
 #ax.set_xscale('log', basey=2) 
 #ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
 #ax.set_xticks(ticks)
 #ax.set_xticklabels([int(i/1000.) for i in ticks])
 
-if not paper_no_legend:
-  plt.subplots_adjust(right=0.58, top=0.84)
-  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=20.)
-
-#ax.set_xticks(np.linspace(000,60000,5))
-
-plt.xlabel('Number of processes')
-plt.ylabel('Runtime (s)')
-#plt.legend(loc='best')
-plt.grid(which='both')
-
-#plt.gcf().subplots_adjust(right=0.89)
-if not paper_version:
-  plt.title(caption, y=1.1)
-  plt.tight_layout()
-  
-#plt.tight_layout()
-plt.savefig(outfile)
-
-######################
-# create plot pillars
-caption = "Multi-node strong scaling pillars, Hazel Hen,\n xi=(3,2,2), 12 1D el./3D el. "
-outfile = output_path+SCENARIO+'_strong_scaling.png'
 if paper_no_legend:
-  plt.figure("multi-node pillars", figsize=(10,8))
+  plt.subplots_adjust(bottom=0.12)
 else:
-  plt.figure("multi-node pillars", figsize=(14,8))
-
-output_path = ""
-plotdata = collections.OrderedDict()
-xdata = Set()
-xtickslist = []
-plotkeys = Set()
-
-# key is the initially defined sorting key
-for key in datasets:
-  
-  if "pillars" not in key:
-    continue
-  
-  dataset = datasets[key]['value']
-  variances = datasets[key]['variance']
-  nproc = dataset[2]
-  
-  nFE = dataset[7]
-  nM = dataset[8]
-  
-  nMperFE = float(nM)/nFE
-    
-  xtickslist.append((nM,nproc))
-  
-  # loop over different curves (e.g. different measurements)
-  for plotkey_number in [15, 36, 37, 38]:
-    
-    plotkey = plotkey_number
-    
-    # define x value and y value
-    xvalue = nproc
-    yvalue = dataset[plotkey_number]
-    yvalue_variance = variances[plotkey_number]
-      
-    if plotkey not in plotdata:
-      plotdata[plotkey] = dict()
-      plotdata[plotkey]['value'] = collections.OrderedDict()
-      plotdata[plotkey]['variance'] = collections.OrderedDict()
-      
-    plotdata[plotkey]['value'][xvalue] = yvalue
-    plotdata[plotkey]['variance'][xvalue] = yvalue_variance
-    xdata.add(xvalue)
-    plotkeys.add(plotkey)
-
-
-# loop over curves and plot data with given label and color
-plotkeys = sorted(plotkeys)
-for plotkey in plotkeys:
-    
-  xlist = sorted(plotdata[plotkey]["value"])
-  ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
-  yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
-
-  label = None
-  if plotkey in labels:
-    label = labels[plotkey]
-  color = ""
-  if plotkey in colors:
-    color = colors[plotkey]
-  plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
-  
-  
-ax = plt.gca()
-#ax.set_xscale('log', basey=2) 
-ax.set_yscale('log', basey=10) 
-#ax.set_xlim([2e3,1e5])
-#ax.set_xscale('log', basey=2) 
-#ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
-#ax.set_xticks(ticks)
-#ax.set_xticklabels([int(i/1000.) for i in ticks])
-
-if not paper_no_legend:
-  plt.subplots_adjust(right=0.58, top=0.84)
-  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., fontsize=20.)
+  plt.subplots_adjust(right=0.57, top=0.84, bottom=0.12)
+  plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
-plt.xlabel('Number of processes')
+plt.xlabel('Number of 1D elements per fibre, $s_x$')
+ax.xaxis.set_label_coords(0.5, -0.1)
 plt.ylabel('Runtime (s)')
 #plt.legend(loc='best')
-plt.grid(which='both')
+plt.grid(which='major')
 
-#plt.gcf().subplots_adjust(right=0.89)
 if not paper_version:
   plt.title(caption, y=1.1)
   plt.tight_layout()
   
 #plt.tight_layout()
 plt.savefig(outfile)
-
 
 if show_plots:
   plt.show()
