@@ -14,7 +14,7 @@ SCENARIO='cuboid'
 import format as fo
 
 paper_version = True
-paper_no_legend = False
+paper_no_legend = True
 
 # determine if plots are shown
 show_plots = True
@@ -393,13 +393,15 @@ ax.set_yscale('log', basey=10)
 #ax.set_xticks(ticks)
 #ax.set_xticklabels([int(i/1000.) for i in ticks])
 
-if not paper_no_legend:
+if paper_no_legend:
+  plt.subplots_adjust(bottom=0.12)
+else:
   plt.subplots_adjust(right=0.57, top=0.84, bottom=0.12)
   plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
-plt.xlabel('Number of 1D elements per fibre, $s_x$')
+plt.xlabel('Number of 1D elements per fiber, $s_x$')
 ax.xaxis.set_label_coords(0.5, -0.1)
 plt.ylabel('Runtime (s)')
 #plt.legend(loc='best')

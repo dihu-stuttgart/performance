@@ -14,24 +14,24 @@
 # Variables are case-insensitive, whitespace between specifiers is ignored.
 # Pass this file's name to cuboid as command argument. It must end in .sce and can be mixed with the usual arguments which are:
 # ./cuboid <input folder> <X> <Y> <Z> <F> <A> <ODESolverId> <MonodomainSolverId> <MonodomainPreconditionerId>
-# where X,Y,Z = NumberGlobal{X,Y,Z}Elements, A = NumberOfElementsInAtomicPortionPerDomain, F = NumberOfInSeriesFibres
+# where X,Y,Z = NumberGlobal{X,Y,Z}Elements, A = NumberOfElementsInAtomicPortionPerDomain, F = NumberOfInSeriesFibers
 # Command line arguments can also be an assignment, like `DebuggingOutput=T` or `X=1`.
 # The command line arguments are processed in the order they occur, when this file appears, all its assignments are parsed.
 # Therefore values can be overwritten when the filename is the first argument.
 
 # ------------- discretization ----------------
 # orientation: X = Xi1 = length, Y = Xi2 = width, Z = Xi3 = height
-# fibres are parallel to X axis
+# fibers are parallel to X axis
 
 NumberGlobalXElements = 1       # number of finite elasticty elements in x-direction, alias x
 NumberGlobalYElements = 1       # number of finite elasticty elements in y-direction, alias y
 NumberGlobalZElements = 1       # number of finite elasticty elements in z-direction, alias z
 
-NumberOfNodesInXi1 = 100         # number of bioelectric elements (i.e. number nodes+1) per 3D FE element in direction of fibre (X direction), alias xi1
-NumberOfNodesInXi2 = 1          # number of fibres per FE element in Y direction, alias xi2
-NumberOfNodesInXi3 = 1          # number of fibres per FE element in Z direction, alias xi3
+NumberOfNodesInXi1 = 100         # number of bioelectric elements (i.e. number nodes+1) per 3D FE element in direction of fiber (X direction), alias xi1
+NumberOfNodesInXi2 = 1          # number of fibers per FE element in Y direction, alias xi2
+NumberOfNodesInXi3 = 1          # number of fibers per FE element in Z direction, alias xi3
 
-NumberOfInSeriesFibres = 1      # number of fibres that are in a series and mechanically connected. This is not completely tested, set to 1, alias f
+NumberOfInSeriesFibers = 1      # number of fibers that are in a series and mechanically connected. This is not completely tested, set to 1, alias f
 
 NumberOfElementsInAtomX = 1     # x-size of an non-decomposable "atom" of finite elasticity elements, that are guaranteed to be on the same subdomain, alias ax
 NumberOfElementsInAtomY = 1     # y-size of an non-decomposable "atom" of finite elasticity elements, that are guaranteed to be on the same subdomain, alias ay
@@ -84,7 +84,7 @@ NewtonTolerance = 1.E-8                       # abs. and rel. tolerance of 3D pr
 # ------------- physical parameters ------------------
 
 # stimulation
-StimValue = 1200.0                   # current value with which fibres are stimulated, this value will be set on all stimulated nodes
+StimValue = 1200.0                   # current value with which fibers are stimulated, this value will be set on all stimulated nodes
 PhysicalStimulationLength = 0.03125  # length of neuromuscular junction, length of line segment where stimulus is applied [cm] (set to 0 to always use 1 node)
 
 # stimulation is applied periodic with periodic time PERIODD, length of stimulation burst is stim_stop
@@ -115,9 +115,9 @@ TkLinParam = 1.0                # parameter for Titin model (ModelType=2) 0: No 
 
 # -------------- input files --------------------------
 InputDirectory = input                        # directory where all input files are found, relative to working directory
-FiringTimesFile = MU_firing_times_10s.txt     # file that contains the time steps (rows) for each fibre (columns) when the fibre is stimulated (value 1 else 0)
-InnervationZoneFile = innervation_zone_18.txt # the position of the neuromuscular junction for each fibre
-FibreDistributionFile = MU_fibre_distribution_4050.txt    # the motor unit number distribution for the fibres
+FiringTimesFile = MU_firing_times_10s.txt     # file that contains the time steps (rows) for each fiber (columns) when the fiber is stimulated (value 1 else 0)
+InnervationZoneFile = innervation_zone_18.txt # the position of the neuromuscular junction for each fiber
+FiberDistributionFile = MU_fiber_distribution_4050.txt    # the motor unit number distribution for the fibers
 CellMLModelFilename = standard                # the CELLML model file (XML), "standard" gets replaced by the actual standard file, depending on ModelType
 
 # CellMLModelFilename
