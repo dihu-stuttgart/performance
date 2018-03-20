@@ -334,7 +334,7 @@ labels = {
 # create plot multi node
 caption = "Serial scaling, neon,\n x,y,z=(2,2,2), xi=(xi1,3,3) "
 output_path = ""
-outfile = output_path+SCENARIO+'_strang_benefit.png'
+outfile = output_path+SCENARIO+'_gudonov_vs_strang_runtimes.png'
 if paper_no_legend:
   plt.figure("improved (12)", figsize=(8,8))
 else:
@@ -421,7 +421,7 @@ if not paper_no_legend:
 
 plt.figtext(0.62,0.5,"solid lines: Strang splitting", size=18)
 plt.figtext(0.62,0.45,"dashed lines: Godunov splitting", size=18)
-plt.xlabel('Number of 1D elements per fibre, $s_x$')
+plt.xlabel('Number of 1D elements per fiber, $s_x$')
 plt.ylabel('Runtime (s)')
 #plt.legend(loc='best')
 plt.grid(which='both')
@@ -437,7 +437,7 @@ plt.savefig(outfile)
 # create plot speedup
 caption = "Serial scaling, neon,\n x,y,z=(2,2,2), xi=(xi1,3,3) "
 output_path = ""
-outfile = output_path+SCENARIO+'_improved.png'
+outfile = output_path+SCENARIO+'_speedup.png'
 if paper_no_legend:
   plt.figure("speedup (12)", figsize=(8,8))
 else:
@@ -556,7 +556,7 @@ if not paper_no_legend:
 
 #plt.figtext(0.62,0.5,"solid lines: Strang splitting", size=18)
 #plt.figtext(0.62,0.45,"dashed lines: Godunov splitting", size=18)
-plt.xlabel('Number of 1D elements per fibre, $s_x$')
+plt.xlabel('Number of 1D elements per fiber, $s_x$')
 plt.ylabel('Speedup')
 #plt.legend(loc='best')
 plt.grid(which='both')
@@ -680,7 +680,7 @@ ax.set_xlim([1e3, 3e5])
 
 #plt.figtext(0.62,0.5,"solid lines: Strang splitting", size=18)
 #plt.figtext(0.62,0.45,"dashed lines: Godunov splitting", size=18)
-plt.xlabel('Number of 1D elements per fibre, $s_x$')
+plt.xlabel('Number of 1D elements per fiber, $s_x$')
 plt.ylabel('Speedup')
 #plt.legend(loc='best')
 plt.grid(which='both')
