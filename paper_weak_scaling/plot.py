@@ -280,25 +280,25 @@ if False:
   print ""
   print "------------- n iterations -------------------------------------------"
   print "{:10}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:8}".\
-  format("key", "F", "#M", "Parabolic", "Newton", "p. n. iter", "min", "max", "n. n. iter", "min", "max", "n fibres" )
+  format("key", "F", "#M", "Parabolic", "Newton", "p. n. iter", "min", "max", "n. n. iter", "min", "max", "n fibers" )
   for key in datasets:
     
     nFE = datasets[key]["value"][7]
     nM = datasets[key]["value"][8]
     nMperFE = float(nM)/nFE
     
-    n_fibrelines_per_element = 1
+    n_fiberlines_per_element = 1
     print nMperFE
     if nMperFE==80:
-      n_fibrelines_per_element = 4
+      n_fiberlines_per_element = 4
     elif nMperFE==120:
-      n_fibrelines_per_element = 6
+      n_fiberlines_per_element = 6
     elif nMperFE==16:
-      n_fibrelines_per_element = 4
+      n_fiberlines_per_element = 4
     elif nMperFE==3:
-      n_fibrelines_per_element = 1
+      n_fiberlines_per_element = 1
       
-    nfibres = datasets[key]["value"][3]*datasets[key]["value"][3]*n_fibrelines_per_element
+    nfibers = datasets[key]["value"][3]*datasets[key]["value"][3]*n_fiberlines_per_element
     
     print "{:10}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:8}".\
     format(key, datasets[key]["value"][6], datasets[key]["value"][8], 
@@ -310,7 +310,7 @@ if False:
     datasets[key]["value"][28],
     datasets[key]["value"][29],
     datasets[key]["value"][30],
-    nfibres,
+    nfibers,
     )
 ###############################################################
 #######################################################
@@ -390,7 +390,7 @@ for key in datasets:
   nMperFE = float(nM)/nFE
     
   if dataset[105] == 1:
-    s = "-"     # pillars, fibres not subdivided
+    s = "-"     # pillars, fibers not subdivided
   else:
     s = "o"     # cubic
   
@@ -582,7 +582,7 @@ if True:
       continue
     
     if dataset[105] == 1:
-      s = "-"     # pillars, fibres not subdivided
+      s = "-"     # pillars, fibers not subdivided
     else:
       s = "o"     # cubic
     

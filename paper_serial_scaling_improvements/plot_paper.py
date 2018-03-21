@@ -27,7 +27,8 @@ outlier_bottom = 0
   
 # read csv file
 #report_filename = "paper_std2.csv"
-report_filename = "duration.00000.csv"
+report_filename = "improvements.csv"
+report_filename_baseline = "baseline.csv"
 
 
 caption = u'Runtime over problem size, neon'
@@ -40,6 +41,16 @@ with open(report_filename) as csvfile:
     if len(row) > 0:
       if '#' not in row[0]:
         data.append(row)
+
+# parse baseline
+data_baseline = []
+with open(report_filename_baseline) as csvfile:
+  reader = csv.reader(csvfile, delimiter=';')
+  for row in reader:
+    if len(row) > 0:
+      if '#' not in row[0]:
+        data_baseline.append(row)
+
 
 n = len(data)
 
@@ -145,7 +156,7 @@ string_indices = [0, 1]
 # all other are int_indices
 int_indices = list(set(range(max_index)) - set(float_indices) - set(string_indices))
 
-def extract_data(data):
+def extract_data(data,tag):
 
   datasets = dict()
   
@@ -171,7 +182,7 @@ def extract_data(data):
       new_data[index] = float(new_data[index])     if isfloat(new_data[index])    else 0.0
       
     # define sorting key
-    key = "{:04d}".format(new_data[8])
+    key = "{}{:04d}".format(tag,new_data[8])
       
     # store extracted values
     if key not in datasets:
@@ -227,7 +238,13 @@ def extract_data(data):
     
   return datasets
   
-datasets = extract_data(data)
+datasets = extract_data(data,"improvements")
+datasets_baseline = extract_data(data_baseline,"baseline")
+
+# merge dicts
+z = datasets.copy()   # start with x's keys and values
+z.update(datasets_baseline)    # modifies z with y's keys and values & returns None
+datasets = z
 
 ###############################################################
 # output to console
@@ -294,32 +311,41 @@ plt.rcParams['lines.markersize'] = 8
 output_path = ""
 
 colors = {
-  15: "ko-",      # total
-  36: "yd-",      # 0D
-  37: "rv-",      # 1D
-  38: "gs-",      # 3D
-  39: "bp-",      # 1D->3D
-  40: "c<-",      # 3D->1D
-  41: "bx-",      # file output
-  22: "mo-",      # memory consumption
+  "baseline15": "ko-",      # total
+  "baseline36": "yd-",      # 0D
+  "baseline37": "rv-",      # 1D
+  "baseline38": "gs-",      # 3D
+  "baseline39": "bp-",      # 1D->3D
+  "baseline40": "c<-",      # 3D->1D
+  "baseline41": "bx-",      # file output
+  "baseline22": "mo-",      # memory consumption
+  
+  "improvements15": "ko--",      # total
+  "improvements36": "yd--",      # 0D
+  "improvements37": "rv--",      # 1D
+  "improvements38": "gs--",      # 3D
+  "improvements39": "bp--",      # 1D->3D
+  "improvements40": "c<--",      # 3D->1D
+  "improvements41": "bx--",      # file output
+  "improvements22": "mo--",      # memory consumption
 }
 
 labels = {
-  15: "total",                # total
-  36: "solver 0D model",      # 0D
-  37: "solver 1D model",      # 1D
-  38: "solver 3D model",      # 3D
-  39: u"homogenization, 1D to 3D",     # 1D->3D
-  40: u"interpolation, 3D to 1D",      # 3D->1D
-  41: "file output",          # file output
-  22: "memory consumption",   # memory consumption
+  "baseline15": "total",                # total
+  "baseline36": "solver 0D model",      # 0D
+  "baseline37": "solver 1D model",      # 1D
+  "baseline38": "solver 3D model",      # 3D
+  "baseline39": u"homogenization, 1D to 3D",     # 1D->3D
+  "baseline40": u"interpolation, 3D to 1D",      # 3D->1D
+  "baseline41": "file output",          # file output
+  "baseline22": "memory consumption",   # memory consumption
 }
 
 ######################
 # create plot multi node
 caption = "Serial scaling, neon,\n x,y,z=(2,2,2), xi=(xi1,3,3) "
 output_path = ""
-outfile = output_path+SCENARIO+'_serial_scaling_improvements.png'
+outfile = output_path+SCENARIO+'_serial_scaling_comparison.png'
 if paper_no_legend:
   plt.figure("serial scaling std (12)", figsize=(8,8))
 else:
@@ -346,14 +372,18 @@ for key in datasets:
   # loop over different curves (e.g. different measurements)
   for plotkey_number in [15, 36, 37, 38, 39, 40]:
     
-    plotkey = plotkey_number
+    if "baseline" in key:
+      plotkey = "baseline"+str(plotkey_number)
+    else:
+      plotkey = "improvements"+str(plotkey_number)
     
     # define x value and y value
     xvalue = nM*2
     yvalue = dataset[plotkey_number]
     yvalue_variance = variances[plotkey_number]
       
-    print labels[plotkey_number],":",yvalue
+    if plotkey_number in labels:
+      print labels[plotkey_number],":",yvalue
       
     if plotkey not in plotdata:
       plotdata[plotkey] = dict()
@@ -383,6 +413,9 @@ for plotkey in plotkeys:
     color = colors[plotkey]
   plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
   
+plt.plot([], [], 'k-', label="baseline implementation")
+plt.plot([], [], 'k--', label="improvements")
+plt.plot([], [], ' ', label="\n")
   
 ax = plt.gca()
 ax.set_xscale('log', basey=10) 
