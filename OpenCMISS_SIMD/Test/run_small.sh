@@ -1,0 +1,1 @@
+run_test1_small.sh && run_test2_small.sh

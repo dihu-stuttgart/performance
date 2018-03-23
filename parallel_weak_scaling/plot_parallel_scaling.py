@@ -183,9 +183,9 @@ def extract_data(data):
     nM = new_data[8]
     nMperFE = float(nM)/nFE
     if new_data[102] == 1:    # NumberOfElementsInAtomX=1
-      s = "o"     # fibres subdivided
+      s = "o"     # fibers subdivided
     else:
-      s = "-"     # fibres not subdivided
+      s = "-"     # fibers not subdivided
     key = "{:04d}|{:06d}|{:02d}{}".format(new_data[2], new_data[8], int(nMperFE), s)
       
     # store extracted values
@@ -286,23 +286,23 @@ if False:
 print ""
 print "------------- n iterations -------------------------------------------"
 print "{:10}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:8}".\
-format("key", "F", "#M", "Parabolic", "Newton", "p. n. iter", "min", "max", "n. n. iter", "min", "max", "n fibres" )
+format("key", "F", "#M", "Parabolic", "Newton", "p. n. iter", "min", "max", "n. n. iter", "min", "max", "n fibers" )
 for key in datasets:
   
   nFE = datasets[key]["value"][7]
   nM = datasets[key]["value"][8]
   nMperFE = float(nM)/nFE
-  n_fibrelines_per_element = 1
+  n_fiberlines_per_element = 1
   if nMperFE==80:
-    n_fibrelines_per_element = 4
+    n_fiberlines_per_element = 4
   elif nMperFE==120:
-    n_fibrelines_per_element = 6
+    n_fiberlines_per_element = 6
   elif nMperFE==16:
-    n_fibrelines_per_element = 4
+    n_fiberlines_per_element = 4
   elif nMperFE==3:
-    n_fibrelines_per_element = 1
+    n_fiberlines_per_element = 1
     
-  nfibres = datasets[key]["value"][3]*datasets[key]["value"][3]*n_fibrelines_per_element
+  nfibers = datasets[key]["value"][3]*datasets[key]["value"][3]*n_fiberlines_per_element
   
   print "{:10}, {:6}, {:6}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:10}, {:8}".\
   format(key, datasets[key]["value"][6], datasets[key]["value"][8], 
@@ -314,7 +314,7 @@ for key in datasets:
   datasets[key]["value"][28],
   datasets[key]["value"][29],
   datasets[key]["value"][30],
-  nfibres,
+  nfibers,
   )
 ###############################################################
 #######################################################
@@ -387,9 +387,9 @@ for key in datasets:
     continue
     
   if dataset[102] == 1:    # NumberOfElementsInAtomX=1
-    s = "o"     # fibres subdivided
+    s = "o"     # fibers subdivided
   else:
-    s = "-"     # fibres not subdivided
+    s = "-"     # fibers not subdivided
   
   xtickslist.append((nM,nproc))
   
@@ -493,9 +493,9 @@ for key in datasets:
     continue
     
   if dataset[102] == 1:    # NumberOfElementsInAtomX=1
-    s = "o"     # fibres subdivided
+    s = "o"     # fibers subdivided
   else:
-    s = "-"     # fibres not subdivided
+    s = "-"     # fibers not subdivided
   
   xtickslist.append((nM,nproc))
   
@@ -620,9 +620,9 @@ for key in datasets:
     continue
     
   if dataset[102] == 1:    # NumberOfElementsInAtomX=1
-    s = "o"     # fibres subdivided
+    s = "o"     # fibers subdivided
   else:
-    s = "-"     # fibres not subdivided
+    s = "-"     # fibers not subdivided
   
   xtickslist.append((nM,nproc))
   
@@ -727,9 +727,9 @@ for key in datasets:
     continue
     
   if dataset[102] == 1:    # NumberOfElementsInAtomX=1
-    s = "o"     # fibres subdivided
+    s = "o"     # fibers subdivided
   else:
-    s = "-"     # fibres not subdivided
+    s = "-"     # fibers not subdivided
   
   xtickslist.append((nM,nproc))
     
@@ -833,9 +833,9 @@ for key in datasets:
     continue
     
   if dataset[102] == 1:    # NumberOfElementsInAtomX=1
-    s = "o"     # fibres subdivided
+    s = "o"     # fibers subdivided
   else:
-    s = "-"     # fibres not subdivided
+    s = "-"     # fibers not subdivided
   
   xtickslist.append((nM,nproc))
     

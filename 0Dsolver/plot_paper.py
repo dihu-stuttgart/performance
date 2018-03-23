@@ -398,7 +398,7 @@ if not paper_no_legend:
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
-plt.xlabel('Number of 1D elements per fibre, $s_x$')
+plt.xlabel('Number of 1D elements per fiber, $s_x$')
 plt.ylabel('Runtime (s)')
 #plt.legend(loc='best')
 plt.grid(which='both')

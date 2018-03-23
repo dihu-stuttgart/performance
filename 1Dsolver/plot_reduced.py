@@ -356,7 +356,7 @@ if False:
 # x-axis: n M elements
 # y-axis: total time
 
-#plt.rcParams.update({'font.size': 23})
+#plt.rcParams.update({'font.size': 20})
 plt.rcParams.update({'font.size': 20})
 plt.rcParams['lines.linewidth'] = 3
 plt.rcParams['lines.markersize'] = 8
@@ -410,7 +410,7 @@ xlist = sorted(xdata)
 
 ######################
 # plot serial scaling
-plt.figure(2, figsize=(12,6))
+plt.figure(2, figsize=(14,8))
 
 # 13 duration main sim
 # 17 ODE
@@ -499,7 +499,7 @@ ax.set_yscale('log', basey=10)
 ax.set_xscale('log', basex=10) 
 ax.set_xlim([8, 4e3])
 #ax.set_xticks([1,2,4,8,12,16,24,32,64])
-plt.xlabel('Number of nodes per fibre, $s_x$')
+plt.xlabel('Number of 1D elements per fiber, $s_x$')
 ax.xaxis.set_label_coords(0.5, -0.13)
 plt.ylabel('Runtime (s)')
 
