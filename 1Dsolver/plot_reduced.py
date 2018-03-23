@@ -496,7 +496,7 @@ for plotkey in plotkeys:
 ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
 ax.set_yscale('log', basey=10) 
-ax.set_xscale('log', basey=10) 
+ax.set_xscale('log', basex=10) 
 ax.set_xlim([8, 4e3])
 #ax.set_xticks([1,2,4,8,12,16,24,32,64])
 plt.xlabel('Number of nodes per fibre, $s_x$')
