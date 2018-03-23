@@ -440,7 +440,7 @@ labels = {
   13: "Duration main simulation",
   15: "total runtime",
   17: "solver 0D model",
-  "parabolic1|1": "LU",
+  "parabolic1|1": "direct solver",
   "parabolic2|1": "GMRES",
   "parabolic3|1": "CG",
   "parabolic3|2": "Parabolic solver (CG, Jacobi)",
@@ -499,7 +499,7 @@ ax.set_yscale('log', basey=10)
 ax.set_xscale('log', basey=10) 
 ax.set_xlim([8, 4e3])
 #ax.set_xticks([1,2,4,8,12,16,24,32,64])
-plt.xlabel('Number of 1D elements per fiber, $s_x$')
+plt.xlabel('Number of 1D elements per fiber')
 ax.xaxis.set_label_coords(0.5, -0.13)
 plt.ylabel('Runtime (s)')
 
