@@ -30,8 +30,8 @@ def run(xi1,ode,msolver,splitting,ode_n_steps,pde_time_step,output_stride,scenar
   """
   command = "$OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR xi1={} ODESolverId={} MonodomainSolverId={} UseStrangSplitting={} OdeNSteps={} PDETimeStep={} \
              OutputTimeStepStride={}\
-             && mkdir -p results/TConv_{}_{}/TConv_{}\
-             && mv *.ex* results/TConv_{}_{}/TConv_{}".format(int(xi1), int(ode), int(msolver), splitting, int(ode_n_steps), pde_time_step,int(output_stride),int(xi1),scenario_name,pde_time_step,int(xi1),scenario_name,pde_time_step)
+             && mkdir -p results/TConv_{}_{}/TConv_dt{}\
+             && mv *.ex* results/TConv_{}_{}/TConv_dt{}".format(int(xi1), int(ode), int(msolver), splitting, int(ode_n_steps), pde_time_step,int(output_stride),int(xi1),scenario_name,pde_time_step,int(xi1),scenario_name,pde_time_step)
 
   try:
     print command
@@ -43,11 +43,11 @@ xi1=16
 msolver = 1   # 1 SOLVER_DIRECT_LU, 2 SOLVER_ITERATIVE_GMRES, 3 SOLVER_ITERATIVE_CONJUGATE_GRADIENT, 4 SOLVER_ITERATIVE_CONJGRAD_SQUARED
 #timesteps=[0.000001,0.0001,0.0002,0.0005,0.001,0.002,0.005]
 #strides=[100000,1000,500,200,100,50,20]
-timesteps=[0.002,0.001,0.0005,0.0002,0.0001,0.000001]
+timesteps=[0.005,0.002,0.001,0.0005,0.0002,0.0001,0.000001]
 strides=[1,1,1,1,1,1,1]
 
 # loop over runs
-for n in range(1):
+for n in range(6,7):
 
   # run with godunov splitting
   ode = 1 # 1 explicit Euler
