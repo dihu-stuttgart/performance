@@ -3,6 +3,7 @@
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import gridspec
 import csv
 import collections
 import copy
@@ -311,6 +312,11 @@ plt.rcParams['lines.markersize'] = 8
 output_path = ""
 
 colors = {
+
+  15: "ko-",      # total
+  36: "yd-",      # 0D
+  37: "rv-",      # 1D
+  
   "baseline15": "ko-",      # total
   "baseline36": "yd-",      # 0D
   "baseline37": "rv-",      # 1D
@@ -347,15 +353,16 @@ caption = "Serial scaling, neon,\n x,y,z=(2,2,2), xi=(xi1,3,3) "
 output_path = ""
 outfile = output_path+SCENARIO+'_serial_scaling_comparison.png'
 if paper_no_legend:
-  plt.figure("serial scaling std (12)", figsize=(8,8))
+  plt.figure("serial scaling std (12)", figsize=(8,10))
 else:
-  plt.figure("serial scaling std (12)", figsize=(14,8))
+  plt.figure("serial scaling std (12)", figsize=(14,10))
 
 output_path = ""
 plotdata = collections.OrderedDict()
 xdata = Set()
 xtickslist = []
 plotkeys = Set()
+plotkeys_speedup = Set()
 
 # key is the initially defined sorting key
 for key in datasets:
@@ -378,7 +385,7 @@ for key in datasets:
       plotkey = "improvements"+str(plotkey_number)
     
     # define x value and y value
-    xvalue = nM*2
+    xvalue = nM
     yvalue = dataset[plotkey_number]
     yvalue_variance = variances[plotkey_number]
       
@@ -395,10 +402,49 @@ for key in datasets:
     xdata.add(xvalue)
     plotkeys.add(plotkey)
 
+  
+  if "baseline" in key:
+    other_key = "improvements"+key[8:]
+      
+    dataset_baseline = datasets[key]['value']
+    if other_key not in datasets:
+      continue
+    dataset_improvements = datasets[other_key]['value']
+    nproc = dataset_baseline[2]
+    
+    nFE = dataset_baseline[7]
+    nM = dataset_baseline[8]
+    
+    nMperFE = float(nM)/nFE
+      
+    # loop over different curves (e.g. different measurements)
+    for plotkey_number in [15, 36, 37]:
+      
+      plotkey = plotkey_number
+      
+      # define x value and y value
+      xvalue = nM
+      yvalue = dataset_baseline[plotkey_number] / dataset_improvements[plotkey_number]
+        
+      print key," ",descriptions[plotkey_number],", xvalue: ", xvalue,", speedup: ",yvalue
+        
+      if plotkey not in plotdata:
+        plotdata[plotkey] = dict()
+        plotdata[plotkey]['value'] = collections.OrderedDict()
+        plotdata[plotkey]['variance'] = collections.OrderedDict()
+        
+      plotdata[plotkey]['value'][xvalue] = yvalue
+      plotdata[plotkey]['variance'][xvalue] = 0
+      xdata.add(xvalue)
+      plotkeys_speedup.add(plotkey)
 
 # loop over curves and plot data with given label and color
 plotkeys = sorted(plotkeys)
-#print "plotkeys: ",plotkeys
+plotkeys_speedup = sorted(plotkeys_speedup)
+
+
+gs = gridspec.GridSpec(2,1,height_ratios=[3,1])
+plt.subplot(gs[0])
 for plotkey in plotkeys:
     
   xlist = sorted(plotdata[plotkey]["value"])
@@ -411,7 +457,7 @@ for plotkey in plotkeys:
   color = ""
   if plotkey in colors:
     color = colors[plotkey]
-  plt.errorbar(xlist, ylist, fmt=color, yerr=yerr, label=label)
+  plt.errorbar([2*x for x in xlist], ylist, fmt=color, yerr=yerr, label=label)
   
 plt.plot([], [], 'k-', label="baseline implementation")
 plt.plot([], [], 'k--', label="improvements")
@@ -426,19 +472,59 @@ ax.set_yscale('log', basey=10)
 #ax.set_xticks(ticks)
 #ax.set_xticklabels([int(i/1000.) for i in ticks])
 
+
 if paper_no_legend:
   plt.subplots_adjust(bottom=0.12)
 else:
   plt.subplots_adjust(right=0.57, top=0.84, bottom=0.12)
   plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
 
-#ax.set_xticks(np.linspace(000,60000,5))
-
-plt.xlabel('Number of 1D elements per fibre, $s_x$')
-ax.xaxis.set_label_coords(0.5, -0.1)
 plt.ylabel('Runtime (s)')
 #plt.legend(loc='best')
 plt.grid(which='major')
+
+plt.subplot(gs[1])
+for plotkey in plotkeys_speedup:
+    
+  xlist = sorted(plotdata[plotkey]["value"])
+  ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
+  yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
+
+  label = None
+  if plotkey in labels:
+    label = labels[plotkey]
+  color = ""
+  if plotkey in colors:
+    color = colors[plotkey]
+  plt.plot([2*x for x in xlist], ylist, color, label=label)
+  
+ax = plt.gca()
+ax.set_xscale('log', basey=10) 
+ax.set_yscale('log', basey=2) 
+
+#ax.set_xlim([1e3, 3e5])
+#ax.set_xscale('log', basey=2) 
+#ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
+#ax.set_xticks(ticks)
+#ax.set_xticklabels([int(i/1000.) for i in ticks])
+
+
+#ax.set_xticks(np.linspace(000,60000,5))
+
+plt.xlabel('Number of 1D elements per fibre')
+ax.xaxis.set_label_coords(0.5, -0.3)
+plt.ylabel('Speedup (-)')
+#plt.legend(loc='best')
+plt.grid(which='major')
+
+y_offset1 = 0.2
+y_offset2 = 0.5
+x_offset = 200
+plt.annotate(s="3.1", xy=(576, 3.10330480237), xytext=(576-x_offset, 3.10330480237+y_offset2))
+plt.annotate(s="5.3", xy=(159624, 5.29661820054), xytext=(159624, 5.29661820054+y_offset2))
+
+plt.annotate(s="1.2", xy=(576, 1.24104304423), xytext=(576-x_offset, 1.24104304423+y_offset1))
+plt.annotate(s="1.2", xy=(159624, 1.22459647275), xytext=(159624, 1.22459647275+y_offset1))
 
 if not paper_version:
   plt.title(caption, y=1.1)
