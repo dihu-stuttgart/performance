@@ -28,7 +28,7 @@ outlier_bottom = 0
   
 # read csv file
 #report_filename = "paper_std2.csv"
-report_filename = "improvements.csv"
+report_filename = "improvements_aggressive.csv"
 report_filename_baseline = "baseline.csv"
 
 
@@ -351,7 +351,7 @@ labels = {
 # create plot multi node
 caption = "Serial scaling, neon,\n x,y,z=(2,2,2), xi=(xi1,3,3) "
 output_path = ""
-outfile = output_path+SCENARIO+'_serial_scaling_comparison.png'
+outfile = output_path+SCENARIO+'_serial_scaling_comparison_aggressive.png'
 if paper_no_legend:
   plt.figure("serial scaling std (12)", figsize=(8,10))
 else:
@@ -387,6 +387,9 @@ for key in datasets:
     # define x value and y value
     xvalue = nM
     yvalue = dataset[plotkey_number]
+    if plotkey_number == 15 and not np.isnan(dataset[96]):
+      yvalue = dataset[15]-dataset[96]
+      
     yvalue_variance = variances[plotkey_number]
       
     if plotkey_number in labels:
@@ -425,6 +428,9 @@ for key in datasets:
       # define x value and y value
       xvalue = nM
       yvalue = dataset_baseline[plotkey_number] / dataset_improvements[plotkey_number]
+      
+      if plotkey_number == 15 and not np.isnan(dataset_baseline[96]):
+        yvalue = (dataset_baseline[15]-dataset_baseline[96]) / (dataset_improvements[15]-dataset_improvements[96])
         
       print key," ",descriptions[plotkey_number],", xvalue: ", xvalue,", speedup: ",yvalue
         
@@ -442,6 +448,9 @@ for key in datasets:
 plotkeys = sorted(plotkeys)
 plotkeys_speedup = sorted(plotkeys_speedup)
 
+print "plotkeys:",plotkeys
+plotkeys = ['baseline15', 'baseline36', 'baseline37', 'baseline38', 'baseline39', 'baseline40', 'improvements15', 'improvements36', 'improvements37', 'improvements38', 'improvements39', 'improvements40']
+
 
 gs = gridspec.GridSpec(2,1,height_ratios=[3,1])
 plt.subplot(gs[0])
@@ -457,7 +466,15 @@ for plotkey in plotkeys:
   color = ""
   if plotkey in colors:
     color = colors[plotkey]
-  plt.errorbar([2*x for x in xlist], ylist, fmt=color, yerr=yerr, label=label)
+    
+  #if '36' in plotkey:
+  #  plt.errorbar([2*x for x in xlist], ylist, fmt=color, yerr=yerr, lw=3)
+  #  plt.errorbar([],[], fmt=color,yerr=None,label=label,lw=3)
+  if '15' in plotkey:
+    plt.errorbar([2*x for x in xlist], ylist, fmt=color, yerr=yerr, lw=7)
+    plt.errorbar([],[], fmt=color,yerr=None,label=label,lw=3)
+  else:
+    plt.errorbar([2*x for x in xlist], ylist, fmt=color, yerr=yerr, label=label)
   
 plt.plot([], [], 'k-', label="baseline implementation")
 plt.plot([], [], 'k--', label="improvements")
@@ -466,7 +483,7 @@ plt.plot([], [], ' ', label="\n")
 ax = plt.gca()
 ax.set_xscale('log', basey=10) 
 ax.set_yscale('log', basey=10) 
-#ax.set_xlim([1e3, 3e5])
+ax.set_xlim([6e2, 12e5])
 #ax.set_xscale('log', basey=2) 
 #ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 10**6, 10))
 #ax.set_xticks(ticks)
@@ -516,15 +533,17 @@ ax.xaxis.set_label_coords(0.5, -0.3)
 plt.ylabel('Speedup (-)')
 #plt.legend(loc='best')
 plt.grid(which='major')
+ax.set_xlim([6e2, 12e5])
 
 y_offset1 = 0.2
 y_offset2 = 0.5
 x_offset = 200
-plt.annotate(s="3.1", xy=(576, 3.10330480237), xytext=(576-x_offset, 3.10330480237+y_offset2))
-plt.annotate(s="5.3", xy=(159624, 5.29661820054), xytext=(159624, 5.29661820054+y_offset2))
+plt.annotate(s="6.1", xy=(2*576, 6.07370821176), xytext=(2*(576-x_offset), 6.07370821176+0.6))
+plt.annotate(s="14.7", xy=(2*239400, 14.6831071659), xytext=(2*(239400+10000), 14.6831071659-4.5))
 
-plt.annotate(s="1.2", xy=(576, 1.24104304423), xytext=(576-x_offset, 1.24104304423+y_offset1))
-plt.annotate(s="1.2", xy=(159624, 1.22459647275), xytext=(159624, 1.22459647275+y_offset1))
+plt.annotate(s="2.4", xy=(2*576, 2.42141242761), xytext=(2*(576-x_offset), 2.42141242761+0.3))
+plt.annotate(s="1.7", xy=(2*239400, 1.70508203501), xytext=(2*(239400+10000), 1.70508203501-0.25))
+plt.annotate(s="2.5", xy=(2*239400, 2.46201716292), xytext=(2*(239400+10000), 2.46201716292+0.08))
 
 if not paper_version:
   plt.title(caption, y=1.1)
