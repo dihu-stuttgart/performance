@@ -5,48 +5,53 @@
 
 import sys
 import numpy as np
-#import matplotlib.pyplot as plt
 import subprocess
 import datetime
 import time
 import os
-import domain_decomposition
 
-# set environment variable
-os.environ['OPENCMISS_SCE_FILE'] = 'paper.sce'
+n_available_nodes = 10000000
+if len(sys.argv) > 1:
+  n_available_nodes = (int)(sys.argv[1])
 
-def check_exit():
+"""
+7x7fibers.bin                49
+15x15fibers.bin             225
+29x29fibers.bin             841
+43x43fibers.bin           1.849
+85x85fibers.bin           7.225
+295x295fibers.bin        87.025
+393x393fibers.bin       154.449
+435x435fibers.bin       189.225
+533x533fibers.bin       284.089
+785x785fibers.bin       616.225
+"""
+
+def run(x,y,z,n_fibers_per_dimension):
   
-  return    # disable time check
-  
-  now = datetime.datetime.now()
-  if now.hour >= 7 and now.hour < 20:  # wait if 7 <= hour <= 20
-    print "Don't run program because it is between 7 and 20."
-    time.sleep(60*60)
-  else:
-    print "OK"
+  opendihu_home = os.environ.get("OPENDIHU_HOME")
+  example_home = os.path.join(opendihu_home, "examples/electrophysiology/fibers_emg")
+  settings_file = os.path.join(example_home, "settings_fibers_emg.py")
 
-def run(nproc,x,y,z,px,py,pz,ex,ey,ez): # nnodes = number of nodes, nproc = number of processes
-  
-  #(used_number_of_processes, subdomain_shape) = domain_decomposition.number_of_processes(nproc,x,y,z,ax,ay,az)
-  #print "Number of subdomains: ",used_number_of_processes, ", shape of subdomain: ", subdomain_shape
+  scenario_name = "weak_scaling_{}_{}_{}".format(x,y,z)
 
-  ode = 1
-  msolver = 2
-  precond = 1
-  
-  j = "-j1"  # no hyperthreading
-#  if p > 12:
-#    j = "-j2"  # hyperthreading
-#  else:
-#    j = "-j1"  # no hyperthreading
+  fiber_file = "../../input/{n}x{n}fibers.bin".format(n=n_fibers_per_dimension)
 
-  command = "aprun -n {nproc} -N {ppn} {j} $OPENCMISS_REL_DIR/cuboid $OPENCMISS_SCE_FILE $OPENCMISS_INPUT_DIR x={x} y={y} z={z} px={px} py={py} pz={pz} ex={ex} ey={ey} ez={ez} "\
-            "ODESolverId={ode} MonodomainSolverId={msolver} MonodomainPreconditionerId={mprecond}"\
-            .format(nproc=int(nproc), ppn=24, j=j, x=int(x), y=int(y), z=int(z), px=int(px), py=int(py), pz=int(pz), ex=int(ex), ey=int(ey), ez=int(ez), ode=ode, msolver=msolver, mprecond=mprecond)
+  command = "aprun \
+  --cpu-binding $({OPENDIHU_HOME}/scripts/generate_cpu_list.py {X} {Y} {Z}) \
+  --pes-per-node 24 \
+  -n {NP} \
+  {EXAMPLE_HOME}/build_release/fibers_emg {SETTINGS_FILE} \
+    --scenario_name {SCENARIO_NAME} \
+    --n_subdomains {X} {Y} {Z} \
+    --fiber_file {FIBER_FILE} \
+    --end_time 1.0 ".format(OPENDIHU_HOME=opendihu_home, X=x, Y=y, Z=z, NP=x*y*z, EXAMPLE_HOME=example_home, SETTINGS_FILE=settings_file, SCENARIO_NAME=scenario_name, FIBER_FILE=fiber_file)
 
-  #print command; return 
-  print command
+  print("partitioning {:2d}*{:2d}*{:2d}={:5d}  {:3d}^2={:6d} fibers, fibers/rank: {:5f}, need {:4d} nodes".format(x,y,z,x*y*z, n_fibers_per_dimension, n_fibers_per_dimension**2, float(n_fibers_per_dimension**2)/(x*y*z), int(np.ceil((x*y*z)/24.))))
+  return
+
+  print(command); return 
+  print(command)
 
   # execute command
   try:
@@ -67,55 +72,37 @@ def run(nproc,x,y,z,px,py,pz,ex,ey,ez): # nnodes = number of nodes, nproc = numb
       log.write("Command successful\n")
 
     pass
+
+partitionings = [
+  [2,  2,  1,    7],
+  [3,  3,  2,   15],
+  [4,  5,  4,   29],
+  [5,  6,  6,   43],
+  [7,  8,  12,  85],
+  [19, 19, 24, 295],
+  [25, 25, 24, 393],
+  [27, 27, 24, 435],
+  [34, 34, 24, 533],
+]
+
+for partitioning in partitionings:
   
-# load modules
-cmd = "module restore /lustre/cray/ws8/ws/icbbnmai-iron/manage/build_release/gcc49.module_snapshot"
-try:
-  subprocess.check_call(cmd, shell=True)
-except:
-  print "not on hazel hen!"
+  n_ranks = partitioning[0] * partitioning[1] * partitioning[2]
+  n_nodes = int(np.ceil(n_ranks/24.))
+  
+  if n_nodes > n_available_nodes:
+    break
+  run(partitioning[0], partitioning[1], partitioning[2], partitioning[3])
+  
+"""
+partitioning 2*2*1=4  7^2=49 fibers, fibers/rank: 12.25
+partitioning 3*3*2=18  15^2=225 fibers, fibers/rank: 12.5
+partitioning 4*5*4=80  29^2=841 fibers, fibers/rank: 10.5125
+partitioning 5*6*6=180  43^2=1849 fibers, fibers/rank: 10.2722222222
+partitioning 7*8*12=672  85^2=7225 fibers, fibers/rank: 10.7514880952
+partitioning 19*19*24=8664  295^2=87025 fibers, fibers/rank: 10.0444367498
+partitioning 25*25*24=15000  393^2=154449 fibers, fibers/rank: 10.2966
+partitioning 27*27*24=17496  435^2=189225 fibers, fibers/rank: 10.8153292181
+partitioning 34*34*24=27744  533^2=284089 fibers, fibers/rank: 10.239655421
 
-
-
-n_start = 1   # size of smallest problem to begin with
-last_total = 0
-
-ax = 1        # number of elements in x-direction in atom (non-decomposable block of elements)
-ode = 1       # 1 explicit Euler, 2 BDF
-msolver = 1   # 1 SOLVER_DIRECT_LU, 2 SOLVER_ITERATIVE_GMRES, 3 SOLVER_ITERATIVE_CONJUGATE_GRADIENT, 4 SOLVER_ITERATIVE_CONJGRAD_SQUARED
-mprecond = 1   # 1 NO_PRECONDITIONER, 2 JACOBI_PRECONDITIONER, 3 BLOCK_JACOBI_PRECONDITIONER, 4 SOR_PRECONDITIONER, 5 INCOMPLETE_CHOLESKY_PRECONDITIONER, 6 INCOMPLETE_LU_PRECONDITIONER, 7 ADDITIVE_SCHWARZ_PRECONDITIONER
-
-nodes = 0
-
-if len(sys.argv) > 1:
-  nodes = int(sys.argv[1])
-print "nodes = ",nodes
-
-if nodes == 0 or nodes == 1:
-  run(1*24, 2,12,8, 1,6,4, 2,2,2)   # pillars
-  run(1*24, 2,12,8, 1,6,4, 2,2,2)   # cubes
-
-if nodes == 0 or nodes == 2:
-  run(2*24, 4,12,8, 1,6,8, 4,2,1)   # pillars
-  run(2*24, 4,12,8, 2,6,4, 2,2,2)   # cubes
-
-if nodes == 0 or nodes == 4:
-  run(4*24, 4,12,16, 1,12,8, 4,1,2)   # pillars
-  run(4*24, 4,12,16, 2,6,8, 2,2,2)   # cubes
-
-if nodes == 0 or nodes == 8:
-  run(8*24, 4,24,16, 1,12,16, 4,2,1)   # pillars
-  run(8*24, 4,24,16, 2,12,8, 2,2,2)   # cubes
-
-if nodes == 0 or nodes == 16:
-  run(16*24, 8,24,16, 1,24,16, 8,1,1)   # pillars
-  run(16*24, 8,24,16, 4,12,8, 2,2,2)   # cubes
-
-if nodes == 0 or nodes == 32:
-  run(32*24, 8,24,32, 1,24,32, 8,1,1)   # pillars
-  run(32*24, 8,24,32, 4,12,16, 2,2,2)   # cubes
-
-if nodes == 0 or nodes == 64:
-  run(64*24, 8,48,32, 1,48,32, 8,1,1)   # pillars
-  run(64*24, 8,48,32, 4,24,16, 2,2,2)   # cubes
-
+"""
