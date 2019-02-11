@@ -30,6 +30,10 @@ if len(sys.argv) > 1:
 def run(x,y,z,n_fibers_per_dimension):
   
   opendihu_home = os.environ.get("OPENDIHU_HOME")
+  if opendihu_home == "":
+    print("Error! $OPENDIHU_HOME is not set!")
+    return
+    
   example_home = os.path.join(opendihu_home, "examples/electrophysiology/fibers_emg")
   settings_file = os.path.join(example_home, "settings_fibers_emg.py")
 
@@ -95,14 +99,15 @@ for partitioning in partitionings:
   run(partitioning[0], partitioning[1], partitioning[2], partitioning[3])
   
 """
-partitioning 2*2*1=4  7^2=49 fibers, fibers/rank: 12.25
-partitioning 3*3*2=18  15^2=225 fibers, fibers/rank: 12.5
-partitioning 4*5*4=80  29^2=841 fibers, fibers/rank: 10.5125
-partitioning 5*6*6=180  43^2=1849 fibers, fibers/rank: 10.2722222222
-partitioning 7*8*12=672  85^2=7225 fibers, fibers/rank: 10.7514880952
-partitioning 19*19*24=8664  295^2=87025 fibers, fibers/rank: 10.0444367498
-partitioning 25*25*24=15000  393^2=154449 fibers, fibers/rank: 10.2966
-partitioning 27*27*24=17496  435^2=189225 fibers, fibers/rank: 10.8153292181
-partitioning 34*34*24=27744  533^2=284089 fibers, fibers/rank: 10.239655421
+partitioning  2* 2* 1=    4    7^2=    49 fibers, fibers/rank: 12.250000, need    1 nodes
+partitioning  3* 3* 2=   18   15^2=   225 fibers, fibers/rank: 12.500000, need    1 nodes
+partitioning  4* 5* 4=   80   29^2=   841 fibers, fibers/rank: 10.512500, need    4 nodes
+partitioning  5* 6* 6=  180   43^2=  1849 fibers, fibers/rank: 10.272222, need    8 nodes
+partitioning  7* 8*12=  672   85^2=  7225 fibers, fibers/rank: 10.751488, need   28 nodes
+partitioning 19*19*24= 8664  295^2= 87025 fibers, fibers/rank: 10.044437, need  361 nodes
+partitioning 25*25*24=15000  393^2=154449 fibers, fibers/rank: 10.296600, need  625 nodes
+partitioning 27*27*24=17496  435^2=189225 fibers, fibers/rank: 10.815329, need  729 nodes
+partitioning 34*34*24=27744  533^2=284089 fibers, fibers/rank: 10.239655, need 1156 nodes
+
 
 """
