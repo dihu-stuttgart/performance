@@ -1,0 +1,23 @@
+#!/bin/bash
+#PBS -N new_gnu_3
+#PBS -l nodes=3:ppn=24
+#PBS -l walltime=00:20:00
+#PBS -j oe
+
+# load modules  
+. ~/load_modules.sh
+#module switch PrgEnv-gnu/6.0.4 PrgEnv-cray
+#module load perftools-base
+#module load perftools-preload
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+export OMP_NUM_THREADS=1
+export PRGENV=gnu
+export OPENDIHU_HOME=/lustre/cray/ws8/ws/icbbnmai-opendihu/opendihu-${PRGENV}
+
+# this script needs OPENDIHU_HOME set
+# <number of available nodes>
+./run.py $PBS_NUM_NODES
+

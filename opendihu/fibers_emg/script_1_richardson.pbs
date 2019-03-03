@@ -1,0 +1,21 @@
+#!/bin/bash
+#PBS -N fibers1
+#PBS -l nodes=1:ppn=24
+#PBS -l walltime=2:00:00
+#PBS -j oe
+
+# load modules  
+. ~/load_modules.sh
+#module switch PrgEnv-gnu/6.0.4 PrgEnv-cray
+#module load perftools-base
+#module load perftools-preload
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+export OMP_NUM_THREADS=1
+export OPENDIHU_HOME=/lustre/cray/ws8/ws/icbbnmai-opendihu/opendihu-gnu
+export EXAMPLE_HOME=$OPENDIHU_HOME/examples/electrophysiology/fibers_emg
+
+echo "gamg, PBS_NUM_NODES=$PBS_NUM_NODES"
+
+aprun --pes-per-node 24 -n 24 $EXAMPLE_HOME/build_release/fibers_emg settings_fibers_emg.py fibers43_richardson 2 3 4 richardson ../../input/43x43fibers.bin
