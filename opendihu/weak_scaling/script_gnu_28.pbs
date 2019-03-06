@@ -1,12 +1,12 @@
 #!/bin/bash
-#PBS -N weak_scaling_cray_28
+#PBS -N weak_scaling_gnu_28
 #PBS -l nodes=28:ppn=24
-#PBS -l walltime=00:20:00
+#PBS -l walltime=00:25:00
 #PBS -j oe
 
 # load modules  
 . ~/load_modules.sh
-module switch PrgEnv-gnu/6.0.4 PrgEnv-cray
+#module switch PrgEnv-gnu/6.0.4 PrgEnv-cray
 #module load perftools-base
 #module load perftools-preload
 
@@ -14,7 +14,7 @@ module switch PrgEnv-gnu/6.0.4 PrgEnv-cray
 cd $PBS_O_WORKDIR
 
 export OMP_NUM_THREADS=1
-export PRGENV=cray
+export PRGENV=gnu
 export OPENDIHU_HOME=/lustre/cray/ws8/ws/icbbnmai-opendihu/opendihu-${PRGENV}
 
 # this script needs OPENDIHU_HOME set

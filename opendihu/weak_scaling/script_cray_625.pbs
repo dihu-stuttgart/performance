@@ -1,12 +1,13 @@
 #!/bin/bash
-#PBS -N weak_scaling_cray_28
-#PBS -l nodes=28:ppn=24
-#PBS -l walltime=00:20:00
+#PBS -N weak_scaling_cray_625
+#PBS -l nodes=625:ppn=24
+#PBS -l walltime=01:00:00
 #PBS -j oe
 
 # load modules  
 . ~/load_modules.sh
 module switch PrgEnv-gnu/6.0.4 PrgEnv-cray
+module list
 #module load perftools-base
 #module load perftools-preload
 

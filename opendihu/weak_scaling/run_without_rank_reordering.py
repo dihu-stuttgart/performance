@@ -44,7 +44,7 @@ def run(x,y,z,n_fibers_per_dimension):
   example_home = os.path.join(opendihu_home, "examples/electrophysiology/fibers_emg")
   settings_file = os.path.join(example_home, "settings_fibers_emg.py")
 
-  scenario_name = "new_weak_scaling_lu_{}_{}_{}".format(x,y,z)
+  scenario_name = "new_no_rank_reordering_weak_scaling_{}_{}_{}".format(x,y,z)
 
   fiber_file = "../../input/{n}x{n}fibers.bin".format(n=n_fibers_per_dimension)
   #firing_times_file = "../../input/MU_firing_times_immediately.txt"
@@ -54,9 +54,9 @@ def run(x,y,z,n_fibers_per_dimension):
   else:
     scenario_name += "_"
 
-  sleep_duration = (int)(n_available_nodes % 10);
+  sleep_duration = (int)(n_available_nodes % 10)+1;
 
-  command = "sleep {DURATION}; export MPICH_RANK_REORDER_METHOD=3; echo $({OPENDIHU_HOME}/scripts/generate_cpu_list.py {X} {Y} {Z}) > MPICH_RANK_ORDER; echo '{n_available_nodes} available compute nodes';\
+  command = "sleep {DURATION}; echo '{n_available_nodes} available compute nodes, no rank reordering';\
   aprun \
   --pes-per-node {N} \
   -n {NP} \
