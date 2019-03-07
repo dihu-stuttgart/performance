@@ -1,7 +1,7 @@
 #!/bin/bash
-#PBS -N weak_scaling_cray_28
-#PBS -l nodes=28:ppn=24
-#PBS -l walltime=00:20:00
+#PBS -N weak_scaling_cray_361
+#PBS -l nodes=361:ppn=24
+#PBS -l walltime=01:00:00
 #PBS -j oe
 
 # load modules  
@@ -9,6 +9,7 @@
 module switch PrgEnv-gnu/6.0.4 PrgEnv-cray
 #module load perftools-base
 #module load perftools-preload
+module list
 
 # Change to the directory that the job was submitted from
 cd $PBS_O_WORKDIR
