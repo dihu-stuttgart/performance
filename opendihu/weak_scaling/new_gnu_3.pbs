@@ -1,8 +1,9 @@
 #!/bin/bash
-#PBS -N new_gnu_3
+#PBS -N out_new_gnu_3
 #PBS -l nodes=3:ppn=24
 #PBS -l walltime=00:20:00
 #PBS -j oe
+#PBS -q test
 
 # load modules  
 . ~/load_modules.sh
@@ -15,7 +16,7 @@ cd $PBS_O_WORKDIR
 
 export OMP_NUM_THREADS=1
 export PRGENV=gnu
-export OPENDIHU_HOME=/lustre/cray/ws8/ws/icbbnmai-opendihu/opendihu-${PRGENV}
+export OPENDIHU_HOME=/lustre/cray/ws9/2/ws/icbbnmai-opendihu0/opendihu-${PRGENV}
 
 # this script needs OPENDIHU_HOME set
 # <number of available nodes>

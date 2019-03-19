@@ -44,7 +44,7 @@ def run(x,y,z,n_fibers_per_dimension):
   example_home = os.path.join(opendihu_home, "examples/electrophysiology/fibers_emg")
   settings_file = os.path.join(example_home, "settings_fibers_emg.py")
 
-  scenario_name = "new_weak_scaling_lu_{}_{}_{}".format(x,y,z)
+  scenario_name = "weak_scaling_{}_{}_{}".format(x,y,z)
 
   fiber_file = "../../input/{n}x{n}fibers.bin".format(n=n_fibers_per_dimension)
   #firing_times_file = "../../input/MU_firing_times_immediately.txt"
@@ -67,7 +67,9 @@ def run(x,y,z,n_fibers_per_dimension):
     --emg_solver_type {EMG_SOLVER_TYPE} \
     --emg_initial_guess_nonzero \
     --firing_times_file {FIRING_TIMES_FILE} \
-    --end_time 1.0 ".format(OPENDIHU_HOME=opendihu_home, X=x, Y=y, Z=z, NP=x*y*z, N=pes_per_node, EXAMPLE_HOME=example_home, SETTINGS_FILE=settings_file, SCENARIO_NAME=scenario_name, FIBER_FILE=fiber_file, n_available_nodes=n_available_nodes, FIRING_TIMES_FILE=firing_times_file, EMG_SOLVER_TYPE=emg_solver_type, DURATION=sleep_duration)
+    --end_time 1.0 \
+    --disable_firing_output \
+".format(OPENDIHU_HOME=opendihu_home, X=x, Y=y, Z=z, NP=x*y*z, N=pes_per_node, EXAMPLE_HOME=example_home, SETTINGS_FILE=settings_file, SCENARIO_NAME=scenario_name, FIBER_FILE=fiber_file, n_available_nodes=n_available_nodes, FIRING_TIMES_FILE=firing_times_file, EMG_SOLVER_TYPE=emg_solver_type, DURATION=sleep_duration)
 
   print("partitioning {:2d}*{:2d}*{:2d}={:5d}  {:3d}^2={:6d} fibers, fibers/rank: {:5f}, need {:4d} nodes".format(x,y,z,x*y*z, n_fibers_per_dimension, n_fibers_per_dimension**2, float(n_fibers_per_dimension**2)/(x*y*z), int(np.ceil((x*y*z)/24.))))
   #return

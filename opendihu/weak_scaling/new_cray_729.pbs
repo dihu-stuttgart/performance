@@ -1,7 +1,7 @@
 #!/bin/bash
 #PBS -N out_new_cray_729
 #PBS -l nodes=729:ppn=24
-#PBS -l walltime=02:00:00
+#PBS -l walltime=00:30:00
 #PBS -j oe
 
 # load modules  
@@ -15,7 +15,7 @@ cd $PBS_O_WORKDIR
 
 export OMP_NUM_THREADS=1
 export PRGENV=cray
-export OPENDIHU_HOME=/lustre/cray/ws8/ws/icbbnmai-opendihu/opendihu-${PRGENV}
+export OPENDIHU_HOME=/lustre/cray/ws9/2/ws/icbbnmai-opendihu0/opendihu-${PRGENV}
 
 # this script needs OPENDIHU_HOME set
 # <number of available nodes>
