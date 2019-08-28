@@ -5,7 +5,7 @@
 # <n_processes_per_fiber> <n_fibers> <n_nodes_per_fiber> <scenario_name>
 
 #for n_nodes in $(seq 20 20 600); do
-for n_nodes in $(seq 20 120 240); do
+for n_nodes in $(seq 60 20 240); do
 
 # shorten model
 rm -rf out
