@@ -24,10 +24,14 @@ if len(sys.argv) > 1:
 
 # load log
 logfile = "../logs/log.csv"
-with open(logfile,"rb") as f:
-  lines = f.read()
-  
+with open(logfile,"r") as f:
+  lines = f.read().split("\n")
+
+lines = list(filter(None, lines))
+
+# parse dt
 last_line_entries = lines[-1].split(";")
+print("last_line_entries: {}".format(last_line_entries))
 dt = (float)(last_line_entries[37])
 print("parsed dt: {}".format(dt))
 
@@ -92,11 +96,11 @@ if entries:
 
   # read last velocity
   last_velocity = -1
-  with open("../last_velocity","rb") as f:
+  with open("../last_velocity","r") as f:
     last_velocity = (float)(f.read())
 
   # store last velocity
-  with open("../last_velocity","wb") as f:
+  with open("../last_velocity","w") as f:
     f.write(velocity)
 
   if last_velocity >= 0:
@@ -107,10 +111,10 @@ if entries:
     if difference < 1e-6:
       with open("../resulting_dt","a") as f:
         f.write("{};{};{};{};{}".format(scenario_name,n_points/fiber_length_cm,velocity,difference,dt))
-      exit(1)  # 1 means converged
+      exit(0)  # 0 means converged
 
 else:
   print("{}, nodes/cm: {}, no stimulus".format(scenario_name,  n_points/fiber_length_cm))
   
 
-exit(0)
+exit(-1)
