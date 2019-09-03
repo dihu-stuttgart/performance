@@ -27,10 +27,11 @@ firing_times_file = "MU_firing_times.txt"
 
 # timing parameters
 stimulation_frequency = 1000*1e-3    # sampling frequency of stimuli in firing_times_file, in stimulations per ms, number before 1e-3 factor is in Hertz.
+stimulation_duration = 0.05           # width of the stimulus
 dt_1D = 4e-3                      # timestep width of diffusion
 dt_0D = 2e-3                      # timestep width of ODEs
 dt_splitting = 4e-3                      # overall timestep width of splitting
-output_timestep = 1e0             # timestep for output files
+output_timestep = 1e-1             # timestep for output files
 n_nodes_per_fiber_per_cm = 1000             # number of nodes per fiber
 n_fibers = 10
 
@@ -81,7 +82,7 @@ while surplus > n_fibers:
 if rank_no == 0:
   print("scenario_name: {}".format(scenario_name))
   print("n_processes_per_fiber: {}, n_fibers: {}, n_nodes_per_fiber_per_cm: {}".format(n_processes_per_fiber, n_fibers, n_nodes_per_fiber_per_cm))
-  print("dt_1D: {}".format(dt_1D))
+  print("dt_0D: {}, dt_1D: {}, dt_splitting: {}".format(dt_0D, dt_1D, dt_splitting), flush=True)
 
 #print("rank: {}/{}".format(rank_no,n_ranks))
    
@@ -143,7 +144,10 @@ def set_specific_states(n_nodes_global, time_step_no, current_time, states, fibe
     if innervation_node_global < n_nodes_global-1:
       nodes_to_stimulate_global.append(innervation_node_global+1)
     if rank_no == 0:
-      print("t: {}, stimulate fiber {} at nodes {}".format(current_time, fiber_no, nodes_to_stimulate_global))
+      cond=(current_time / stimulation_frequency) - (int)(current_time / stimulation_frequency) <= dt_0D
+      #print("cond: {}, {} <= {}".format((current_time / stimulation_frequency) - (int)(current_time / stimulation_frequency) <= dt_0D, (current_time / stimulation_frequency) - (int)(current_time / stimulation_frequency), dt_0D))
+      if cond:
+        print("t: {}, stimulate fiber {} at nodes {}, {}, dt_0D: {}".format(current_time, fiber_no, nodes_to_stimulate_global, (current_time / stimulation_frequency) - (int)(current_time / stimulation_frequency), dt_0D ), flush=True)
 
     for node_no_global in nodes_to_stimulate_global:
       states[(node_no_global,0,0)] = activation_value_vm   # key: ((x,y,z),nodal_dof_index,state_no)
@@ -171,8 +175,8 @@ def set_specific_parameters(n_nodes_global, time_step_no, current_time, paramete
   # stimulation value
   if is_fiber_gets_stimulated:
     stimulation_current = 10*nodal_stimulation_current
-    if rank_no == 0:
-      print("t: {}, stimulate fiber {} at nodes {}".format(current_time, fiber_no, nodes_to_stimulate_global))
+    if rank_no == 0 and (current_time / stimulation_frequency) - (int)(current_time / stimulation_frequency) < 1e-12:
+      print("t: {}, stimulate fiber {} at nodes {}, {}".format(current_time, fiber_no, nodes_to_stimulate_global, (current_time / stimulation_frequency) - (int)(current_time / stimulation_frequency) ))
 
   else:
     stimulation_current = 0.
@@ -213,10 +217,11 @@ def get_instance_config(i):
       "timeStepWidth": dt_splitting,  # 1e-1
       "logTimeStepWidthAsKey": "dt_splitting",
       "durationLogKey": "duration_total",
-      "timeStepOutputInterval" : 100,
+      "timeStepOutputInterval" : 10000,
       "endTime": end_time,
       "outputData1": False,
       "outputData2": True,
+      "transferSlotName": "states",   #states or intermediates
 
       "Term1": {      # CellML
         "Heun" : {
@@ -224,7 +229,7 @@ def get_instance_config(i):
           "logTimeStepWidthAsKey": "dt_0D",
           "durationLogKey": "duration_0D",
           "initialValues": [],
-          "timeStepOutputInterval": 1e4,
+          "timeStepOutputInterval": 1e5,
           "inputMeshIsGlobal": True,
           "dirichletBoundaryConditions": {},
           
@@ -242,10 +247,11 @@ def get_instance_config(i):
             "additionalArgument": i,
             "setSpecificStatesCallInterval":          0,                                    # 0 means disabled
             "setSpecificStatesCallFrequency":         stimulation_frequency,                # set_specific_states should be called stimulation_frequency times per ms, the factor 2 is needed because every Heun step includes two calls to rhs
-            "setSpecificStatesRepeatAfterFirstCall":  0.03,                                 # simulation time span for which the setSpecificStates callback will be called after a call was triggered
+            "setSpecificStatesRepeatAfterFirstCall":  stimulation_duration,                                 # simulation time span for which the setSpecificStates callback will be called after a call was triggered
             
             
             "outputStateIndex": 0,     # state 0 = Vm, rate 28 = gamma
+            "outputIntermediateIndex": 0,   # not needed, because intermediates are not passed on (transferSlotName != intermediates)
             "parametersUsedAsIntermediate": parameters_used_as_intermediate,  #[32],       # list of intermediate value indices, that will be set by parameters. Explicitely defined parameters that will be copied to intermediates, this vector contains the indices of the algebraic array. This is ignored if the input is generated from OpenCMISS generated c code.
             "parametersUsedAsConstant": parameters_used_as_constant,          #[65],           # list of constant value indices, that will be set by parameters. This is ignored if the input is generated from OpenCMISS generated c code.
             "parametersInitialValues": parameters_initial_values,            #[0.0, 1.0],      # initial values for the parameters: I_Stim, l_hs
@@ -261,7 +267,30 @@ def get_instance_config(i):
           "timeStepWidth": dt_1D,  # 1e-5
           "logTimeStepWidthAsKey": "dt_1D",
           "durationLogKey": "duration_1D",
-          "timeStepOutputInterval": 1e4,
+          "timeStepOutputInterval": 1e5,
+          "dirichletBoundaryConditions": bc,
+          "inputMeshIsGlobal": True,
+          "solverName": "implicitSolver",
+          "FiniteElementMethod" : {
+            "solverName": "implicitSolver",
+            "inputMeshIsGlobal": True,
+            "meshName": "MeshFiber_{}".format(i),
+            "prefactor": Conductivity/(Am*Cm),
+          },
+          "OutputWriter" : [
+            {"format": "Paraview", "outputInterval": (int)(1./dt_1D*output_timestep), "filename": "out/fibre_"+str(i), "binary": True, "fixedFormat": False, "combineFiles":False},
+            #{"format": "Paraview", "outputInterval": 1./dt_1D*output_timestep, "filename": "out/fibre_"+str(i)+"_txt", "binary": False, "fixedFormat": False},
+            #{"format": "ExFile", "filename": "out/fibre_"+str(i), "outputInterval": 1./dt_1D*output_timestep, "sphereSize": "0.02*0.02*0.02"},
+            {"format": "PythonFile", "filename": "out/fibre_"+str(i), "outputInterval": int(1./dt_1D*output_timestep), "binary":True, "onlyNodalValues":True, "combineFiles":False},
+          ]
+        },
+        "ImplicitEuler" : {
+          "initialValues": [],
+          #"numberTimeSteps": 1,
+          "timeStepWidth": dt_1D,  # 1e-5
+          "logTimeStepWidthAsKey": "dt_1D",
+          "durationLogKey": "duration_1D",
+          "timeStepOutputInterval": 1e5,
           "dirichletBoundaryConditions": bc,
           "inputMeshIsGlobal": True,
           "solverName": "implicitSolver",
@@ -303,6 +332,8 @@ config = {
       "relativeTolerance": 1e-10,
       "solverType": solver_type,
       "preconditionerType": "none",
+      "dumpFormat": "default",
+      "dumpFilename": "",    # no filename disables data dump
     }
   },
   "MultipleInstances": {

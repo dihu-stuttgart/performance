@@ -18,9 +18,10 @@ cd $cwd
 
 # hodgkin huxley model
 rm -rf out
-./cuboid_hodgkin_huxley_cn ../settings_cuboid.py 1 1 $n_nodes $dt hodgkin_huxley_crank_nicolson | tee -a out.txt
+./cuboid_hodgkin_huxley_ie ../settings_cuboid.py 1 1 $n_nodes $dt hodgkin_huxley_implicit_euler | tee -a out.txt
 cd out
-python3 ../../evaluate.py hodgkin_huxley_crank_nicolson && break # break if evaluate is 1
+python3 ../../evaluate.py hodgkin_huxley_implicit_euler && break # break if evaluate has exit code 0
+echo "no break"
 
 done
 done

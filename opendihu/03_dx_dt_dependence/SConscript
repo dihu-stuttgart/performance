@@ -8,8 +8,10 @@
 Import('env')     # import Environment object from calling SConstruct
 
 testcases = [
-  "cuboid_hodgkin_huxley",
-  "cuboid_shorten"
+  "cuboid_hodgkin_huxley_cn",
+  "cuboid_shorten_cn",
+  "cuboid_hodgkin_huxley_ie",
+  "cuboid_shorten_ie",
 ]
 
 for testcase in testcases:

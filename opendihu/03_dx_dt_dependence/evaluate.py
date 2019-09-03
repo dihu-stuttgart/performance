@@ -14,7 +14,7 @@ import py_reader    # reader utility for opendihu *.py files
 import pprint 
 pp = pprint.PrettyPrinter()
 
-max_threshold = 30.0
+max_threshold = 25.0
 
 scenario_name = ""
 if len(sys.argv) > 1:
@@ -31,7 +31,7 @@ lines = list(filter(None, lines))
 
 # parse dt
 last_line_entries = lines[-1].split(";")
-print("last_line_entries: {}".format(last_line_entries))
+#print("last_line_entries: {}".format(last_line_entries))
 dt = (float)(last_line_entries[37])
 print("parsed dt: {}".format(dt))
 
@@ -49,6 +49,7 @@ for file in files:
     py_files.append(file)
 
 # load all files
+#print("files: {}".format(py_files))
 data = py_reader.load_data(py_files)
 
 entries = []
@@ -57,7 +58,7 @@ n_points = 0
 # loop over data files and output in readable formatting
 for dataset in data:
   current_time = dataset["currentTime"]
-  if current_time < 9:
+  if current_time < 1.0:
     continue
   
   solution = py_reader.get_values(dataset, "solution", "0")
@@ -91,30 +92,34 @@ if entries:
   # write to file
   # scenario_name; n elements per cm; propagation velocity in elements per ms
   with open("../result.csv","a") as f:
-    f.write("{};{};{}\n".format(scenario_name,n_points/fiber_length_cm,velocity))
+    f.write("{};{};{};{}\n".format(scenario_name,n_points/fiber_length_cm,velocity,dt))
     #pp.pprint(dataset)
 
   # read last velocity
   last_velocity = -1
-  with open("../last_velocity","r") as f:
-    last_velocity = (float)(f.read())
+  try:
+    with open("../last_velocity","r") as f:
+      last_velocity = (float)(f.read())
+  except:
+    print("could not open last_velocity file")
 
   # store last velocity
   with open("../last_velocity","w") as f:
-    f.write(velocity)
+    f.write(str(velocity))
 
   if last_velocity >= 0:
-    difference = fabs(velocity - last_velocity)
-    print("last_velocity: {}, current_velocity: {}, difference: {}".format(last_velocity, velocity, difference))
+    difference = abs(velocity - last_velocity)
+    print("dt: {}, last_velocity: {}, current_velocity: {}, difference: {}".format(dt, last_velocity, velocity, difference))
     
     # scenario_name; n elements per cm; propagation velocity in cm/ms; convergence error; dt
-    if difference < 1e-6:
+    if difference < 1e-3:
       with open("../resulting_dt","a") as f:
-        f.write("{};{};{};{};{}".format(scenario_name,n_points/fiber_length_cm,velocity,difference,dt))
+        f.write("{};{};{};{};{}\n".format(scenario_name,n_points/fiber_length_cm,velocity,difference,dt))
+      print("error is small enough, done with scenario {}!\n\n".format(scenario_name))
       exit(0)  # 0 means converged
 
 else:
-  print("{}, nodes/cm: {}, no stimulus".format(scenario_name,  n_points/fiber_length_cm))
+  print("dt: {}, {}, nodes/cm: {}, no stimulus".format(dt, scenario_name, n_points/fiber_length_cm))
   
-
+print("no convergence")
 exit(-1)
