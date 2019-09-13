@@ -37,14 +37,14 @@ extern void NR_MINIMISE(double(*func)(double VOI, double *C, double *R, double *
 
 
 
-/* This function was created by opendihu at 2019/8/26 17:37:05.
- * It is designed for 80 instances of the CellML problem. */
+/* This function was created by opendihu at 2019/9/13 01:57:27.
+ * It is designed for 3840 instances of the CellML problem. */
 void computeCellMLRightHandSide(void *context, double t, double *states, double *rates, double *intermediates, double *parameters)
 {
   double VOI = t;   /* current simulation time */
 
 double DUMMY_ASSIGNMENT;
-double CONSTANTS[110], ALGEBRAIC[5600];
+double CONSTANTS[110], ALGEBRAIC[268800];
 
 /* Constant C_m */
 CONSTANTS[0] = 0.58;
@@ -389,1152 +389,1152 @@ CONSTANTS[109] =  0.990000*CONSTANTS[105];
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2320+i] = (((( ( CONSTANTS[103]*(states[1440+i]+states[1520+i]+states[1600+i]+states[1680+i]+states[1760+i]))*((states[2400+i] - states[2320+i])/CONSTANTS[106]) -  CONSTANTS[60]*((states[2320+i]/(states[2320+i]+CONSTANTS[61]))/CONSTANTS[106]))+ CONSTANTS[62]*((states[2400+i] - states[2320+i])/CONSTANTS[106]))+ - CONSTANTS[63]*((states[2320+i] - states[2480+i])/CONSTANTS[106]))+- ( ( CONSTANTS[70]*states[2320+i])*((CONSTANTS[72]+- states[2720+i])+- states[2880+i])+ - CONSTANTS[71]*states[2720+i]))+- ( ( CONSTANTS[78]*states[2320+i])*states[3520+i]+ - CONSTANTS[79]*states[3200+i]);
+    rates[111360+i] = (((( ( CONSTANTS[103]*(states[69120+i]+states[72960+i]+states[76800+i]+states[80640+i]+states[84480+i]))*((states[115200+i] - states[111360+i])/CONSTANTS[106]) -  CONSTANTS[60]*((states[111360+i]/(states[111360+i]+CONSTANTS[61]))/CONSTANTS[106]))+ CONSTANTS[62]*((states[115200+i] - states[111360+i])/CONSTANTS[106]))+ - CONSTANTS[63]*((states[111360+i] - states[119040+i])/CONSTANTS[106]))+- ( ( CONSTANTS[70]*states[111360+i])*((CONSTANTS[72]+- states[130560+i])+- states[138240+i])+ - CONSTANTS[71]*states[130560+i]))+- ( ( CONSTANTS[78]*states[111360+i])*states[168960+i]+ - CONSTANTS[79]*states[153600+i]);
   }
 /* dCaSR1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2400+i] = ((( - ( CONSTANTS[103]*(states[1440+i]+states[1520+i]+states[1600+i]+states[1680+i]+states[1760+i]))*((states[2400+i] - states[2320+i])/CONSTANTS[108])+ CONSTANTS[60]*((states[2320+i]/(states[2320+i]+CONSTANTS[61]))/CONSTANTS[108]))+ - CONSTANTS[62]*((states[2400+i] - states[2320+i])/CONSTANTS[108]))+ - CONSTANTS[64]*((states[2400+i] - states[2560+i])/CONSTANTS[108]))+- ( ( CONSTANTS[75]*states[2400+i])*(CONSTANTS[77] - states[3040+i])+ - CONSTANTS[76]*states[3040+i]);
+    rates[115200+i] = ((( - ( CONSTANTS[103]*(states[69120+i]+states[72960+i]+states[76800+i]+states[80640+i]+states[84480+i]))*((states[115200+i] - states[111360+i])/CONSTANTS[108])+ CONSTANTS[60]*((states[111360+i]/(states[111360+i]+CONSTANTS[61]))/CONSTANTS[108]))+ - CONSTANTS[62]*((states[115200+i] - states[111360+i])/CONSTANTS[108]))+ - CONSTANTS[64]*((states[115200+i] - states[122880+i])/CONSTANTS[108]))+- ( ( CONSTANTS[75]*states[115200+i])*(CONSTANTS[77] - states[145920+i])+ - CONSTANTS[76]*states[145920+i]);
   }
 /* dCa_SR2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2560+i] = ((( CONSTANTS[60]*((states[2480+i]/(states[2480+i]+CONSTANTS[61]))/CONSTANTS[109])+ - CONSTANTS[62]*((states[2560+i]+- states[2480+i])/CONSTANTS[109]))+ CONSTANTS[64]*((states[2400+i]+- states[2560+i])/CONSTANTS[109]))+- ( ( CONSTANTS[75]*states[2560+i])*(CONSTANTS[77]+- states[3120+i])+ - CONSTANTS[76]*states[3120+i])) -  (1000.00/1.00000)*( CONSTANTS[95]*( states[4400+i]*(0.00100000/1.00000)*states[2560+i] - CONSTANTS[97])*( states[4400+i]*(0.00100000/1.00000)*states[2560+i] - CONSTANTS[97]>0.00000 ? 1.00000 : 0.00000)*(0.00100000/1.00000)*states[4400+i]*states[2560+i] -  CONSTANTS[96]*states[4480+i]*(CONSTANTS[97] -  states[4400+i]*(0.00100000/1.00000)*states[2560+i])*(CONSTANTS[97] -  states[4400+i]*(0.00100000/1.00000)*states[2560+i]>0.00000 ? 1.00000 : 0.00000));
+    rates[122880+i] = ((( CONSTANTS[60]*((states[119040+i]/(states[119040+i]+CONSTANTS[61]))/CONSTANTS[109])+ - CONSTANTS[62]*((states[122880+i]+- states[119040+i])/CONSTANTS[109]))+ CONSTANTS[64]*((states[115200+i]+- states[122880+i])/CONSTANTS[109]))+- ( ( CONSTANTS[75]*states[122880+i])*(CONSTANTS[77]+- states[149760+i])+ - CONSTANTS[76]*states[149760+i])) -  (1000.00/1.00000)*( CONSTANTS[95]*( states[211200+i]*(0.00100000/1.00000)*states[122880+i] - CONSTANTS[97])*( states[211200+i]*(0.00100000/1.00000)*states[122880+i] - CONSTANTS[97]>0.00000 ? 1.00000 : 0.00000)*(0.00100000/1.00000)*states[211200+i]*states[122880+i] -  CONSTANTS[96]*states[215040+i]*(CONSTANTS[97] -  states[211200+i]*(0.00100000/1.00000)*states[122880+i])*(CONSTANTS[97] -  states[211200+i]*(0.00100000/1.00000)*states[122880+i]>0.00000 ? 1.00000 : 0.00000));
   }
 /* dCa_P1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2720+i] =  ( CONSTANTS[70]*states[2320+i])*((CONSTANTS[72]+- states[2720+i])+- states[2880+i])+ - CONSTANTS[71]*states[2720+i];
+    rates[130560+i] =  ( CONSTANTS[70]*states[111360+i])*((CONSTANTS[72]+- states[130560+i])+- states[138240+i])+ - CONSTANTS[71]*states[130560+i];
   }
 /* dCa_P2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2800+i] =  ( CONSTANTS[70]*states[2480+i])*((CONSTANTS[72]+- states[2800+i])+- states[2960+i])+ - CONSTANTS[71]*states[2800+i];
+    rates[134400+i] =  ( CONSTANTS[70]*states[119040+i])*((CONSTANTS[72]+- states[134400+i])+- states[142080+i])+ - CONSTANTS[71]*states[134400+i];
   }
 /* dMg_P1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2880+i] =  ( CONSTANTS[73]*(CONSTANTS[72]+- states[2720+i]+- states[2880+i]))*states[3680+i]+ - CONSTANTS[74]*states[2880+i];
+    rates[138240+i] =  ( CONSTANTS[73]*(CONSTANTS[72]+- states[130560+i]+- states[138240+i]))*states[176640+i]+ - CONSTANTS[74]*states[138240+i];
   }
 /* dMP2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2960+i] =  ( CONSTANTS[73]*(CONSTANTS[72]+- states[2800+i]+- states[2960+i]))*states[3760+i]+ - CONSTANTS[74]*states[2960+i];
+    rates[142080+i] =  ( CONSTANTS[73]*(CONSTANTS[72]+- states[134400+i]+- states[142080+i]))*states[180480+i]+ - CONSTANTS[74]*states[142080+i];
   }
 /* dCa_Cs1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[3040+i] =  ( CONSTANTS[75]*states[2400+i])*(CONSTANTS[77]+- states[3040+i])+ - CONSTANTS[76]*states[3040+i];
+    rates[145920+i] =  ( CONSTANTS[75]*states[115200+i])*(CONSTANTS[77]+- states[145920+i])+ - CONSTANTS[76]*states[145920+i];
   }
 /* dCs_Cs2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[3120+i] =  ( CONSTANTS[75]*states[2560+i])*(CONSTANTS[77]+- states[3120+i])+ - CONSTANTS[76]*states[3120+i];
+    rates[149760+i] =  ( CONSTANTS[75]*states[122880+i])*(CONSTANTS[77]+- states[149760+i])+ - CONSTANTS[76]*states[149760+i];
   }
 /* dCa_ATP1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[3200+i] = ( ( CONSTANTS[78]*states[2320+i])*states[3520+i]+ - CONSTANTS[79]*states[3200+i])+ - CONSTANTS[82]*((states[3200+i]+- states[3280+i])/CONSTANTS[106]);
+    rates[153600+i] = ( ( CONSTANTS[78]*states[111360+i])*states[168960+i]+ - CONSTANTS[79]*states[153600+i])+ - CONSTANTS[82]*((states[153600+i]+- states[157440+i])/CONSTANTS[106]);
   }
 /* dCa_ATP2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[3280+i] = ( ( CONSTANTS[78]*states[2480+i])*states[3600+i]+ - CONSTANTS[79]*states[3280+i])+ CONSTANTS[82]*((states[3200+i]+- states[3280+i])/CONSTANTS[107]);
+    rates[157440+i] = ( ( CONSTANTS[78]*states[119040+i])*states[172800+i]+ - CONSTANTS[79]*states[157440+i])+ CONSTANTS[82]*((states[153600+i]+- states[157440+i])/CONSTANTS[107]);
   }
 /* dMg_ATP1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[3360+i] = ( ( CONSTANTS[80]*states[3680+i])*states[3520+i]+ - CONSTANTS[81]*states[3360+i])+ - CONSTANTS[82]*((states[3360+i]+- states[3440+i])/CONSTANTS[106]);
+    rates[161280+i] = ( ( CONSTANTS[80]*states[176640+i])*states[168960+i]+ - CONSTANTS[81]*states[161280+i])+ - CONSTANTS[82]*((states[161280+i]+- states[165120+i])/CONSTANTS[106]);
   }
 /* dMg_ATP2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[3440+i] = ( ( CONSTANTS[80]*states[3760+i])*states[3600+i]+ - CONSTANTS[81]*states[3440+i])+ CONSTANTS[82]*((states[3360+i]+- states[3440+i])/CONSTANTS[107]);
+    rates[165120+i] = ( ( CONSTANTS[80]*states[180480+i])*states[172800+i]+ - CONSTANTS[81]*states[165120+i])+ CONSTANTS[82]*((states[161280+i]+- states[165120+i])/CONSTANTS[107]);
   }
 /* dATP1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[3520+i] = (- ( ( CONSTANTS[78]*states[2320+i])*states[3520+i]+ - CONSTANTS[79]*states[3200+i])+- ( ( CONSTANTS[80]*states[3680+i])*states[3520+i]+ - CONSTANTS[81]*states[3360+i]))+ - CONSTANTS[82]*((states[3520+i]+- states[3600+i])/CONSTANTS[106]);
+    rates[168960+i] = (- ( ( CONSTANTS[78]*states[111360+i])*states[168960+i]+ - CONSTANTS[79]*states[153600+i])+- ( ( CONSTANTS[80]*states[176640+i])*states[168960+i]+ - CONSTANTS[81]*states[161280+i]))+ - CONSTANTS[82]*((states[168960+i]+- states[172800+i])/CONSTANTS[106]);
   }
 /* dATP2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[3600+i] = (- ( ( CONSTANTS[78]*states[2480+i])*states[3600+i]+ - CONSTANTS[79]*states[3280+i])+- ( ( CONSTANTS[80]*states[3760+i])*states[3600+i]+ - CONSTANTS[81]*states[3440+i]))+ CONSTANTS[82]*((states[3520+i]+- states[3600+i])/CONSTANTS[107]);
+    rates[172800+i] = (- ( ( CONSTANTS[78]*states[119040+i])*states[172800+i]+ - CONSTANTS[79]*states[157440+i])+- ( ( CONSTANTS[80]*states[180480+i])*states[172800+i]+ - CONSTANTS[81]*states[165120+i]))+ CONSTANTS[82]*((states[168960+i]+- states[172800+i])/CONSTANTS[107]);
   }
 /* dMg1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[3680+i] = (- ( ( CONSTANTS[73]*(CONSTANTS[72]+- states[2720+i]+- states[2880+i]))*states[3680+i]+ - CONSTANTS[74]*states[2880+i])+- ( ( CONSTANTS[80]*states[3680+i])*states[3520+i]+ - CONSTANTS[81]*states[3360+i]))+ - CONSTANTS[83]*((states[3680+i]+- states[3760+i])/CONSTANTS[106]);
+    rates[176640+i] = (- ( ( CONSTANTS[73]*(CONSTANTS[72]+- states[130560+i]+- states[138240+i]))*states[176640+i]+ - CONSTANTS[74]*states[138240+i])+- ( ( CONSTANTS[80]*states[176640+i])*states[168960+i]+ - CONSTANTS[81]*states[161280+i]))+ - CONSTANTS[83]*((states[176640+i]+- states[180480+i])/CONSTANTS[106]);
   }
 /* dMg2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[3760+i] = (- ( ( CONSTANTS[73]*(CONSTANTS[72]+- states[2800+i]+- states[2960+i]))*states[3760+i]+ - CONSTANTS[74]*states[2960+i])+- ( ( CONSTANTS[80]*states[3760+i])*states[3600+i]+ - CONSTANTS[81]*states[3440+i]))+ CONSTANTS[83]*((states[3680+i]+- states[3760+i])/CONSTANTS[107]);
+    rates[180480+i] = (- ( ( CONSTANTS[73]*(CONSTANTS[72]+- states[134400+i]+- states[142080+i]))*states[180480+i]+ - CONSTANTS[74]*states[142080+i])+- ( ( CONSTANTS[80]*states[180480+i])*states[172800+i]+ - CONSTANTS[81]*states[165120+i]))+ CONSTANTS[83]*((states[176640+i]+- states[180480+i])/CONSTANTS[107]);
   }
 /* dCa_CaT2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[3840+i] = (( ( CONSTANTS[67]*states[2480+i])*states[2640+i]+ - CONSTANTS[68]*states[3840+i])+ - CONSTANTS[86]*states[3840+i])+ CONSTANTS[87]*states[4080+i];
+    rates[184320+i] = (( ( CONSTANTS[67]*states[119040+i])*states[126720+i]+ - CONSTANTS[68]*states[184320+i])+ - CONSTANTS[86]*states[184320+i])+ CONSTANTS[87]*states[195840+i];
   }
 /* dD_1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[4000+i] = (((( CONSTANTS[67]*states[2480+i]*states[3920+i]+ - CONSTANTS[68]*states[4000+i])+ CONSTANTS[84]*states[2640+i])+ - CONSTANTS[85]*states[4000+i])+ ( - CONSTANTS[67]*states[2480+i])*states[4000+i])+ CONSTANTS[68]*states[4080+i];
+    rates[192000+i] = (((( CONSTANTS[67]*states[119040+i]*states[188160+i]+ - CONSTANTS[68]*states[192000+i])+ CONSTANTS[84]*states[126720+i])+ - CONSTANTS[85]*states[192000+i])+ ( - CONSTANTS[67]*states[119040+i])*states[192000+i])+ CONSTANTS[68]*states[195840+i];
   }
 /* dD_2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[4080+i] = ((((( CONSTANTS[67]*states[2480+i]*states[4000+i]+ - CONSTANTS[68]*states[4080+i])+ CONSTANTS[86]*states[3840+i])+ - CONSTANTS[87]*states[4080+i])+ - CONSTANTS[88]*states[4080+i])+ CONSTANTS[89]*states[4160+i])+ CONSTANTS[92]*states[4240+i];
+    rates[195840+i] = ((((( CONSTANTS[67]*states[119040+i]*states[192000+i]+ - CONSTANTS[68]*states[195840+i])+ CONSTANTS[86]*states[184320+i])+ - CONSTANTS[87]*states[195840+i])+ - CONSTANTS[88]*states[195840+i])+ CONSTANTS[89]*states[199680+i])+ CONSTANTS[92]*states[203520+i];
   }
 /* dA_1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[4160+i] = (( CONSTANTS[88]*states[4080+i]+ - CONSTANTS[89]*states[4160+i])+ CONSTANTS[91]*states[4240+i])+ - CONSTANTS[90]*states[4160+i];
+    rates[199680+i] = (( CONSTANTS[88]*states[195840+i]+ - CONSTANTS[89]*states[199680+i])+ CONSTANTS[91]*states[203520+i])+ - CONSTANTS[90]*states[199680+i];
   }
 /* dA_2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[4240+i] = ( - CONSTANTS[91]*states[4240+i]+ CONSTANTS[90]*states[4160+i])+ - CONSTANTS[92]*states[4240+i];
+    rates[203520+i] = ( - CONSTANTS[91]*states[203520+i]+ CONSTANTS[90]*states[199680+i])+ - CONSTANTS[92]*states[203520+i];
   }
 /* dP_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[4320+i] =  (0.00100000/1.00000)*( CONSTANTS[90]*states[4160+i] -  CONSTANTS[91]*states[4240+i])+ -1.00000*CONSTANTS[93]*states[4320+i]+ -1.00000*CONSTANTS[94]*((states[4320+i] - states[4400+i])/CONSTANTS[107]);
+    rates[207360+i] =  (0.00100000/1.00000)*( CONSTANTS[90]*states[199680+i] -  CONSTANTS[91]*states[203520+i])+ -1.00000*CONSTANTS[93]*states[207360+i]+ -1.00000*CONSTANTS[94]*((states[207360+i] - states[211200+i])/CONSTANTS[107]);
   }
 /* dP_SR_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[4400+i] =  CONSTANTS[94]*((states[4320+i] - states[4400+i])/CONSTANTS[109]) -  1.00000*( CONSTANTS[95]*( states[4400+i]*(0.00100000/1.00000)*states[2560+i] - CONSTANTS[97])*( states[4400+i]*(0.00100000/1.00000)*states[2560+i] - CONSTANTS[97]>0.00000 ? 1.00000 : 0.00000)*(0.00100000/1.00000)*states[4400+i]*states[2560+i] -  CONSTANTS[96]*states[4480+i]*(CONSTANTS[97] -  states[4400+i]*(0.00100000/1.00000)*states[2560+i])*(CONSTANTS[97] -  states[4400+i]*(0.00100000/1.00000)*states[2560+i]>0.00000 ? 1.00000 : 0.00000));
+    rates[211200+i] =  CONSTANTS[94]*((states[207360+i] - states[211200+i])/CONSTANTS[109]) -  1.00000*( CONSTANTS[95]*( states[211200+i]*(0.00100000/1.00000)*states[122880+i] - CONSTANTS[97])*( states[211200+i]*(0.00100000/1.00000)*states[122880+i] - CONSTANTS[97]>0.00000 ? 1.00000 : 0.00000)*(0.00100000/1.00000)*states[211200+i]*states[122880+i] -  CONSTANTS[96]*states[215040+i]*(CONSTANTS[97] -  states[211200+i]*(0.00100000/1.00000)*states[122880+i])*(CONSTANTS[97] -  states[211200+i]*(0.00100000/1.00000)*states[122880+i]>0.00000 ? 1.00000 : 0.00000));
   }
 /* dP_C_SR_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[4480+i] =  1.00000*( CONSTANTS[95]*( states[4400+i]*(0.00100000/1.00000)*states[2560+i] - CONSTANTS[97])*( states[4400+i]*(0.00100000/1.00000)*states[2560+i] - CONSTANTS[97]>0.00000 ? 1.00000 : 0.00000)*(0.00100000/1.00000)*states[4400+i]*states[2560+i] -  CONSTANTS[96]*states[4480+i]*(CONSTANTS[97] -  states[4400+i]*(0.00100000/1.00000)*states[2560+i])*(CONSTANTS[97] -  states[4400+i]*(0.00100000/1.00000)*states[2560+i]>0.00000 ? 1.00000 : 0.00000));
+    rates[215040+i] =  1.00000*( CONSTANTS[95]*( states[211200+i]*(0.00100000/1.00000)*states[122880+i] - CONSTANTS[97])*( states[211200+i]*(0.00100000/1.00000)*states[122880+i] - CONSTANTS[97]>0.00000 ? 1.00000 : 0.00000)*(0.00100000/1.00000)*states[211200+i]*states[122880+i] -  CONSTANTS[96]*states[215040+i]*(CONSTANTS[97] -  states[211200+i]*(0.00100000/1.00000)*states[122880+i])*(CONSTANTS[97] -  states[211200+i]*(0.00100000/1.00000)*states[122880+i]>0.00000 ? 1.00000 : 0.00000));
   }
 /* T_0_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[960+i] = (CONSTANTS[69]+- states[2640+i]+- states[3840+i]+- states[3920+i]+- states[4000+i]+- states[4080+i]+- states[4160+i]+- states[4240+i]>0.00000 ? CONSTANTS[69]+- states[2640+i]+- states[3840+i]+- states[3920+i]+- states[4000+i]+- states[4080+i]+- states[4160+i]+- states[4240+i] : 0.00000);
+    ALGEBRAIC[46080+i] = (CONSTANTS[69]+- states[126720+i]+- states[184320+i]+- states[188160+i]+- states[192000+i]+- states[195840+i]+- states[199680+i]+- states[203520+i]>0.00000 ? CONSTANTS[69]+- states[126720+i]+- states[184320+i]+- states[188160+i]+- states[192000+i]+- states[195840+i]+- states[199680+i]+- states[203520+i] : 0.00000);
   }
 /* dCa2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2480+i] = (((( - CONSTANTS[60]*((states[2480+i]/(states[2480+i]+CONSTANTS[61]))/CONSTANTS[107])+ CONSTANTS[62]*((states[2560+i]+- states[2480+i])/CONSTANTS[107]))+ CONSTANTS[63]*((states[2320+i] - states[2480+i])/CONSTANTS[107]))+- ((((((( CONSTANTS[67]*states[2480+i]*ALGEBRAIC[960+i]+ - CONSTANTS[68]*states[2640+i])+ CONSTANTS[67]*states[2480+i]*states[2640+i])+ - CONSTANTS[68]*states[3840+i])+ CONSTANTS[67]*states[2480+i]*states[3920+i])+ - CONSTANTS[68]*states[4000+i])+ CONSTANTS[67]*states[2480+i]*states[4000+i])+ - CONSTANTS[68]*states[4080+i]))+- ( ( CONSTANTS[70]*states[2480+i])*(CONSTANTS[72]+- states[2800+i]+- states[2960+i])+ - CONSTANTS[71]*states[2800+i]))+- ( ( CONSTANTS[78]*states[2480+i])*states[3600+i]+ - CONSTANTS[79]*states[3280+i]);
+    rates[119040+i] = (((( - CONSTANTS[60]*((states[119040+i]/(states[119040+i]+CONSTANTS[61]))/CONSTANTS[107])+ CONSTANTS[62]*((states[122880+i]+- states[119040+i])/CONSTANTS[107]))+ CONSTANTS[63]*((states[111360+i] - states[119040+i])/CONSTANTS[107]))+- ((((((( CONSTANTS[67]*states[119040+i]*ALGEBRAIC[46080+i]+ - CONSTANTS[68]*states[126720+i])+ CONSTANTS[67]*states[119040+i]*states[126720+i])+ - CONSTANTS[68]*states[184320+i])+ CONSTANTS[67]*states[119040+i]*states[188160+i])+ - CONSTANTS[68]*states[192000+i])+ CONSTANTS[67]*states[119040+i]*states[192000+i])+ - CONSTANTS[68]*states[195840+i]))+- ( ( CONSTANTS[70]*states[119040+i])*(CONSTANTS[72]+- states[134400+i]+- states[142080+i])+ - CONSTANTS[71]*states[134400+i]))+- ( ( CONSTANTS[78]*states[119040+i])*states[172800+i]+ - CONSTANTS[79]*states[157440+i]);
   }
 /* dCa_T_2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2640+i] = (((( ( CONSTANTS[67]*states[2480+i])*ALGEBRAIC[960+i]+ - CONSTANTS[68]*states[2640+i])+ ( - CONSTANTS[67]*states[2480+i])*states[2640+i])+ CONSTANTS[68]*states[3840+i])+ - CONSTANTS[84]*states[2640+i])+ CONSTANTS[85]*states[4000+i];
+    rates[126720+i] = (((( ( CONSTANTS[67]*states[119040+i])*ALGEBRAIC[46080+i]+ - CONSTANTS[68]*states[126720+i])+ ( - CONSTANTS[67]*states[119040+i])*states[126720+i])+ CONSTANTS[68]*states[184320+i])+ - CONSTANTS[84]*states[126720+i])+ CONSTANTS[85]*states[192000+i];
   }
 /* dD_0_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[3920+i] = (( ( - CONSTANTS[67]*states[2480+i])*states[3920+i]+ CONSTANTS[68]*states[4000+i])+ CONSTANTS[84]*ALGEBRAIC[960+i])+ - CONSTANTS[85]*states[3920+i];
+    rates[188160+i] = (( ( - CONSTANTS[67]*states[119040+i])*states[188160+i]+ CONSTANTS[68]*states[192000+i])+ CONSTANTS[84]*ALGEBRAIC[46080+i])+ - CONSTANTS[85]*states[188160+i];
   }
 /* stress_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    intermediates[0+i] =  ((( (states[4160+i]/CONSTANTS[69])*CONSTANTS[99]+ (states[4240+i]/CONSTANTS[69])*CONSTANTS[100]) - CONSTANTS[101])/CONSTANTS[102])*(parameters[80+i]>=0.635000&&parameters[80+i]<=0.850000 ?  (0.700000/(0.850000 - 0.635000))*(parameters[80+i] - 0.635000) : parameters[80+i]>0.850000&&parameters[80+i]<=1.17000 ? 0.700000+ (0.300000/(1.17000 - 0.850000))*(parameters[80+i] - 0.850000) : parameters[80+i]>1.17000&&parameters[80+i]<=1.25500 ? 1.00000 : parameters[80+i]>1.25500&&parameters[80+i]<=1.97000 ? 1.00000 -  (1.00000/(1.97000 - 1.25500))*(parameters[80+i] - 1.25500) : 0.00000);
+    intermediates[0+i] =  ((( (states[199680+i]/CONSTANTS[69])*CONSTANTS[99]+ (states[203520+i]/CONSTANTS[69])*CONSTANTS[100]) - CONSTANTS[101])/CONSTANTS[102])*(parameters[3840+i]>=0.635000&&parameters[3840+i]<=0.850000 ?  (0.700000/(0.850000 - 0.635000))*(parameters[3840+i] - 0.635000) : parameters[3840+i]>0.850000&&parameters[3840+i]<=1.17000 ? 0.700000+ (0.300000/(1.17000 - 0.850000))*(parameters[3840+i] - 0.850000) : parameters[3840+i]>1.17000&&parameters[3840+i]<=1.25500 ? 1.00000 : parameters[3840+i]>1.25500&&parameters[3840+i]<=1.97000 ? 1.00000 -  (1.00000/(1.97000 - 1.25500))*(parameters[3840+i] - 1.25500) : 0.00000);
   }
 /* dummy_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2240+i] = intermediates[0+i];
+    rates[107520+i] = intermediates[0+i];
   }
 /* alpha_n_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[80+i] =  CONSTANTS[16]*((states[0+i] - CONSTANTS[21])/(1.00000 - exp(- ((states[0+i] - CONSTANTS[21])/CONSTANTS[32]))));
+    ALGEBRAIC[3840+i] =  CONSTANTS[16]*((states[0+i] - CONSTANTS[21])/(1.00000 - exp(- ((states[0+i] - CONSTANTS[21])/CONSTANTS[32]))));
   }
 /* beta_n_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[1120+i] =  CONSTANTS[19]*exp(- ((states[0+i] - CONSTANTS[21])/CONSTANTS[34]));
+    ALGEBRAIC[53760+i] =  CONSTANTS[19]*exp(- ((states[0+i] - CONSTANTS[21])/CONSTANTS[34]));
   }
 /* dn_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[640+i] =  ALGEBRAIC[80+i]*(1.00000 - states[640+i]) -  ALGEBRAIC[1120+i]*states[640+i];
+    rates[30720+i] =  ALGEBRAIC[3840+i]*(1.00000 - states[30720+i]) -  ALGEBRAIC[53760+i]*states[30720+i];
   }
 /* h_K_inf_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[160+i] = 1.00000/(1.00000+exp((states[0+i] - CONSTANTS[25])/CONSTANTS[28]));
+    ALGEBRAIC[7680+i] = 1.00000/(1.00000+exp((states[0+i] - CONSTANTS[25])/CONSTANTS[28]));
   }
 /* tau_h_K_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[1200+i] =  1000.00*exp(- ((states[0+i]+40.0000)/25.7500));
+    ALGEBRAIC[57600+i] =  1000.00*exp(- ((states[0+i]+40.0000)/25.7500));
   }
 /* dh_K_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[720+i] = (ALGEBRAIC[160+i] - states[720+i])/ALGEBRAIC[1200+i];
+    rates[34560+i] = (ALGEBRAIC[7680+i] - states[34560+i])/ALGEBRAIC[57600+i];
   }
 /* alpha_m_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[320+i] =  CONSTANTS[15]*((states[0+i] - CONSTANTS[20])/(1.00000 - exp(- ((states[0+i] - CONSTANTS[20])/CONSTANTS[31]))));
+    ALGEBRAIC[15360+i] =  CONSTANTS[15]*((states[0+i] - CONSTANTS[20])/(1.00000 - exp(- ((states[0+i] - CONSTANTS[20])/CONSTANTS[31]))));
   }
 /* beta_m_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[1360+i] =  CONSTANTS[18]*exp(- ((states[0+i] - CONSTANTS[20])/CONSTANTS[33]));
+    ALGEBRAIC[65280+i] =  CONSTANTS[18]*exp(- ((states[0+i] - CONSTANTS[20])/CONSTANTS[33]));
   }
 /* dm_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[800+i] =  ALGEBRAIC[320+i]*(1.00000 - states[800+i]) -  ALGEBRAIC[1360+i]*states[800+i];
+    rates[38400+i] =  ALGEBRAIC[15360+i]*(1.00000 - states[38400+i]) -  ALGEBRAIC[65280+i]*states[38400+i];
   }
 /* alpha_h_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[240+i] =  CONSTANTS[14]*exp(- ((states[0+i] - CONSTANTS[22])/CONSTANTS[29]));
+    ALGEBRAIC[11520+i] =  CONSTANTS[14]*exp(- ((states[0+i] - CONSTANTS[22])/CONSTANTS[29]));
   }
 /* beta_h_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[1280+i] = CONSTANTS[17]/(1.00000+exp(- ((states[0+i] - CONSTANTS[22])/CONSTANTS[30])));
+    ALGEBRAIC[61440+i] = CONSTANTS[17]/(1.00000+exp(- ((states[0+i] - CONSTANTS[22])/CONSTANTS[30])));
   }
 /* dh_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[880+i] =  ALGEBRAIC[240+i]*(1.00000 - states[880+i]) -  ALGEBRAIC[1280+i]*states[880+i];
+    rates[42240+i] =  ALGEBRAIC[11520+i]*(1.00000 - states[42240+i]) -  ALGEBRAIC[61440+i]*states[42240+i];
   }
 /* S_inf_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[400+i] = 1.00000/(1.00000+exp((states[0+i] - CONSTANTS[24])/CONSTANTS[27]));
+    ALGEBRAIC[19200+i] = 1.00000/(1.00000+exp((states[0+i] - CONSTANTS[24])/CONSTANTS[27]));
   }
 /* tau_S_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[1440+i] = 8571.00/(0.200000+ 5.65000*pow((states[0+i]+CONSTANTS[48])/100.000, 2.00000));
+    ALGEBRAIC[69120+i] = 8571.00/(0.200000+ 5.65000*pow((states[0+i]+CONSTANTS[48])/100.000, 2.00000));
   }
 /* dS_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[960+i] = (ALGEBRAIC[400+i] - states[960+i])/ALGEBRAIC[1440+i];
+    rates[46080+i] = (ALGEBRAIC[19200+i] - states[46080+i])/ALGEBRAIC[69120+i];
   }
 /* alpha_n_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[480+i] =  CONSTANTS[16]*((states[80+i] - CONSTANTS[21])/(1.00000 - exp(- ((states[80+i] - CONSTANTS[21])/CONSTANTS[32]))));
+    ALGEBRAIC[23040+i] =  CONSTANTS[16]*((states[3840+i] - CONSTANTS[21])/(1.00000 - exp(- ((states[3840+i] - CONSTANTS[21])/CONSTANTS[32]))));
   }
 /* beta_n_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[1520+i] =  CONSTANTS[19]*exp(- ((states[80+i] - CONSTANTS[21])/CONSTANTS[34]));
+    ALGEBRAIC[72960+i] =  CONSTANTS[19]*exp(- ((states[3840+i] - CONSTANTS[21])/CONSTANTS[34]));
   }
 /* dn_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[1040+i] =  ALGEBRAIC[480+i]*(1.00000 - states[1040+i]) -  ALGEBRAIC[1520+i]*states[1040+i];
+    rates[49920+i] =  ALGEBRAIC[23040+i]*(1.00000 - states[49920+i]) -  ALGEBRAIC[72960+i]*states[49920+i];
   }
 /* h_K_inf_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[560+i] = 1.00000/(1.00000+exp((states[80+i] - CONSTANTS[25])/CONSTANTS[28]));
+    ALGEBRAIC[26880+i] = 1.00000/(1.00000+exp((states[3840+i] - CONSTANTS[25])/CONSTANTS[28]));
   }
 /* tau_h_K_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[1600+i] =  1.00000*exp(- ((states[80+i]+40.0000)/25.7500));
+    ALGEBRAIC[76800+i] =  1.00000*exp(- ((states[3840+i]+40.0000)/25.7500));
   }
 /* dh_K_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[1120+i] = (ALGEBRAIC[560+i] - states[1120+i])/ALGEBRAIC[1600+i];
+    rates[53760+i] = (ALGEBRAIC[26880+i] - states[53760+i])/ALGEBRAIC[76800+i];
   }
 /* alpha_m_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[720+i] =  CONSTANTS[15]*((states[80+i] - CONSTANTS[20])/(1.00000 - exp(- ((states[80+i] - CONSTANTS[20])/CONSTANTS[31]))));
+    ALGEBRAIC[34560+i] =  CONSTANTS[15]*((states[3840+i] - CONSTANTS[20])/(1.00000 - exp(- ((states[3840+i] - CONSTANTS[20])/CONSTANTS[31]))));
   }
 /* beta_m_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[1760+i] =  CONSTANTS[18]*exp(- ((states[80+i] - CONSTANTS[20])/CONSTANTS[33]));
+    ALGEBRAIC[84480+i] =  CONSTANTS[18]*exp(- ((states[3840+i] - CONSTANTS[20])/CONSTANTS[33]));
   }
 /* dm_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[1200+i] =  ALGEBRAIC[720+i]*(1.00000 - states[1200+i]) -  ALGEBRAIC[1760+i]*states[1200+i];
+    rates[57600+i] =  ALGEBRAIC[34560+i]*(1.00000 - states[57600+i]) -  ALGEBRAIC[84480+i]*states[57600+i];
   }
 /* alpha_h_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[640+i] =  CONSTANTS[14]*exp(- ((states[80+i] - CONSTANTS[22])/CONSTANTS[29]));
+    ALGEBRAIC[30720+i] =  CONSTANTS[14]*exp(- ((states[3840+i] - CONSTANTS[22])/CONSTANTS[29]));
   }
 /* beta_h_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[1680+i] = CONSTANTS[17]/(1.00000+exp(- ((states[80+i] - CONSTANTS[22])/CONSTANTS[30])));
+    ALGEBRAIC[80640+i] = CONSTANTS[17]/(1.00000+exp(- ((states[3840+i] - CONSTANTS[22])/CONSTANTS[30])));
   }
 /* dh_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[1280+i] =  ALGEBRAIC[640+i]*(1.00000 - states[1280+i]) -  ALGEBRAIC[1680+i]*states[1280+i];
+    rates[61440+i] =  ALGEBRAIC[30720+i]*(1.00000 - states[61440+i]) -  ALGEBRAIC[80640+i]*states[61440+i];
   }
 /* S_inf_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[800+i] = 1.00000/(1.00000+exp((states[80+i] - CONSTANTS[24])/CONSTANTS[27]));
+    ALGEBRAIC[38400+i] = 1.00000/(1.00000+exp((states[3840+i] - CONSTANTS[24])/CONSTANTS[27]));
   }
 /* tau_S_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[1840+i] = 8571.00/(0.200000+ 5.65000*pow((states[80+i]+CONSTANTS[48])/100.000, 2.00000));
+    ALGEBRAIC[88320+i] = 8571.00/(0.200000+ 5.65000*pow((states[3840+i]+CONSTANTS[48])/100.000, 2.00000));
   }
 /* dS_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[1360+i] = (ALGEBRAIC[800+i] - states[1360+i])/ALGEBRAIC[1840+i];
+    rates[65280+i] = (ALGEBRAIC[38400+i] - states[65280+i])/ALGEBRAIC[88320+i];
   }
 /* k_C_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[880+i] =  0.500000*CONSTANTS[57]*exp((states[80+i] - CONSTANTS[59])/( 8.00000*CONSTANTS[58]));
+    ALGEBRAIC[42240+i] =  0.500000*CONSTANTS[57]*exp((states[3840+i] - CONSTANTS[59])/( 8.00000*CONSTANTS[58]));
   }
 /* k_Cm_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[1920+i] =  0.500000*CONSTANTS[57]*exp((CONSTANTS[59] - states[80+i])/( 8.00000*CONSTANTS[58]));
+    ALGEBRAIC[92160+i] =  0.500000*CONSTANTS[57]*exp((CONSTANTS[59] - states[3840+i])/( 8.00000*CONSTANTS[58]));
   }
 /* dC_0_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[1840+i] =  - CONSTANTS[54]*states[1840+i]+ CONSTANTS[55]*states[1440+i]+ -4.00000*ALGEBRAIC[880+i]*states[1840+i]+ ALGEBRAIC[1920+i]*states[1920+i];
+    rates[88320+i] =  - CONSTANTS[54]*states[88320+i]+ CONSTANTS[55]*states[69120+i]+ -4.00000*ALGEBRAIC[42240+i]*states[88320+i]+ ALGEBRAIC[92160+i]*states[92160+i];
   }
 /* dO_0_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[1440+i] =  CONSTANTS[54]*states[1840+i]+ - CONSTANTS[55]*states[1440+i]+( -4.00000*ALGEBRAIC[880+i]*states[1440+i])/CONSTANTS[56]+ CONSTANTS[56]*ALGEBRAIC[1920+i]*states[1520+i];
+    rates[69120+i] =  CONSTANTS[54]*states[88320+i]+ - CONSTANTS[55]*states[69120+i]+( -4.00000*ALGEBRAIC[42240+i]*states[69120+i])/CONSTANTS[56]+ CONSTANTS[56]*ALGEBRAIC[92160+i]*states[72960+i];
   }
 /* dC_1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[1920+i] =  4.00000*ALGEBRAIC[880+i]*states[1840+i]+ - ALGEBRAIC[1920+i]*states[1920+i]+( - CONSTANTS[54]*states[1920+i])/CONSTANTS[56]+ CONSTANTS[56]*CONSTANTS[55]*states[1520+i]+ -3.00000*ALGEBRAIC[880+i]*states[1920+i]+ 2.00000*ALGEBRAIC[1920+i]*states[2000+i];
+    rates[92160+i] =  4.00000*ALGEBRAIC[42240+i]*states[88320+i]+ - ALGEBRAIC[92160+i]*states[92160+i]+( - CONSTANTS[54]*states[92160+i])/CONSTANTS[56]+ CONSTANTS[56]*CONSTANTS[55]*states[72960+i]+ -3.00000*ALGEBRAIC[42240+i]*states[92160+i]+ 2.00000*ALGEBRAIC[92160+i]*states[96000+i];
   }
 /* dO_1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[1520+i] = ( CONSTANTS[54]*states[1920+i])/CONSTANTS[56]+ - CONSTANTS[55]*CONSTANTS[56]*states[1520+i]+( 4.00000*ALGEBRAIC[880+i]*states[1440+i])/CONSTANTS[56]+ - CONSTANTS[56]*ALGEBRAIC[1920+i]*states[1520+i]+( -3.00000*ALGEBRAIC[880+i]*states[1520+i])/CONSTANTS[56]+ 2.00000*CONSTANTS[56]*ALGEBRAIC[1920+i]*states[1600+i];
+    rates[72960+i] = ( CONSTANTS[54]*states[92160+i])/CONSTANTS[56]+ - CONSTANTS[55]*CONSTANTS[56]*states[72960+i]+( 4.00000*ALGEBRAIC[42240+i]*states[69120+i])/CONSTANTS[56]+ - CONSTANTS[56]*ALGEBRAIC[92160+i]*states[72960+i]+( -3.00000*ALGEBRAIC[42240+i]*states[72960+i])/CONSTANTS[56]+ 2.00000*CONSTANTS[56]*ALGEBRAIC[92160+i]*states[76800+i];
   }
 /* dC_2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2000+i] =  3.00000*ALGEBRAIC[880+i]*states[1920+i]+ -2.00000*ALGEBRAIC[1920+i]*states[2000+i]+( - CONSTANTS[54]*states[2000+i])/pow(CONSTANTS[56], 2.00000)+ pow(CONSTANTS[56], 2.00000)*CONSTANTS[55]*states[1600+i]+ -2.00000*ALGEBRAIC[880+i]*states[2000+i]+ 3.00000*ALGEBRAIC[1920+i]*states[2080+i];
+    rates[96000+i] =  3.00000*ALGEBRAIC[42240+i]*states[92160+i]+ -2.00000*ALGEBRAIC[92160+i]*states[96000+i]+( - CONSTANTS[54]*states[96000+i])/pow(CONSTANTS[56], 2.00000)+ pow(CONSTANTS[56], 2.00000)*CONSTANTS[55]*states[76800+i]+ -2.00000*ALGEBRAIC[42240+i]*states[96000+i]+ 3.00000*ALGEBRAIC[92160+i]*states[99840+i];
   }
 /* dO_2_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[1600+i] = ( 3.00000*ALGEBRAIC[880+i]*states[1520+i])/CONSTANTS[56]+ -2.00000*CONSTANTS[56]*ALGEBRAIC[1920+i]*states[1600+i]+( CONSTANTS[54]*states[2000+i])/pow(CONSTANTS[56], 2.00000)+ - CONSTANTS[55]*pow(CONSTANTS[56], 2.00000)*states[1600+i]+( -2.00000*ALGEBRAIC[880+i]*states[1600+i])/CONSTANTS[56]+ 3.00000*CONSTANTS[56]*ALGEBRAIC[1920+i]*states[1680+i];
+    rates[76800+i] = ( 3.00000*ALGEBRAIC[42240+i]*states[72960+i])/CONSTANTS[56]+ -2.00000*CONSTANTS[56]*ALGEBRAIC[92160+i]*states[76800+i]+( CONSTANTS[54]*states[96000+i])/pow(CONSTANTS[56], 2.00000)+ - CONSTANTS[55]*pow(CONSTANTS[56], 2.00000)*states[76800+i]+( -2.00000*ALGEBRAIC[42240+i]*states[76800+i])/CONSTANTS[56]+ 3.00000*CONSTANTS[56]*ALGEBRAIC[92160+i]*states[80640+i];
   }
 /* dC_3_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2080+i] =  2.00000*ALGEBRAIC[880+i]*states[2000+i]+ -3.00000*ALGEBRAIC[1920+i]*states[2080+i]+( - CONSTANTS[54]*states[2080+i])/pow(CONSTANTS[56], 3.00000)+ CONSTANTS[55]*pow(CONSTANTS[56], 3.00000)*states[1680+i]+ - ALGEBRAIC[880+i]*states[2080+i]+ 4.00000*ALGEBRAIC[1920+i]*states[2160+i];
+    rates[99840+i] =  2.00000*ALGEBRAIC[42240+i]*states[96000+i]+ -3.00000*ALGEBRAIC[92160+i]*states[99840+i]+( - CONSTANTS[54]*states[99840+i])/pow(CONSTANTS[56], 3.00000)+ CONSTANTS[55]*pow(CONSTANTS[56], 3.00000)*states[80640+i]+ - ALGEBRAIC[42240+i]*states[99840+i]+ 4.00000*ALGEBRAIC[92160+i]*states[103680+i];
   }
 /* dO_3_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[1680+i] = ( CONSTANTS[54]*states[2080+i])/pow(CONSTANTS[56], 3.00000)+ - CONSTANTS[55]*pow(CONSTANTS[56], 3.00000)*states[1680+i]+( 2.00000*ALGEBRAIC[880+i]*states[1600+i])/CONSTANTS[56]+ -3.00000*ALGEBRAIC[1920+i]*CONSTANTS[56]*states[1680+i]+( - ALGEBRAIC[880+i]*states[1680+i])/CONSTANTS[56]+ 4.00000*CONSTANTS[56]*ALGEBRAIC[1920+i]*states[1760+i];
+    rates[80640+i] = ( CONSTANTS[54]*states[99840+i])/pow(CONSTANTS[56], 3.00000)+ - CONSTANTS[55]*pow(CONSTANTS[56], 3.00000)*states[80640+i]+( 2.00000*ALGEBRAIC[42240+i]*states[76800+i])/CONSTANTS[56]+ -3.00000*ALGEBRAIC[92160+i]*CONSTANTS[56]*states[80640+i]+( - ALGEBRAIC[42240+i]*states[80640+i])/CONSTANTS[56]+ 4.00000*CONSTANTS[56]*ALGEBRAIC[92160+i]*states[84480+i];
   }
 /* dC_4_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[2160+i] =  ALGEBRAIC[880+i]*states[2080+i]+ -4.00000*ALGEBRAIC[1920+i]*states[2160+i]+( - CONSTANTS[54]*states[2160+i])/pow(CONSTANTS[56], 4.00000)+ CONSTANTS[55]*pow(CONSTANTS[56], 4.00000)*states[1760+i];
+    rates[103680+i] =  ALGEBRAIC[42240+i]*states[99840+i]+ -4.00000*ALGEBRAIC[92160+i]*states[103680+i]+( - CONSTANTS[54]*states[103680+i])/pow(CONSTANTS[56], 4.00000)+ CONSTANTS[55]*pow(CONSTANTS[56], 4.00000)*states[84480+i];
   }
 /* dO_4_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[1760+i] = ( ALGEBRAIC[880+i]*states[1680+i])/CONSTANTS[56]+ -4.00000*CONSTANTS[56]*ALGEBRAIC[1920+i]*states[1760+i]+( CONSTANTS[54]*states[2160+i])/pow(CONSTANTS[56], 4.00000)+ - CONSTANTS[55]*pow(CONSTANTS[56], 4.00000)*states[1760+i];
+    rates[84480+i] = ( ALGEBRAIC[42240+i]*states[80640+i])/CONSTANTS[56]+ -4.00000*CONSTANTS[56]*ALGEBRAIC[92160+i]*states[84480+i]+( CONSTANTS[54]*states[103680+i])/pow(CONSTANTS[56], 4.00000)+ - CONSTANTS[55]*pow(CONSTANTS[56], 4.00000)*states[84480+i];
   }
 /* J_K_eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2400+i] =  states[0+i]*((states[240+i] -  states[320+i]*exp(( -1.00000*CONSTANTS[6]*states[0+i])/( CONSTANTS[35]*CONSTANTS[36])))/(1.00000 - exp(( -1.00000*CONSTANTS[6]*states[0+i])/( CONSTANTS[35]*CONSTANTS[36]))));
+    ALGEBRAIC[115200+i] =  states[0+i]*((states[11520+i] -  states[15360+i]*exp(( -1.00000*CONSTANTS[6]*states[0+i])/( CONSTANTS[35]*CONSTANTS[36])))/(1.00000 - exp(( -1.00000*CONSTANTS[6]*states[0+i])/( CONSTANTS[35]*CONSTANTS[36]))));
   }
 /* E_K_eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[1040+i] =  (( CONSTANTS[35]*CONSTANTS[36])/CONSTANTS[6])*log(states[320+i]/states[240+i]);
+    ALGEBRAIC[49920+i] =  (( CONSTANTS[35]*CONSTANTS[36])/CONSTANTS[6])*log(states[15360+i]/states[11520+i]);
   }
 /* K_R_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2880+i] =  states[320+i]*exp( ( - CONSTANTS[41]*ALGEBRAIC[1040+i])*(CONSTANTS[6]/( CONSTANTS[35]*CONSTANTS[36])));
+    ALGEBRAIC[138240+i] =  states[15360+i]*exp( ( - CONSTANTS[41]*ALGEBRAIC[49920+i])*(CONSTANTS[6]/( CONSTANTS[35]*CONSTANTS[36])));
   }
 /* g_IR_bar_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2960+i] =  CONSTANTS[40]*(pow(ALGEBRAIC[2880+i], 2.00000)/(CONSTANTS[42]+pow(ALGEBRAIC[2880+i], 2.00000)));
+    ALGEBRAIC[142080+i] =  CONSTANTS[40]*(pow(ALGEBRAIC[138240+i], 2.00000)/(CONSTANTS[42]+pow(ALGEBRAIC[138240+i], 2.00000)));
   }
 /* y_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[3040+i] = 1.00000 - pow(1.00000+( CONSTANTS[43]*(1.00000+pow(ALGEBRAIC[2880+i], 2.00000)/CONSTANTS[42]))/( pow(CONSTANTS[46], 2.00000)*exp(( 2.00000*(1.00000 - CONSTANTS[41])*states[0+i]*CONSTANTS[6])/( CONSTANTS[35]*CONSTANTS[36]))), -1.00000);
+    ALGEBRAIC[145920+i] = 1.00000 - pow(1.00000+( CONSTANTS[43]*(1.00000+pow(ALGEBRAIC[138240+i], 2.00000)/CONSTANTS[42]))/( pow(CONSTANTS[46], 2.00000)*exp(( 2.00000*(1.00000 - CONSTANTS[41])*states[0+i]*CONSTANTS[6])/( CONSTANTS[35]*CONSTANTS[36]))), -1.00000);
   }
 /* g_IR_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[3120+i] =  ALGEBRAIC[2960+i]*ALGEBRAIC[3040+i];
+    ALGEBRAIC[149760+i] =  ALGEBRAIC[142080+i]*ALGEBRAIC[145920+i];
   }
 /* I_IR_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[3200+i] =  ALGEBRAIC[3120+i]*(ALGEBRAIC[2400+i]>0.00000 ? 1.00000 : 0.00000)*(ALGEBRAIC[2400+i]/50.0000);
+    ALGEBRAIC[153600+i] =  ALGEBRAIC[149760+i]*(ALGEBRAIC[115200+i]>0.00000 ? 1.00000 : 0.00000)*(ALGEBRAIC[115200+i]/50.0000);
   }
 /* g_DR_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[3280+i] =  ( CONSTANTS[38]*pow(states[640+i], 4.00000))*states[720+i];
+    ALGEBRAIC[157440+i] =  ( CONSTANTS[38]*pow(states[30720+i], 4.00000))*states[34560+i];
   }
 /* I_DR_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[3360+i] =  ALGEBRAIC[3280+i]*(ALGEBRAIC[2400+i]/50.0000);
+    ALGEBRAIC[161280+i] =  ALGEBRAIC[157440+i]*(ALGEBRAIC[115200+i]/50.0000);
   }
 /* sig_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[3680+i] =  (1.00000/7.00000)*(exp(states[560+i]/67.3000) - 1.00000);
+    ALGEBRAIC[176640+i] =  (1.00000/7.00000)*(exp(states[26880+i]/67.3000) - 1.00000);
   }
 /* f1_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[3760+i] = pow(1.00000+ 0.120000*exp( -0.100000*states[0+i]*(CONSTANTS[6]/( CONSTANTS[35]*CONSTANTS[36])))+ 0.0400000*ALGEBRAIC[3680+i]*exp(- ( states[0+i]*(CONSTANTS[6]/( CONSTANTS[35]*CONSTANTS[36])))), -1.00000);
+    ALGEBRAIC[180480+i] = pow(1.00000+ 0.120000*exp( -0.100000*states[0+i]*(CONSTANTS[6]/( CONSTANTS[35]*CONSTANTS[36])))+ 0.0400000*ALGEBRAIC[176640+i]*exp(- ( states[0+i]*(CONSTANTS[6]/( CONSTANTS[35]*CONSTANTS[36])))), -1.00000);
   }
 /* I_NaK_bar_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[3840+i] =  CONSTANTS[6]*(CONSTANTS[47]/( pow(1.00000+CONSTANTS[44]/states[320+i], 2.00000)*pow(1.00000+CONSTANTS[45]/states[400+i], 3.00000)));
+    ALGEBRAIC[184320+i] =  CONSTANTS[6]*(CONSTANTS[47]/( pow(1.00000+CONSTANTS[44]/states[15360+i], 2.00000)*pow(1.00000+CONSTANTS[45]/states[19200+i], 3.00000)));
   }
 /* I_NaK_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[3920+i] =  ALGEBRAIC[3840+i]*ALGEBRAIC[3760+i];
+    ALGEBRAIC[188160+i] =  ALGEBRAIC[184320+i]*ALGEBRAIC[180480+i];
   }
 /* dK_e_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[320+i] = (ALGEBRAIC[3200+i]+ALGEBRAIC[3360+i]+CONSTANTS[12]+ - 2.00000*ALGEBRAIC[3920+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[5])+(states[160+i] - states[320+i])/CONSTANTS[10];
+    rates[15360+i] = (ALGEBRAIC[153600+i]+ALGEBRAIC[161280+i]+CONSTANTS[12]+ - 2.00000*ALGEBRAIC[188160+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[5])+(states[7680+i] - states[15360+i])/CONSTANTS[10];
   }
 /* g_Na_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[3520+i] =  ( ( CONSTANTS[39]*pow(states[800+i], 3.00000))*states[880+i])*states[960+i];
+    ALGEBRAIC[168960+i] =  ( ( CONSTANTS[39]*pow(states[38400+i], 3.00000))*states[42240+i])*states[46080+i];
   }
 /* J_Na_eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[3440+i] =  states[0+i]*((states[400+i] -  states[560+i]*exp(( -1.00000*CONSTANTS[6]*states[0+i])/( CONSTANTS[35]*CONSTANTS[36])))/(1.00000 - exp(( -1.00000*CONSTANTS[6]*states[0+i])/( CONSTANTS[35]*CONSTANTS[36]))));
+    ALGEBRAIC[165120+i] =  states[0+i]*((states[19200+i] -  states[26880+i]*exp(( -1.00000*CONSTANTS[6]*states[0+i])/( CONSTANTS[35]*CONSTANTS[36])))/(1.00000 - exp(( -1.00000*CONSTANTS[6]*states[0+i])/( CONSTANTS[35]*CONSTANTS[36]))));
   }
 /* I_Na_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[3600+i] =  ALGEBRAIC[3520+i]*(ALGEBRAIC[3440+i]/75.0000);
+    ALGEBRAIC[172800+i] =  ALGEBRAIC[168960+i]*(ALGEBRAIC[165120+i]/75.0000);
   }
 /* dNa_e_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[560+i] = (ALGEBRAIC[3600+i]+CONSTANTS[13]+ 3.00000*ALGEBRAIC[3920+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[5])+(states[480+i] - states[560+i])/CONSTANTS[11];
+    rates[26880+i] = (ALGEBRAIC[172800+i]+CONSTANTS[13]+ 3.00000*ALGEBRAIC[188160+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[5])+(states[23040+i] - states[26880+i])/CONSTANTS[11];
   }
 /* I_T_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[0+i] =  (1000.00/1.00000)*((states[0+i] - states[80+i])/CONSTANTS[2]);
+    ALGEBRAIC[0+i] =  (1000.00/1.00000)*((states[0+i] - states[3840+i])/CONSTANTS[2]);
   }
 /* Cl_i_eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2080+i] = 156.500/(5.00000+exp(( - CONSTANTS[6]*ALGEBRAIC[1040+i])/( CONSTANTS[35]*CONSTANTS[36])));
+    ALGEBRAIC[99840+i] = 156.500/(5.00000+exp(( - CONSTANTS[6]*ALGEBRAIC[49920+i])/( CONSTANTS[35]*CONSTANTS[36])));
   }
 /* Cl_o_eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2160+i] = 156.500 -  5.00000*ALGEBRAIC[2080+i];
+    ALGEBRAIC[103680+i] = 156.500 -  5.00000*ALGEBRAIC[99840+i];
   }
 /* J_Cl_eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2640+i] =  states[0+i]*((ALGEBRAIC[2080+i] -  ALGEBRAIC[2160+i]*exp(( CONSTANTS[6]*states[0+i])/( CONSTANTS[35]*CONSTANTS[36])))/(1.00000 - exp(( CONSTANTS[6]*states[0+i])/( CONSTANTS[35]*CONSTANTS[36]))));
+    ALGEBRAIC[126720+i] =  states[0+i]*((ALGEBRAIC[99840+i] -  ALGEBRAIC[103680+i]*exp(( CONSTANTS[6]*states[0+i])/( CONSTANTS[35]*CONSTANTS[36])))/(1.00000 - exp(( CONSTANTS[6]*states[0+i])/( CONSTANTS[35]*CONSTANTS[36]))));
   }
 /* a_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2560+i] = 1.00000/(1.00000+exp((states[0+i] - CONSTANTS[23])/CONSTANTS[26]));
+    ALGEBRAIC[122880+i] = 1.00000/(1.00000+exp((states[0+i] - CONSTANTS[23])/CONSTANTS[26]));
   }
 /* g_Cl_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2720+i] =  CONSTANTS[37]*pow(ALGEBRAIC[2560+i], 4.00000);
+    ALGEBRAIC[130560+i] =  CONSTANTS[37]*pow(ALGEBRAIC[122880+i], 4.00000);
   }
 /* I_Cl_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2800+i] =  ALGEBRAIC[2720+i]*(ALGEBRAIC[2640+i]/45.0000);
+    ALGEBRAIC[134400+i] =  ALGEBRAIC[130560+i]*(ALGEBRAIC[126720+i]/45.0000);
   }
 /* I_ionic_s_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4000+i] = ALGEBRAIC[2800+i]+ALGEBRAIC[3200+i]+ALGEBRAIC[3360+i]+ALGEBRAIC[3600+i]+ALGEBRAIC[3920+i]+- parameters[0+i];
+    ALGEBRAIC[192000+i] = ALGEBRAIC[134400+i]+ALGEBRAIC[153600+i]+ALGEBRAIC[161280+i]+ALGEBRAIC[172800+i]+ALGEBRAIC[188160+i]+- parameters[0+i];
   }
 /* vS_diff_calculation */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[0+i] = - ((ALGEBRAIC[4000+i]+ALGEBRAIC[0+i])/CONSTANTS[0]);
+    rates[0+i] = - ((ALGEBRAIC[192000+i]+ALGEBRAIC[0+i])/CONSTANTS[0]);
   }
 /* J_K_t_eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2480+i] =  states[80+i]*((states[240+i] -  states[160+i]*exp(( -1.00000*CONSTANTS[6]*states[80+i])/( CONSTANTS[35]*CONSTANTS[36])))/(1.00000 - exp(( -1.00000*CONSTANTS[6]*states[80+i])/( CONSTANTS[35]*CONSTANTS[36]))));
+    ALGEBRAIC[119040+i] =  states[3840+i]*((states[11520+i] -  states[7680+i]*exp(( -1.00000*CONSTANTS[6]*states[3840+i])/( CONSTANTS[35]*CONSTANTS[36])))/(1.00000 - exp(( -1.00000*CONSTANTS[6]*states[3840+i])/( CONSTANTS[35]*CONSTANTS[36]))));
   }
 /* E_K_t_eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2000+i] =  (( CONSTANTS[35]*CONSTANTS[36])/CONSTANTS[6])*log(states[160+i]/states[240+i]);
+    ALGEBRAIC[96000+i] =  (( CONSTANTS[35]*CONSTANTS[36])/CONSTANTS[6])*log(states[7680+i]/states[11520+i]);
   }
 /* K_R_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4400+i] =  states[160+i]*exp( ( - CONSTANTS[41]*ALGEBRAIC[2000+i])*(CONSTANTS[6]/( CONSTANTS[35]*CONSTANTS[36])));
+    ALGEBRAIC[211200+i] =  states[7680+i]*exp( ( - CONSTANTS[41]*ALGEBRAIC[96000+i])*(CONSTANTS[6]/( CONSTANTS[35]*CONSTANTS[36])));
   }
 /* g_IR_bar_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4480+i] =  CONSTANTS[40]*(pow(ALGEBRAIC[4400+i], 2.00000)/(CONSTANTS[42]+pow(ALGEBRAIC[4400+i], 2.00000)));
+    ALGEBRAIC[215040+i] =  CONSTANTS[40]*(pow(ALGEBRAIC[211200+i], 2.00000)/(CONSTANTS[42]+pow(ALGEBRAIC[211200+i], 2.00000)));
   }
 /* y_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4560+i] = 1.00000 - pow(1.00000+( CONSTANTS[43]*(1.00000+pow(ALGEBRAIC[4400+i], 2.00000)/CONSTANTS[42]))/( pow(CONSTANTS[46], 2.00000)*exp(( 2.00000*(1.00000 - CONSTANTS[41])*states[80+i]*CONSTANTS[6])/( CONSTANTS[35]*CONSTANTS[36]))), -1.00000);
+    ALGEBRAIC[218880+i] = 1.00000 - pow(1.00000+( CONSTANTS[43]*(1.00000+pow(ALGEBRAIC[211200+i], 2.00000)/CONSTANTS[42]))/( pow(CONSTANTS[46], 2.00000)*exp(( 2.00000*(1.00000 - CONSTANTS[41])*states[3840+i]*CONSTANTS[6])/( CONSTANTS[35]*CONSTANTS[36]))), -1.00000);
   }
 /* g_IR_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4640+i] =  ALGEBRAIC[4480+i]*ALGEBRAIC[4560+i];
+    ALGEBRAIC[222720+i] =  ALGEBRAIC[215040+i]*ALGEBRAIC[218880+i];
   }
 /* I_IR_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4720+i] =  CONSTANTS[50]*ALGEBRAIC[4640+i]*(ALGEBRAIC[2480+i]/50.0000);
+    ALGEBRAIC[226560+i] =  CONSTANTS[50]*ALGEBRAIC[222720+i]*(ALGEBRAIC[119040+i]/50.0000);
   }
 /* g_DR_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4800+i] =  ( CONSTANTS[38]*pow(states[1040+i], 4.00000))*states[1120+i];
+    ALGEBRAIC[230400+i] =  ( CONSTANTS[38]*pow(states[49920+i], 4.00000))*states[53760+i];
   }
 /* I_DR_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4880+i] =  CONSTANTS[51]*ALGEBRAIC[4800+i]*(ALGEBRAIC[2480+i]/50.0000);
+    ALGEBRAIC[234240+i] =  CONSTANTS[51]*ALGEBRAIC[230400+i]*(ALGEBRAIC[119040+i]/50.0000);
   }
 /* sig_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[5200+i] =  (1.00000/7.00000)*(exp(states[480+i]/67.3000) - 1.00000);
+    ALGEBRAIC[249600+i] =  (1.00000/7.00000)*(exp(states[23040+i]/67.3000) - 1.00000);
   }
 /* f1_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[5280+i] = pow(1.00000+ 0.120000*exp( -0.100000*states[80+i]*(CONSTANTS[6]/( CONSTANTS[35]*CONSTANTS[36])))+ 0.0400000*ALGEBRAIC[5200+i]*exp(- ( states[80+i]*(CONSTANTS[6]/( CONSTANTS[35]*CONSTANTS[36])))), -1.00000);
+    ALGEBRAIC[253440+i] = pow(1.00000+ 0.120000*exp( -0.100000*states[3840+i]*(CONSTANTS[6]/( CONSTANTS[35]*CONSTANTS[36])))+ 0.0400000*ALGEBRAIC[249600+i]*exp(- ( states[3840+i]*(CONSTANTS[6]/( CONSTANTS[35]*CONSTANTS[36])))), -1.00000);
   }
 /* I_NaK_bar_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[5360+i] =  CONSTANTS[6]*(CONSTANTS[47]/( pow(1.00000+CONSTANTS[44]/states[160+i], 2.00000)*pow(1.00000+CONSTANTS[45]/states[400+i], 3.00000)));
+    ALGEBRAIC[257280+i] =  CONSTANTS[6]*(CONSTANTS[47]/( pow(1.00000+CONSTANTS[44]/states[7680+i], 2.00000)*pow(1.00000+CONSTANTS[45]/states[19200+i], 3.00000)));
   }
 /* I_NaK_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[5440+i] =  CONSTANTS[53]*ALGEBRAIC[5360+i]*ALGEBRAIC[5280+i];
+    ALGEBRAIC[261120+i] =  CONSTANTS[53]*ALGEBRAIC[257280+i]*ALGEBRAIC[253440+i];
   }
 /* dK_i_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[240+i] =  - CONSTANTS[9]*((ALGEBRAIC[4720+i]+ALGEBRAIC[4880+i]+CONSTANTS[12]+ - 2.00000*ALGEBRAIC[5440+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[3])) - (ALGEBRAIC[3200+i]+ALGEBRAIC[3360+i]+CONSTANTS[12]+ -2.00000*ALGEBRAIC[3920+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[4]);
+    rates[11520+i] =  - CONSTANTS[9]*((ALGEBRAIC[226560+i]+ALGEBRAIC[234240+i]+CONSTANTS[12]+ - 2.00000*ALGEBRAIC[261120+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[3])) - (ALGEBRAIC[153600+i]+ALGEBRAIC[161280+i]+CONSTANTS[12]+ -2.00000*ALGEBRAIC[188160+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[4]);
   }
 /* dK_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[160+i] = (ALGEBRAIC[4720+i]+ALGEBRAIC[4880+i]+CONSTANTS[12]+ - 2.00000*ALGEBRAIC[5440+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[3]) - (states[160+i] - states[320+i])/CONSTANTS[7];
+    rates[7680+i] = (ALGEBRAIC[226560+i]+ALGEBRAIC[234240+i]+CONSTANTS[12]+ - 2.00000*ALGEBRAIC[261120+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[3]) - (states[7680+i] - states[15360+i])/CONSTANTS[7];
   }
 /* g_Na_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[5040+i] =  ( ( CONSTANTS[39]*pow(states[1200+i], 3.00000))*states[1280+i])*states[1360+i];
+    ALGEBRAIC[241920+i] =  ( ( CONSTANTS[39]*pow(states[57600+i], 3.00000))*states[61440+i])*states[65280+i];
   }
 /* J_Na_t_eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4960+i] =  states[80+i]*((states[400+i] -  states[480+i]*exp(( -1.00000*CONSTANTS[6]*states[80+i])/( CONSTANTS[35]*CONSTANTS[36])))/(1.00000 - exp(( -1.00000*CONSTANTS[6]*states[80+i])/( CONSTANTS[35]*CONSTANTS[36]))));
+    ALGEBRAIC[238080+i] =  states[3840+i]*((states[19200+i] -  states[23040+i]*exp(( -1.00000*CONSTANTS[6]*states[3840+i])/( CONSTANTS[35]*CONSTANTS[36])))/(1.00000 - exp(( -1.00000*CONSTANTS[6]*states[3840+i])/( CONSTANTS[35]*CONSTANTS[36]))));
   }
 /* I_Na_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[5120+i] =  CONSTANTS[52]*ALGEBRAIC[5040+i]*(ALGEBRAIC[4960+i]/75.0000);
+    ALGEBRAIC[245760+i] =  CONSTANTS[52]*ALGEBRAIC[241920+i]*(ALGEBRAIC[238080+i]/75.0000);
   }
 /* dNa_i_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[400+i] =  - CONSTANTS[9]*((ALGEBRAIC[5120+i]+CONSTANTS[13]+ 3.00000*ALGEBRAIC[5440+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[3])) - (ALGEBRAIC[3600+i]+CONSTANTS[13]+ 3.00000*ALGEBRAIC[3920+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[4]);
+    rates[19200+i] =  - CONSTANTS[9]*((ALGEBRAIC[245760+i]+CONSTANTS[13]+ 3.00000*ALGEBRAIC[261120+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[3])) - (ALGEBRAIC[172800+i]+CONSTANTS[13]+ 3.00000*ALGEBRAIC[188160+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[4]);
   }
 /* dNa_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[480+i] = (ALGEBRAIC[5120+i]+CONSTANTS[13]+ 3.00000*ALGEBRAIC[5440+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[3]) - (states[480+i] - states[560+i])/CONSTANTS[8];
+    rates[23040+i] = (ALGEBRAIC[245760+i]+CONSTANTS[13]+ 3.00000*ALGEBRAIC[261120+i])/( (1000.00/1.00000)*CONSTANTS[6]*CONSTANTS[3]) - (states[23040+i] - states[26880+i])/CONSTANTS[8];
   }
 /* Cl_i_t_eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2240+i] = 156.500/(5.00000+exp(( - CONSTANTS[6]*ALGEBRAIC[2000+i])/( CONSTANTS[35]*CONSTANTS[36])));
+    ALGEBRAIC[107520+i] = 156.500/(5.00000+exp(( - CONSTANTS[6]*ALGEBRAIC[96000+i])/( CONSTANTS[35]*CONSTANTS[36])));
   }
 /* Cl_o_t_eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[2320+i] = 156.500 -  5.00000*ALGEBRAIC[2240+i];
+    ALGEBRAIC[111360+i] = 156.500 -  5.00000*ALGEBRAIC[107520+i];
   }
 /* J_Cl_t_eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4160+i] =  states[80+i]*((ALGEBRAIC[2240+i] -  ALGEBRAIC[2320+i]*exp(( CONSTANTS[6]*states[80+i])/( CONSTANTS[35]*CONSTANTS[36])))/(1.00000 - exp(( CONSTANTS[6]*states[80+i])/( CONSTANTS[35]*CONSTANTS[36]))));
+    ALGEBRAIC[199680+i] =  states[3840+i]*((ALGEBRAIC[107520+i] -  ALGEBRAIC[111360+i]*exp(( CONSTANTS[6]*states[3840+i])/( CONSTANTS[35]*CONSTANTS[36])))/(1.00000 - exp(( CONSTANTS[6]*states[3840+i])/( CONSTANTS[35]*CONSTANTS[36]))));
   }
 /* a_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4080+i] = 1.00000/(1.00000+exp((states[80+i] - CONSTANTS[23])/CONSTANTS[26]));
+    ALGEBRAIC[195840+i] = 1.00000/(1.00000+exp((states[3840+i] - CONSTANTS[23])/CONSTANTS[26]));
   }
 /* g_Cl_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4240+i] =  CONSTANTS[37]*pow(ALGEBRAIC[4080+i], 4.00000);
+    ALGEBRAIC[203520+i] =  CONSTANTS[37]*pow(ALGEBRAIC[195840+i], 4.00000);
   }
 /* I_Cl_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[4320+i] =  CONSTANTS[49]*ALGEBRAIC[4240+i]*(ALGEBRAIC[4160+i]/45.0000);
+    ALGEBRAIC[207360+i] =  CONSTANTS[49]*ALGEBRAIC[203520+i]*(ALGEBRAIC[199680+i]/45.0000);
   }
 /* I_ionic_t_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    ALGEBRAIC[5520+i] = ALGEBRAIC[4320+i]+ALGEBRAIC[4720+i]+ALGEBRAIC[4880+i]+ALGEBRAIC[5120+i]+ALGEBRAIC[5440+i];
+    ALGEBRAIC[264960+i] = ALGEBRAIC[207360+i]+ALGEBRAIC[226560+i]+ALGEBRAIC[234240+i]+ALGEBRAIC[245760+i]+ALGEBRAIC[261120+i];
   }
 /* dvT_Eqn */
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 80; i++)
+  for (int i = 0; i < 3840; i++)
   {
-    rates[80+i] = - ((ALGEBRAIC[5520+i] - ALGEBRAIC[0+i]/CONSTANTS[1])/CONSTANTS[0]);
+    rates[3840+i] = - ((ALGEBRAIC[264960+i] - ALGEBRAIC[0+i]/CONSTANTS[1])/CONSTANTS[0]);
   }
 
 

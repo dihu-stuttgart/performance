@@ -7,21 +7,22 @@
 #for n_nodes in $(seq 20 20 600); do
 for n_nodes in $(seq 20 20 240); do
 
-for dt in 1e-3 5.62341325190349e-4 3.162277660168379e-4 1e-4 5.6234132519e-5 3.1622776601e-5 1.77827941003892e-5 1e-5 5.62341325190349e-6 3.162277660168379e-6 1.778279410e-6 1e-6 5.62341325190349e-7 3.162277660168379e-7 1.778279410e-7 1e-7
+for dt in 1e-3 5.62341325190349e-4 3.162277660168379e-4 1e-4 5.6234132519e-5 3.1622776601e-5 1.77827941003892e-5 1e-5 5.62341325190349e-6 3.162277660168379e-6 1.778279410e-6 1e-6 5.62341325190349e-7 3.162277660168379e-7 1.778279410e-7 1e-7; do
 
 # shorten model
-rm -rf out
-./cuboid_shorten ../settings_cuboid.py 1 1 $n_nodes $dt shorten
-cd out
-python3 ../../evaluate.py shorten && break   # break if evaluate is 1
-cd -
+#rm -rf out
+#./cuboid_shorten ../settings_cuboid.py 1 1 $n_nodes $dt shorten_crank_nicolson
+#cd out
+#python3 ../../evaluate.py shorten_crank_nicolson && break   # break if evaluate is 1
+#cd -
 
 # hodgkin huxley model
-#rm -rf out
-#./cuboid_hodgkin_huxley ../settings_cuboid.py 1 1 $n_nodes hodgkin_huxley
-#cd out
-#python3 ../../evaluate.py hodgkin_huxley
-#cd -
+rm -rf out
+./cuboid_hodgkin_huxley ../settings_cuboid.py 1 1 $n_nodes $dt hodgkin_huxley_crank_nicolson
+cd out
+python3 ../../evaluate.py hodgkin_huxley_crank_nicolson && break # break if evaluate is 1
+cd -
+done
 done
 #n_nodes=100
 #./cuboid_shorten ../settings_cuboid.py 1 1 $n_nodes nodes_$n_nodes shorten

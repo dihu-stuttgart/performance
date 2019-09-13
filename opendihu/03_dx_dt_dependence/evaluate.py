@@ -73,7 +73,11 @@ for dataset in data:
   
   if max_threshold_indices:
     pos0 = max_threshold_indices[0]
+    if pos0 == 0:
+      pos0 = max_threshold_indices[1]
     pos1 = max_threshold_indices[-1]
+    if pos1 = len(solution)-1:
+      pos1 = max_threshold_indices[-2]
   
     distance = 0.5*((center-pos0) + (pos1-center))
     entries.append((current_time, distance))
@@ -106,6 +110,9 @@ if entries:
   # store last velocity
   with open("../last_velocity","w") as f:
     f.write(str(velocity))
+
+  if abs(last_velocity) < 1e-8:
+    last_velocity = -1.0
 
   if last_velocity >= 0:
     difference = abs(velocity - last_velocity)
