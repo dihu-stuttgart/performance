@@ -54,13 +54,13 @@ def run(x,y,z,n_fibers_per_dimension):
   else:
     scenario_name += "_"
 
-  sleep_duration = (int)(n_available_nodes % 10);
+  sleep_duration = (int)(n_available_nodes % 100);
 
-  command = "sleep {DURATION}; export MPICH_RANK_REORDER_METHOD=3; echo $({OPENDIHU_HOME}/scripts/generate_cpu_list.py {X} {Y} {Z}) > MPICH_RANK_ORDER; echo '{n_available_nodes} available compute nodes';\
+  command = "sleep {DURATION}; export PYTHONPATH=$PYTHONPATH:{EXAMPLE_HOME};  export MPICH_RANK_REORDER_METHOD=3; echo $({OPENDIHU_HOME}/scripts/generate_cpu_list.py {X} {Y} {Z}) > MPICH_RANK_ORDER; sleep 5; echo '{n_available_nodes} available compute nodes';\
   aprun \
   --pes-per-node {N} \
   -n {NP} \
-  {EXAMPLE_HOME}/build_release/fibers_emg {SETTINGS_FILE} \
+  {EXAMPLE_HOME}/build_release/fast_fibers_emg {SETTINGS_FILE} \
     --scenario_name {SCENARIO_NAME} \
     --n_subdomains {X} {Y} {Z} \
     --fiber_file {FIBER_FILE} \
