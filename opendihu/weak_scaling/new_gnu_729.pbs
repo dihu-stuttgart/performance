@@ -1,7 +1,7 @@
 #!/bin/bash
-#PBS -N out_new_gnu_7
-#PBS -l nodes=7:ppn=24
-#PBS -l walltime=00:10:00
+#PBS -N out_new_gnu_729
+#PBS -l nodes=729:ppn=24
+#PBS -l walltime=00:30:00
 #PBS -j oe
 
 # load modules  

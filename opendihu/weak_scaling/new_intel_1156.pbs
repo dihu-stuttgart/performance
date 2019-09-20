@@ -1,12 +1,12 @@
 #!/bin/bash
-#PBS -N out_new_gnu_7
-#PBS -l nodes=7:ppn=24
-#PBS -l walltime=00:10:00
+#PBS -N out_new_intel_1156
+#PBS -l nodes=1156:ppn=24
+#PBS -l walltime=02:35:00
 #PBS -j oe
 
 # load modules  
 . ~/load_modules.sh
-#module switch PrgEnv-gnu/6.0.4 PrgEnv-cray
+module switch PrgEnv-gnu/6.0.4 PrgEnv-intel
 #module load perftools-base
 #module load perftools-preload
 
@@ -14,7 +14,7 @@
 cd $PBS_O_WORKDIR
 
 export OMP_NUM_THREADS=1
-export PRGENV=gnu
+export PRGENV=intel
 export OPENDIHU_HOME=/lustre/cray/ws9/2/ws/icbbnmai-opendihu1/opendihu-${PRGENV}
 
 # this script needs OPENDIHU_HOME set
