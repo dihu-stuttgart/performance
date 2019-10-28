@@ -73,11 +73,7 @@ for dataset in data:
   
   if max_threshold_indices:
     pos0 = max_threshold_indices[0]
-    if pos0 == 0:
-      pos0 = max_threshold_indices[1]
     pos1 = max_threshold_indices[-1]
-    if pos1 = len(solution)-1:
-      pos1 = max_threshold_indices[-2]
   
     distance = 0.5*((center-pos0) + (pos1-center))
     entries.append((current_time, distance))
@@ -86,7 +82,9 @@ for dataset in data:
   else:
     
     print("t: {}, max vm: {}, no stimulus".format(current_time, max_vm))
-    
+   
+print(entries)
+ 
 fiber_length_cm = 4.0
 if entries:
   velocity = (entries[-1][1] - entries[0][1]) / (entries[-1][0] - entries[0][0])
