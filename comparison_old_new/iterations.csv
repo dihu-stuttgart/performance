@@ -1,0 +1,8 @@
+# Timestep; Parabolic reason; Newton reason; parabolic n. iter; min; max; newton n. iter; min; max 
+# Parabolic reason: 1=RTOL_NORMAL, 2=RTOL, 3=ATOL, 4=ITS, 5=CG_NEG_CURVE, 6=CG_CONSTRAINED, 7=STEP_LENGTH, 8=HAPPY_BREAKDOWN, 9=ATOL_NORMAL
+# Newton reason: 2=FNORM_ABS ||F||<atol, 3=FNORM_RELATIVE ||F|| < rtol*||F_initial||, 4=SNORM_RELATIVE Newton computed step size small || delta x || < stol || x ||, 5=ITS, 7=TR_DELTA
+-1.00000000;      2;      2;      0;      0;      0;      0;      0;      3;
+-1.00000000;      2;      2;      0;      0;      0;      0;      0;      3;
+-1.00000000;      2;      2;      0;      0;      0;      0;      0;      3;
+-1.00000000;      2;      2;      0;      0;      0;      0;      0;      4;
+-1.00000000;      2;      2;      0;      0;      0;      0;      0;      4;
