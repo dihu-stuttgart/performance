@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-input_filename = "logs/log.csv"
+input_filename = "log.csv"
 
 show_plots = True
 if len(sys.argv) > 1:
@@ -31,8 +31,11 @@ with open(input_filename) as f:
   line = f.readline()
   if "~nDofsFiber0" in line:
     pos = line.find("~nDofsFiber0")
-    column_names = line[0:pos].split(";")
-    n_columns = len(column_names)
+    line = line[0:pos]
+  column_names = line.split(";")
+  n_columns = len(column_names)
+
+print("column_names: {}".format(column_names))
 
 # load data frame
 df = pd.read_csv(input_filename, sep=';', error_bad_lines=False, warn_bad_lines=True, comment="#", header=None, names=column_names, usecols=range(n_columns))
@@ -98,7 +101,7 @@ column_shortnames = {
 ordered_values = ['n', "total", '0D', '1D', "bidomain", "computation", 'stiffness', 'initCell', 'initBC', 'read', 'write', 'compMap', 'map', "mem"]
 
 df_cray = df[df['version'].str.contains("Cray Cray")]
-df_gnu = df[df['version'].str.contains("GCC 8")]
+df_gnu = df[df['version'].str.contains("GCC")]
 
 print("n rows:")
 print(len(df.index))
@@ -129,8 +132,8 @@ def plot(df, title, columns_to_plot, mylabels=None):
   
   #linestyle_cycler = cycler.cycler('linestyle',['-','--',':','-.'])
   # (cycler.cycler('color', ["k",(0.3,0.3,0.7),(0.7,0.7,1.0), "r", "y"])+cycler.cycler('linestyle', ['-', '--', ':', '-', '-'])))
-  plt.rc('axes', prop_cycle=(cycler('color', ['k', (0.6,0.6,1.0), (0.1,0.1,0.6), 'r', 'y']) +
-                             cycler('linestyle', ['-', '--', '-.', '-', '-'])))
+  plt.rc('axes', prop_cycle=(cycler('color', ['k', 'b', 'r', 'y']) +
+                             cycler('linestyle', ['-', '--', '-.', '-'])))
   #plt.rc('axes', prop_cycle=("cycler('color', 'rgb') + cycler('linestyle',  ['-', '-', ':'])"))
     
   errors = df.groupby(['nRanks']).std()
@@ -171,29 +174,9 @@ columns_to_plot = ["totalUsertime", "duration_init", "durationOnlyWrite", "durat
 #mylabels = ["total", "read geometry files", "write VTK files", "1D model", "0D model", ]
 mylabels = ["total", "initialization", "write VTK files", "1D model", "0D model", ]
 print_table(df_cray, "", columns_to_plot, mylabels)
-exit()
+#exit()
 
-
-
-print_table(df_gnu, "GNU compiler (without rank reordering)", columns_to_plot)
+columns_to_plot = ["totalUsertime", "duration_bidomain","duration_1D", "duration_0D"]
+mylabels = ["total", "3D model", "1D model", "0D model"]
+print_table(df_gnu, "Weak scaling on Hazel Hen, partitioning only in x,y directions", columns_to_plot, mylabels)
     
-#df_cray_reordering = df_cray[df_cray['# timestamp'] > pd.to_datetime("2019/2/27")]
-#df_gnu_reordering = df_gnu[df_gnu['# timestamp'] > pd.to_datetime("2019/2/27")]
-
-print_table(df_cray_reordering, "Cray compiler (with rank reordering)", columns_to_plot)
-print_table(df_gnu_reordering, "GNU compiler (with rank reordering)", columns_to_plot)
-
-columns = list(df_cray_reordering)
-column_dict = {name: "{}_reordering".format(name) for name in columns if name != "nRanks"}
-df_cray_reordering=df_cray_reordering.rename(columns=column_dict)
-
-df_rr = pd.concat([df_cray_reordering,df_cray])
-print(df_rr.info())
-columns_to_plot0 = []
-
-columns_to_plot0 = ["duration_1D", "duration_1D_reordering"]
-mylabels = ["bad placement", "optimal placement"]
-print_table(df_rr, "Effect of rank reordering", columns_to_plot0, mylabels)
-
-    
-# plot
