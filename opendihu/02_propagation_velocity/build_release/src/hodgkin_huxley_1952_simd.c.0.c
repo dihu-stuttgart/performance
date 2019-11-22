@@ -50,8 +50,8 @@ CONSTANTS[7] = CONSTANTS[0] - 12.0000;
 CONSTANTS[8] = CONSTANTS[0]+10.6130;
 }
 
-/* This function was created by opendihu at 2019/8/26 17:08:21.
- * It is designed for 960 instances of the CellML problem. */
+/* This function was created by opendihu at 2019/9/15 02:05:27.
+ * It is designed for 4000 instances of the CellML problem. */
 void computeCellMLRightHandSide(void *context, double t, double *states, double *rates, double *intermediates, double *parameters)
 {
   double VOI = t;   /* current simulation time */
@@ -68,110 +68,110 @@ void computeCellMLRightHandSide(void *context, double t, double *states, double 
   CONSTANTS[7] = CONSTANTS[0] - 12.0000;
   CONSTANTS[8] = CONSTANTS[0]+10.6130;
 
-  double ALGEBRAIC[8640];    /* 9 per instance * 960 instances */ 
+  double ALGEBRAIC[36000];    /* 9 per instance * 4000 instances */ 
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    ALGEBRAIC[960+i] = ( - 0.100000*(states[0+i]+50.0000))/(exp(- (states[0+i]+50.0000)/10.0000) - 1.00000);
+    ALGEBRAIC[4000+i] = ( - 0.100000*(states[0+i]+50.0000))/(exp(- (states[0+i]+50.0000)/10.0000) - 1.00000);
   }
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    ALGEBRAIC[4800+i] =  4.00000*exp(- (states[0+i]+75.0000)/18.0000);
+    ALGEBRAIC[20000+i] =  4.00000*exp(- (states[0+i]+75.0000)/18.0000);
   }
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    rates[960+i] =  ALGEBRAIC[960+i]*(1.00000 - states[960+i]) -  ALGEBRAIC[4800+i]*states[960+i];
+    rates[4000+i] =  ALGEBRAIC[4000+i]*(1.00000 - states[4000+i]) -  ALGEBRAIC[20000+i]*states[4000+i];
   }
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    ALGEBRAIC[1920+i] =  0.0700000*exp(- (states[0+i]+75.0000)/20.0000);
+    ALGEBRAIC[8000+i] =  0.0700000*exp(- (states[0+i]+75.0000)/20.0000);
   }
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    ALGEBRAIC[5760+i] = 1.00000/(exp(- (states[0+i]+45.0000)/10.0000)+1.00000);
+    ALGEBRAIC[24000+i] = 1.00000/(exp(- (states[0+i]+45.0000)/10.0000)+1.00000);
   }
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    rates[1920+i] =  ALGEBRAIC[1920+i]*(1.00000 - states[1920+i]) -  ALGEBRAIC[5760+i]*states[1920+i];
+    rates[8000+i] =  ALGEBRAIC[8000+i]*(1.00000 - states[8000+i]) -  ALGEBRAIC[24000+i]*states[8000+i];
   }
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    ALGEBRAIC[2880+i] = ( - 0.0100000*(states[0+i]+65.0000))/(exp(- (states[0+i]+65.0000)/10.0000) - 1.00000);
+    ALGEBRAIC[12000+i] = ( - 0.0100000*(states[0+i]+65.0000))/(exp(- (states[0+i]+65.0000)/10.0000) - 1.00000);
   }
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    ALGEBRAIC[6720+i] =  0.125000*exp((states[0+i]+75.0000)/80.0000);
+    ALGEBRAIC[28000+i] =  0.125000*exp((states[0+i]+75.0000)/80.0000);
   }
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    rates[2880+i] =  ALGEBRAIC[2880+i]*(1.00000 - states[2880+i]) -  ALGEBRAIC[6720+i]*states[2880+i];
+    rates[12000+i] =  ALGEBRAIC[12000+i]*(1.00000 - states[12000+i]) -  ALGEBRAIC[28000+i]*states[12000+i];
   }
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    ALGEBRAIC[0+i] =  CONSTANTS[3]*pow(states[960+i], 3.00000)*states[1920+i]*(states[0+i] - CONSTANTS[6]);
+    ALGEBRAIC[0+i] =  CONSTANTS[3]*pow(states[4000+i], 3.00000)*states[8000+i]*(states[0+i] - CONSTANTS[6]);
   }
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    ALGEBRAIC[3840+i] =  CONSTANTS[4]*pow(states[2880+i], 4.00000)*(states[0+i] - CONSTANTS[7]);
+    ALGEBRAIC[16000+i] =  CONSTANTS[4]*pow(states[12000+i], 4.00000)*(states[0+i] - CONSTANTS[7]);
   }
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    ALGEBRAIC[7680+i] =  CONSTANTS[5]*(states[0+i] - CONSTANTS[8]);
+    ALGEBRAIC[32000+i] =  CONSTANTS[5]*(states[0+i] - CONSTANTS[8]);
   }
 
 #ifndef TEST_WITHOUT_PRAGMAS
   #pragma omp for simd
 #endif
-  for (int i = 0; i < 960; i++)
+  for (int i = 0; i < 4000; i++)
   {
-    rates[0+i] = - (- parameters[0+i]+ALGEBRAIC[0+i]+ALGEBRAIC[3840+i]+ALGEBRAIC[7680+i])/CONSTANTS[1];
+    rates[0+i] = - (- parameters[0+i]+ALGEBRAIC[0+i]+ALGEBRAIC[16000+i]+ALGEBRAIC[32000+i])/CONSTANTS[1];
   }
 }
 
