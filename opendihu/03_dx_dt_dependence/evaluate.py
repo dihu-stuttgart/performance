@@ -73,11 +73,7 @@ for dataset in data:
   
   if max_threshold_indices:
     pos0 = max_threshold_indices[0]
-    if pos0 == 0:
-      pos0 = max_threshold_indices[1]
     pos1 = max_threshold_indices[-1]
-    if pos1 = len(solution)-1:
-      pos1 = max_threshold_indices[-2]
   
     distance = 0.5*((center-pos0) + (pos1-center))
     entries.append((current_time, distance))
@@ -86,15 +82,17 @@ for dataset in data:
   else:
     
     print("t: {}, max vm: {}, no stimulus".format(current_time, max_vm))
-    
+   
+print(entries)
+ 
 fiber_length_cm = 4.0
 if entries:
-  velocity = (entries[-1][1] - entries[0][1]) / (entries[-1][0] - entries[0][0])
-  velocity /= (n_points/fiber_length_cm)
+  velocity = (entries[-1][1] - entries[0][1]) / (entries[-1][0] - entries[0][0])  # Δdistance / Δt
+  velocity /= (n_points/fiber_length_cm)          # convert velocity from elements/ms to cm/ms
   print("{}, nodes/cm: {}, propagation velocity: {}, ({}/{})".format(scenario_name,  n_points/fiber_length_cm, velocity, (entries[-1][1] - entries[0][1]), (entries[-1][0] - entries[0][0])))
   
   # write to file
-  # scenario_name; n elements per cm; propagation velocity in elements per ms
+  # scenario_name; n elements per cm; propagation velocity in cm per ms; dt
   with open("../result.csv","a") as f:
     f.write("{};{};{};{}\n".format(scenario_name,n_points/fiber_length_cm,velocity,dt))
     #pp.pprint(dataset)

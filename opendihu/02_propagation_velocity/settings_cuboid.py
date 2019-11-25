@@ -10,7 +10,7 @@ import sys
 
 # global parameters
 PMax = 7.3              # maximum stress [N/cm^2]
-Conductivity = 3.828    # sigma, conductivity [mS/cm]
+Conductivity = 3.828    # sigma, conductivity [S/m = 10 mS/cm]
 Am = 500.0              # surface area to volume ratio [cm^-1]
 Cm = 0.58               # membrane capacitance [uF/cm^2] (0.58 = slow twich, 1.0 = fast twitch)
 innervation_zone_width = 1.  # cm

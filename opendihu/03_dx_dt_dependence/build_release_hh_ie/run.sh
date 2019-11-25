@@ -8,7 +8,7 @@
 cwd=$(pwd)
 
 #for n_nodes in $(seq 20 20 600); do
-for n_nodes in $(seq 20 20 240); do
+for n_nodes in $(seq 20 20 1000); do
 
 rm -f last_velocity
 #for dt in 1e-3 5.62341325190349e-4 3.162277660168379e-4 1e-4 5.6234132519e-5 3.1622776601e-5 1.77827941003892e-5 1e-5 5.62341325190349e-6 3.162277660168379e-6 1.778279410e-6 1e-6 5.62341325190349e-7 3.162277660168379e-7 1.778279410e-7 1e-7; do
@@ -20,7 +20,7 @@ cd $cwd
 rm -rf out
 ./cuboid_hodgkin_huxley_ie ../settings_cuboid.py 1 1 $n_nodes $dt hodgkin_huxley_implicit_euler | tee -a out.txt
 cd out
-python3 ../../evaluate.py hodgkin_huxley_implicit_euler && break # break if evaluate has exit code 0
+python3 ../../evaluate.py hodgkin_huxley_implicit_euler # break if evaluate has exit code 0
 echo "no break"
 
 done
