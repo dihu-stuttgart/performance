@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
-input_filename = "log.csv"
+input_filename = "logs_hazel_weak.csv"
 
 show_plots = True
 if len(sys.argv) > 1:

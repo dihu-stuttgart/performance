@@ -23,7 +23,7 @@ print("filenames: {}, {}".format(input1_filename, input2_filename))
 	
 show_plots = True
 
-plt.rcParams.update({'font.size': 14})
+plt.rcParams.update({'font.size': 24})
 plt.rcParams['lines.linewidth'] = 2
 
 # load opendihu data
@@ -82,7 +82,7 @@ for n_fibers in df_opencmiss["n_fibers"]:
   
 print(df_opendihu["speedup"])
 
-plt.figure(figsize=(10,8))
+plt.figure(figsize=(11,8))
 
 max_x = 20
 
@@ -92,23 +92,31 @@ plt.plot([], [], ' ', label="\n")
 
 # plot opencmiss
 plt.plot(df_opencmiss["n_fibers"][0:max_x], df_opencmiss["duration_total"][0:max_x], "k-", lw=3, label="total duration")
-plt.plot(df_opencmiss["n_fibers"][0:max_x], df_opencmiss["duration_0D"][0:max_x], "y-", label="0D model")
-plt.plot(df_opencmiss["n_fibers"][0:max_x], df_opencmiss["duration_1D"][0:max_x], "r-", label="1D model")
+#plt.plot(df_opencmiss["n_fibers"][0:max_x], df_opencmiss["duration_0D"][0:max_x], "y-", label="0D model")
+#plt.plot(df_opencmiss["n_fibers"][0:max_x], df_opencmiss["duration_1D"][0:max_x], "r-", label="1D model")
 
 # plot opendihu
 plt.plot(df_opendihu["n_fibers"][0:max_x], df_opendihu["duration_total"][0:max_x], "k--", lw=3)
-plt.plot(df_opendihu["n_fibers"][0:max_x], df_opendihu["duration_0D"][0:max_x], "y--")
-plt.plot(df_opendihu["n_fibers"][0:max_x], df_opendihu["duration_1D"][0:max_x], "r--")
+#plt.plot(df_opendihu["n_fibers"][0:max_x], df_opendihu["duration_0D"][0:max_x], "y--")
+#plt.plot(df_opendihu["n_fibers"][0:max_x], df_opendihu["duration_1D"][0:max_x], "r--")
 
 ax = plt.gca()
-ax.set_xscale('log', basex=10)
-ax.set_yscale('log', basey=10)
-plt.subplots_adjust(right=0.58, top=0.84)
-plt.title("runtime of simulation")
-plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False, labels=["OpenCMISS", "opendihu", "", "total", "0D model", "1D model"])
+#ax.set_xscale('log', basex=10)
+#ax.set_yscale('log', basey=10)
+plt.subplots_adjust(right=0.68, top=0.84)
+plt.title("Improved runtime of opendihu\n compared to OpenCMISS")
+#plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False, labels=["OpenCMISS", "opendihu", "", "total", "0D model", "1D model"])
+plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False, labels=["OpenCMISS", "opendihu"])
 plt.grid(which='major')
 plt.xlabel("number of fibers")
 plt.ylabel("duration [s]")
 
 #plt.yscale('log', basey=10)
+plt.savefig("opencmiss-opendihu.pdf")
+plt.savefig("opencmiss-opendihu.png")
+
+ax.set_xscale('log', basex=10)
+ax.set_yscale('log', basey=10)
+plt.savefig("opencmiss-opendihu-loglog.pdf")
+plt.savefig("opencmiss-opendihu-loglog.png")
 plt.show()
