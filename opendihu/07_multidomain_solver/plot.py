@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# parallel weak scaling
+# solvers for multidomain with fat
 
 import sys
 import numpy as np
@@ -35,7 +35,7 @@ if len(sys.argv) == 1:
 
 # load matplotlib
 import matplotlib
-if not matplotlib.is_interactive() or not show_plots:
+if not show_plots:
   matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
@@ -43,6 +43,7 @@ import pandas as pd
 import numpy as np
 
 # define global plotting parameters
+matplotlib.rcdefaults()
 plt.rcParams.update({'font.size': 16})
 plt.rcParams['lines.linewidth'] = 2
 
@@ -90,7 +91,7 @@ if list_columns:
 df = pd.read_csv(input_filename, sep=';', error_bad_lines=False, warn_bad_lines=True, comment="#", header=None, names=column_names, usecols=range(n_columns), mangle_dupe_cols=True)
 
 # filter data
-df = df.loc[df['nIterations_multidomainLinearSolver'] != 0]
+df = df.loc[df['nIterations_multidomainLinearSolver'] != 0]       # exclude runs where solver diverged (no number of iterations)
 #df = df.loc[df['nIterations_multidomainLinearSolver'] < 1000]
 
 if not list_columns:
@@ -136,30 +137,104 @@ def merge_dicts(x, y):
   z.update(y)    # modifies z with y's keys and values & returns None
   return z
 
-def plot(df, title, columns_to_plot, mylabels=None):
-  means = df.groupby(['nRanks']).mean()
-  if len(means) == 0:
-    return
+def plot(df, items):
+  scenario_names = [s for s in df['scenarioName'].unique() if not isinstance(s,float) and not "preonly_lu" in s]
   
+  print(scenario_names)
+  df = df.groupby('scenarioName').agg(items)
+  
+  lines = {}
+  
+  print("plot df")
+  # collect lines for plot
+  for scenario_name in scenario_names:
+    
+    print("scenario_name: {}".format(scenario_name))
+    
+    # example for scenario_name:
+    # gmres_bjacobi_dt0.001_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse_10mus
+    pos = scenario_name.rfind("_")
+    
+    row_name = scenario_name[0:pos]
+    n_mus = (int)(scenario_name[pos+1:scenario_name.find("mus")])
+    value = df.loc[scenario_name]["duration_multidomain"]
+    
+    if row_name not in lines:
+      lines[row_name] = [np.nan,np.nan,np.nan,np.nan]
+      
+    if n_mus == 2: i = 0
+    elif n_mus == 6: i = 1
+    elif n_mus == 10: i = 2
+    elif n_mus == 12: i = 3
+    lines[row_name][i] = value
+    
+  print("lines")
+  print(lines.keys())
+  label = {
+    'gmres_euclid_dt0.001_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':  "Euclid (symmetric)",
+    'gmres_euclid_dt0.001_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse': "Euclid",
+    'preonly_lu_dt0.001_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':   "Direct solver",
+    'gmres_none_dt0.001_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':   "No preconditioner",
+    'gmres_bjacobi_dt0.001_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse': "Block jacobi (symmetric)",
+    'gmres_boomeramg_dt0.001_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse': "BoomerAMG (symmetric)",
+    'gmres_boomeramg_dt0.001_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse': "BoomerAMG",
+    'gmres_pilut_dt0.001_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':   "Pilut (symmetric)",
+    'gmres_bjacobi_dt0.001_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse': "Block jacobi (symmetric)",
+    'gmres_pilut_dt0.001_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':  "Pilut",
+  }
+  
+  #order = sorted(lines.iteritems())
+  
+  order = [
+    'gmres_none_dt0.001_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse', #:   "No preconditioner",
+    'gmres_pilut_dt0.001_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse', #:  "Pilut",
+    'gmres_pilut_dt0.001_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse', #:   "Pilut (symmetric)",
+    #'gmres_boomeramg_dt0.001_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse', #: "BoomerAMG (symmetric)",
+    'gmres_euclid_dt0.001_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse', #: "Euclid",
+    'gmres_euclid_dt0.001_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse', #:  "Euclid (symmetric)",
+    'gmres_boomeramg_dt0.001_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse', #: "BoomerAMG",
+  ]
+  
+  mylabels = None
+  
+  
+  #plt.style.use('ggplot')
+  prop_cycle = plt.rcParams['axes.prop_cycle']
+  colors = prop_cycle.by_key()['color']
+  
+  #colors = ["r","m","c","b"]
   #linestyle_cycler = cycler.cycler('linestyle',['-','--',':','-.'])
   # (cycler.cycler('color', ["k",(0.3,0.3,0.7),(0.7,0.7,1.0), "r", "y"])+cycler.cycler('linestyle', ['-', '--', ':', '-', '-'])))
-  plt.rc('axes', prop_cycle=(cycler('color', ['k', 'b', 'r', 'y']) +
-                             cycler('linestyle', ['-', '--', '-.', '-'])))
+  plt.rc('axes', prop_cycle=(cycler('color', [colors[0],colors[1],colors[1],colors[2],colors[2],colors[3]]) +
+                             cycler('linestyle', ['-', '-', '--', '-', '--',  '-']) +
+                             cycler('marker', ['o', 'o', 'x', 'o', 'x', 'o'])
+                             ))
   #plt.rc('axes', prop_cycle=("cycler('color', 'rgb') + cycler('linestyle',  ['-', '-', ':'])"))
     
-  errors = df.groupby(['nRanks']).std()
-  ax = means.plot(figsize=(10,7), y=columns_to_plot, title=title, logx=True, logy=True, yerr=errors, marker='o')
+  fig = plt.figure(figsize=(12,5))
+    
+  # plot
+  for name in order:
+    
+    x_values = [2,6,10,12]
+    y_values = lines[name]
+    
+    print(label[name])
+    
+    plt.plot(x_values, y_values, label=label[name])
   
-  rank_nos = sorted(list(set(df["nRanks"])))
   ax = plt.gca()
-  ax.set_xticks(rank_nos)
-  ax.set_xticklabels(rank_nos)
+  ax.set_xticks([2,6,10,12])
+  ax.set_xticklabels(["2\n12","6\n36","10\n60","12\n72"])
+  ax.set_yscale('log')
   ax.grid(which='major')
-  ax.set_xlabel('number of processes')
-  ax.set_ylabel('runtime [s]')
-  ax.set_title(title)
+  ax.set_xlabel('number of motor units\nnumber of processes')
+  ax.set_ylabel('runtime of solver [s]')
   if mylabels is not None:
     ax.legend(labels=mylabels)
+  ax.legend(bbox_to_anchor=(1.0, 1.0))
+    
+  fig.subplots_adjust(bottom=0.2, right=0.7)
   
   if show_plots:
     plt.show()
@@ -213,7 +288,7 @@ def output(df, title, columns_to_print, columns_to_plot, plot_labels=None):
   print("-"*120)
 
   # create plot
-  plot(df, title, columns_to_plot, plot_labels)
+  plot(df, items)
 
 # ------------------------------------------------
 # define shortnames for the table, each line is
