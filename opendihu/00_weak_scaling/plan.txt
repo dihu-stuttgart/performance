@@ -1,0 +1,57 @@
+  [2,  2,  1,    7],
+  [3,  3,  2,   15],
+  [4,  5,  4,   29],
+  [5,  6,  6,   43],
+  [7,  8,  12,  85], 
+  [19, 19, 24, 295],
+  [25, 25, 24, 393],
+  [27, 27, 24, 435],
+  [34, 34, 24, 533],
+
+
+  [2,  2,  1,    7],
+  [3,  3,  2,   13],
+  [4,  4,  4,   25],
+  [5,  5,  6,   37],
+  [7,  8,  8,  67], 
+  [10, 10, 12, 109],
+  [17, 17, 12, 187],
+  [18, 18, 24, 277],
+  [27, 27, 24, 427],
+  [34, 34, 24, 523],
+
+partitioning  2* 2* 1=    4    7^2=    49 fibers, fibers/rank: 12.250000, need    1 nodes
+partitioning  3* 3* 2=   18   13^2=   169 fibers, fibers/rank: 9.388889, need    1 nodes
+partitioning  4* 4* 4=   64   25^2=   625 fibers, fibers/rank: 9.765625, need    3 nodes
+partitioning  5* 5* 6=  150   37^2=  1369 fibers, fibers/rank: 9.126667, need    7 nodes
+partitioning  7* 8* 8=  448   67^2=  4489 fibers, fibers/rank: 10.020089, need   19 nodes
+partitioning 10*10*12= 1200  109^2= 11881 fibers, fibers/rank: 9.900833, need   50 nodes
+partitioning 17*17*12= 3468  187^2= 34969 fibers, fibers/rank: 10.083333, need  145 nodes
+partitioning 18*18*24= 7776  277^2= 76729 fibers, fibers/rank: 9.867413, need  324 nodes
+partitioning 27*27*24=17496  427^2=182329 fibers, fibers/rank: 10.421182, need  729 nodes
+partitioning 34*34*24=27744  523^2=273529 fibers, fibers/rank: 9.859033, need 1156 nodes
+
+
+
+
+
+1156 available compute nodes
+0/27744 : File "/lustre/cray/ws8/ws/icbbnmai-opendihu/opendihu-cray/examples/electrophysiology/fibers_emg/settings_fibers_emg.py" loaded.
+0/27744 : --------------------------------------------------------------------------------
+scenario_name: new_weak_scaling_lu_34_34_24,  n_subdomains: 34 34 24,  n_ranks: 27744,  end_time: 1.0
+dt_0D:           0.0015, diffusion_solver_type:      cg
+dt_1D:           0.001, potential_flow_solver_type: gmres
+dt_3D:           0.003, emg_solver_type:            gmres, emg_initial_guess_nonzero: True
+dt_bidomain:     1.0,                                    paraview_output: False
+output_timestep: 1.0  stimulation_frequency: 1.0 1/ms = 1000.0 Hz
+fiber_file:              ../../input/523x523fibers.bin
+cellml_file:             ../../input/hodgkin_huxley_1952.c
+fiber_distribution_file: ../../input/MU_fibre_distribution_3780.txt
+firing_times_file:       ../../input/MU_firing_times_real.txt
+********************************************************************************
+nFibersTotal:      273529 (523 x 523)
+nPointsWholeFiber: 1480
+27744 ranks, partitioning: x34 x y34 x z24
+523 x 523 = 273529 fibers, per partition: 16 x 16 = 256, 1480 points per fiber
+0: 3Dmesh, nElements: [8, 8, 21], nRanks: [34, 34, 24], n 3D mesh nodePositions: 2
+
