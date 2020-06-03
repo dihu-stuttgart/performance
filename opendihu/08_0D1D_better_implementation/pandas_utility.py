@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# pandas utility
+# pandas utility to load data frames from csv files like they are produced by opendihu. 
+# use df = pandas_utility.load_df(input_filename) to get the data from a csv file
+# then directly call pandas_utility.print_table() and pandas_utility.plot_weak_scaling() if needed
+# 
+# If this script is executed directly, it plots the given filename as weak scaling data set.
+# usage: ./pandas_utility.py <input_filename log.csv>
+# 
+
+
+# good read about how pandas is used: https://towardsdatascience.com/pandas-equivalent-of-10-useful-sql-queries-f79428e60bd9
 
 import sys, os
 import subprocess
@@ -57,6 +66,11 @@ def determine_column_names(line):
   n_columns = len(column_names)
 
 def load_df(input_filename):
+  """
+  Create a data frame from the csv file given as input. This is a robust version of the pandas pd.read_cvs() function that handles missing/invalid lines etc.
+  It allows different data sets to have different columns, if there is a new column header each time (as there is in opendihu generated csv files).
+  The timestamp is converted to datetime format, also a new column duration_init is computed.
+  """
 
   # determine columns to load from the log file
   with open(input_filename) as f:
@@ -137,6 +151,16 @@ def load_df(input_filename):
   return df
 
 def compute_means_stddev(df, column_names):
+  """
+  compute items for computation of means and standard deviation
+  usage is as follows:
+  
+  mean_items,stddev_items = compute_means_stddev(df, columns_to_plot)
+    
+  # aggregate data
+  means = df.groupby(group_by_columns).agg(mean_items)
+  errors = df.groupby(group_by_columns).agg(stddev_items)
+  """
   
   column_names = list(set(column_names))
   
@@ -166,9 +190,16 @@ def compute_means_stddev(df, column_names):
   
 def print_table(df, title, columns_to_print_longnames, column_shortnames, group_by_columns=['scenarioName','nRanks']):
   """
-  print values to console and produce plot
+  Print values of a df to console. Compute mean values.
+  
+  :param df:    the pandas dataframe to use
+  :param title: title that is printed before the table
+  :param columns_to_print_longnames: a list of names of columns that should be included in the table
+  :param column_shortnames: a dict that maps long names to short names. The short names will be the caption of the columns, if given. 
+                   It makes sense to specify short names for long column names to get more information in the table for the given maximum width.
+  :param group_by_columns: the columns that define one data point
   """
-
+  
   # compute mean values
   mean_items,_ = compute_means_stddev(df, columns_to_print_longnames)
 
@@ -194,6 +225,17 @@ def print_table(df, title, columns_to_print_longnames, column_shortnames, group_
   print("-"*120)
 
 def plot_weak_scaling(df, title, columns_to_plot, group_by_columns=['nRanks'], plot_labels=None):
+  """
+  Make a weak scaling plot out of the df, write it to a png and pdf file in `out` directory.
+  You have to call plt.show() to show the plotting window afterwards.
+  Mean and standard deviation values are computed.
+  
+  :param df:    the pandas dataframe to use
+  :param title: title and output file name of the plot
+  :param columns_to_plt: a list of names of columns that should be one line each
+  :param group_by_columns: the columns that define one data point
+  :param plot_labels: a list of strings, custom labels to be shown in the legend
+  """
   
   # compute mean and stddev values
   mean_items,stddev_items = compute_means_stddev(df, columns_to_plot)
@@ -211,6 +253,10 @@ def plot_weak_scaling(df, title, columns_to_plot, group_by_columns=['nRanks'], p
     if column_name not in available_columns_longnames:
       print("Note: remove invalid column {} from columns_to_plot".format(column_name))
       columns_to_plot.remove(column_name)
+    
+  # define colors and linestyles, do this befor this function
+  #plt.rc('axes', prop_cycle=(cycler('color', ['y', 'r', (0.1,0.1,0.6), (0.5,0.5,0.5), (1.0,0.7,0.2)]) +
+  #                           cycler('linestyle', [ '-', '-', '-', '--','-'])))
     
   # plot values
   ax = means.interpolate(method='linear', limit_area='inside').plot(figsize=(13,7), y=columns_to_plot, title = title, logx=True, logy=True, yerr=errors, marker='o')
