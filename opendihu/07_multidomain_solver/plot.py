@@ -10,6 +10,7 @@ import datetime
 import time
 from cycler import cycler
 import os
+import pandas_utility
 
 input_filename = "logs/log.csv"
 list_columns = False
@@ -47,108 +48,11 @@ matplotlib.rcdefaults()
 plt.rcParams.update({'font.size': 16})
 plt.rcParams['lines.linewidth'] = 2
 
-def remove_duplicates(seq):
-  seen = set()
-  seen_add = seen.add
-  return [x for x in seq if not (x in seen or seen_add(x))]
-
-def determine_column_names(line):
-  if "~nDofs" in line:
-    pos = line.find("~nDofs")
-    line = line[0:pos]
-  column_names = list(line.split(";"))
-
-  # rename "n" columns 
-  for i, column_name in enumerate(column_names):
-    if column_name == "n":
-      column_names[i] = "{}_n".format(column_names[i-1])
-
-  while "" in column_names:
-    column_names.remove("")
-
-  # remove duplicates
-  seen = set()
-  column_names2 = []
-  for x in list(column_names):
-    if x not in seen:
-      seen.add(x)
-      column_names2.append(x)
-    else:
-      print("  Note: column \"{}\" appears multiple times".format(x))
-      while x in seen:
-        x = "{}_2".format(x)
-      seen.add(x)
-      column_names2.append(x)
-
-  column_names = column_names2
-  return column_names
-  n_columns = len(column_names)
-
-# determine columns to load from the log file
-with open(input_filename) as f:
-  
-  # separate lines of file in blocks for a single scenario
-  scenario_blocks = []
-  current_lines = []
-  column_names = None
-  for line in f:
-    if "~nDofs" in line:
-      if current_lines != []:
-        scenario_blocks.append(current_lines)
-      current_lines = []
-    current_lines.append(line)
-    
-  print("File \"{}\" contains data from {} runs".format(input_filename,len(scenario_blocks)))
-    
-  # loop over scenario blocks
-  df_blocks = []
-  for scenario_block in scenario_blocks:
-    if "~nDofs" in scenario_block[0]:
-      column_names = determine_column_names(scenario_block[0])
-      n_columns = len(column_names)
-      print("parse block with {} columns".format(n_columns))
-      with open("a","w") as fout:
-        for line in scenario_block:
-          fout.write(line)
-              
-    # load data frame
-    df_block = pd.read_csv("a", sep=';', error_bad_lines=False, warn_bad_lines=True, comment="#", header=None, names=column_names, usecols=range(n_columns), mangle_dupe_cols=True)
-    df_blocks.append(df_block)
-  
-if list_columns:
-	print("File {} contains {} colums: {}".format(input_filename, n_columns, column_names))
-
-# concat the blocks of all scenarios
-df = pd.concat(df_blocks)
-
-# load data frame
-#df = pd.read_csv(input_filename, sep=';', error_bad_lines=False, warn_bad_lines=True, comment="#", header=None, names=column_names, usecols=range(n_columns), mangle_dupe_cols=True)
+df = pandas_utility.load_df(input_filename)
 
 # filter data
 df = df.loc[df['nIterations_multidomainLinearSolver'] != 0]       # exclude runs where solver diverged (no number of iterations)
 #df = df.loc[df['nIterations_multidomainLinearSolver'] < 1000]
-
-if not list_columns:
-  print("File {} contains {} rows and {} colums.".format(input_filename, len(df.index), n_columns))
-
-# parse timestamp
-df['# timestamp'] =  pd.to_datetime(df['# timestamp'])
-
-# compute new field for initialization time
-if 'durationParaview3DInit' not in df:
-    df['durationParaview3DInit'] = 0
-if 'durationParaview1DInit' not in df:
-    df['durationParaview1DInit'] = 0
-if 'durationParaview1DWrite' not in df:
-    df['durationParaview1DWrite'] = 0
-    
-if 'durationParaview3DWrite' not in df:
-  if 'durationParaviewOutput' in df:
-    df['durationOnlyWrite'] = df['durationParaviewOutput']
-  else:
-    df['durationOnlyWrite'] = df['durationWriteOutput']
-else:
-  df['durationOnlyWrite'] = df['durationParaview3DWrite'] + df['durationParaview1DWrite']
 
 try:
   df['duration_init'] = df['totalUsertime'] - df['duration_total'] + df['durationParaview3DInit'] + df['durationParaview1DInit']
@@ -225,7 +129,8 @@ def plot(df, items):
     'gmres_pilut_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':     "Pilut",
     'gmres_pilut_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':      "Pilut (symmetric)",
     'gmres_none_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':      "No preconditioner",
-    'gmres_none_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':       "No preconditioner (symmetric)"
+    'gmres_none_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':       "No preconditioner (symmetric)",
+    'gmres_sor,ilu_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':   "Block Gauss-Seidel with ILU",
   }
   
   #order = sorted(lines.iteritems())
@@ -242,6 +147,7 @@ def plot(df, items):
     'gmres_bjacobi_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse',#    "Block jacobi (symmetric)",
     'gmres_sor_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse',#       "Block Gauss-Seidel",
     'gmres_sor_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse',#        "Block Gauss-Seidel (symmetric)", 
+    'gmres_sor,ilu_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse',#   "Block Gauss-Seidel with ILU",
   ]
   
   mylabels = None
@@ -254,9 +160,9 @@ def plot(df, items):
   #colors = ["r","m","c","b"]
   #linestyle_cycler = cycler.cycler('linestyle',['-','--',':','-.'])
   # (cycler.cycler('color', ["k",(0.3,0.3,0.7),(0.7,0.7,1.0), "r", "y"])+cycler.cycler('linestyle', ['-', '--', ':', '-', '-'])))
-  plt.rc('axes', prop_cycle=(cycler('color', [colors[0],colors[1],colors[1],colors[2],colors[2],colors[3],colors[3],colors[4],colors[4],colors[5],colors[5]]) +
-                             cycler('linestyle', ['-', '-', '--', '-', '--', '-', '--',  '-', '--', '-', '--']) +
-                             cycler('marker', ['o', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x'])
+  plt.rc('axes', prop_cycle=(cycler('color', [colors[0],colors[1],colors[1],colors[2],colors[2],colors[3],colors[3],colors[4],colors[4],colors[5],colors[5],colors[6]]) +
+                             cycler('linestyle', ['-', '-', '--', '-', '--', '-', '--',  '-', '--', '-', '--','-']) +
+                             cycler('marker', ['o', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o'])
                              ))
   #plt.rc('axes', prop_cycle=("cycler('color', 'rgb') + cycler('linestyle',  ['-', '-', ':'])"))
   

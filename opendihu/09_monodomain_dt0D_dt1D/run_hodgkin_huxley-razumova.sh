@@ -37,27 +37,36 @@ cd $current_dir
 cd $current_dir/$scenario_name
 dt_0D=1e-7
 dt_1D=1e-7
-mpirun -n 1 $example_dir/build_release/${example_binary} settings_${scenario_name}.py $scenario_name ${dt_0D} ${dt_1D}
+nproc=8
+mpirun -n $nproc $example_dir/build_release/${example_binary} settings_${scenario_name}.py $scenario_name ${dt_0D} ${dt_1D}
 
 # copy reference solution
 cd out
 cp $(ls -t cellml*.py | head -1) ../reference_solution.py
 
-for dt_0D in 1e-1 5.62341325190349e-2 3.162277660168379e-2 1e-2 5.62341325190349e-3 3.162277660168379e-3 1e-3 5.62341325190349e-4 3.162277660168379e-4 1e-4 5.6234132519e-5 3.1622776601e-5 1.77827941003892e-5 1.77827941003892e-5 1e-5 5.62341325190349e-6 3.162277660168379e-6; do
-for dt_1D in 1e-1 5.62341325190349e-2 3.162277660168379e-2 1e-2 5.62341325190349e-3 3.162277660168379e-3 1e-3 5.62341325190349e-4 3.162277660168379e-4 1e-4 5.6234132519e-5 3.1622776601e-5 1.77827941003892e-5 1.77827941003892e-5 1e-5 5.62341325190349e-6 3.162277660168379e-6; do
+for dt_0D in 1 5.62341325190349e-1 3.162277660168379e-1 1e-1 5.62341325190349e-2 3.162277660168379e-2 1e-2 5.62341325190349e-3 3.162277660168379e-3 1e-3 5.62341325190349e-4 3.162277660168379e-4 1e-4 5.6234132519e-5 3.1622776601e-5 1.77827941003892e-5 1.77827941003892e-5 1e-5 5.62341325190349e-6 3.162277660168379e-6; do
+for dt_1D in 1 5.62341325190349e-1 3.162277660168379e-1 1e-1 5.62341325190349e-2 3.162277660168379e-2 1e-2 5.62341325190349e-3 3.162277660168379e-3 1e-3 5.62341325190349e-4 3.162277660168379e-4 1e-4 5.6234132519e-5 3.1622776601e-5 1.77827941003892e-5 1.77827941003892e-5 1e-5 5.62341325190349e-6 3.162277660168379e-6; do
+
+if python -c "exit(0 if $dt_0D > $dt_1D else 1)"; then
+  echo "do not compute dt_0D: $dt_0D, dt_1D: $dt_1D"
+  continue
+fi 
 
 cd $current_dir/$scenario_name
 
 echo "Scenario $scenario_name, dt_0D: $dt_0D, dt_1D: $dt_1D"
-
 rm -f out/*
 
 # hodgkin huxley model
 # parameters: [<scenario_name> [<dt_0D> [<dt_1D>]]]
-mpirun -n 1 $example_dir/build_release/${example_binary} settings_${scenario_name}.py $scenario_name ${dt_0D} ${dt_1D}
+mpirun -n $nproc $example_dir/build_release/${example_binary} settings_${scenario_name}.py $scenario_name ${dt_0D} ${dt_1D}
 
 cd out
 python3 ../../evaluate.py $scenario_name ${dt_0D} ${dt_1D}
+
+# save result
+cd ..
+mv out dt_0D_${dt_0D}_dt_1D_${dt_1D}
 
 done
 done

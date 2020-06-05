@@ -9,7 +9,7 @@
 import sys
 import numpy as np
 
-end_time = 10   # [ms] end time of simulation
+end_time = 4   # [ms] end time of simulation
 n_elements = 200
 element_size = 1./100   # [cm]
 #element_size = 1./10
