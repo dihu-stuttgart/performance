@@ -133,8 +133,8 @@ def set_specific_states(n_nodes_global, time_step_no, current_time, states, fibe
       nodes_to_stimulate_global.insert(0, innervation_node_global-1)
     if innervation_node_global < n_nodes_global-1:
       nodes_to_stimulate_global.append(innervation_node_global+1)
-    if rank_no == 0:
-      print("t: {}, stimulate fiber {} at nodes {}".format(current_time, fiber_no, nodes_to_stimulate_global))
+    #if rank_no == 0:
+   #   print("t: {}, stimulate fiber {} at nodes {}".format(current_time, fiber_no, nodes_to_stimulate_global))
 
     for node_no_global in nodes_to_stimulate_global:
       states[(node_no_global,0,0)] = 20.0   # key: ((x,y,z),nodal_dof_index,state_no)
@@ -259,8 +259,8 @@ config = {
           
           # output writer for states, algebraics and parameters
           "OutputWriter" : [
-#            {"format": "Paraview", "outputInterval": int(1./dt_1D*output_timestep), "filename": "out/cellml", "binary": True, "onlyNodalValues": True, "fixedFormat": True, "combineFiles": True, "fileNumbering": "incremental"},
-            {"format": "PythonFile", "outputInterval": int(1./dt_1D*output_timestep), "filename": "out/cellml", "binary": True, "onlyNodalValues": True, "fixedFormat": True, "combineFiles": True, "fileNumbering": "incremental"},
+#            {"format": "Paraview", "outputInterval": int(1./dt_0D*output_timestep), "filename": "out/cellml", "binary": True, "onlyNodalValues": True, "fixedFormat": True, "combineFiles": True, "fileNumbering": "incremental"},
+            {"format": "PythonFile", "outputInterval": int(1./dt_0D*output_timestep), "filename": "out/cellml", "binary": True, "onlyNodalValues": True, "fixedFormat": True, "combineFiles": True, "fileNumbering": "incremental"},
           ],
         },
         
@@ -293,7 +293,7 @@ config = {
         
         # output writer only for the diffusion variable (i.e. state "Vm")
         "OutputWriter" : [
-          {"format": "PythonFile", "outputInterval": int(1./dt_1D*output_timestep), "filename": "out/vm", "binary": True, "onlyNodalValues": False, "fileNumbering": "incremental"},
+          #{"format": "PythonFile", "outputInterval": int(1./dt_1D*output_timestep), "filename": "out/vm", "binary": True, "onlyNodalValues": False, "fileNumbering": "incremental"},
           {"format": "Paraview",   "outputInterval": int(1./dt_1D*output_timestep), "filename": "out/vm", "binary": True, "fixedFormat": False, "combineFiles": True, "fileNumbering": "incremental"},
           #{"format": "ExFile", "filename": "out/fiber", "outputInterval": 1e5, "sphereSize": "0.02*0.02*0.02"},
         ],
