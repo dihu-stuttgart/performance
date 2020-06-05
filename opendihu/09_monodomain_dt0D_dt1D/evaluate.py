@@ -35,6 +35,12 @@ for field_variable in dataset["data"]:
     reference_solution_field_variable = field_variable
     break
 
+print("\nreference data, file \"{}\"".format(filename))
+for field_variable in dataset["data"]:
+  print("  field variable \"{}\"".format(field_variable["name"]))
+  for component in field_variable["components"]:
+    print("    component \"{}\"".format(component["name"]))
+
 # load simulation output
 # get all input data in current directory
 ls = os.listdir(".")
@@ -65,6 +71,12 @@ for field_variable in dataset["data"]:
     solution_field_variable = field_variable
     break
   
+print("\nsolution data, file \"{}\"".format(py_files[0]))
+for field_variable in dataset["data"]:
+  print("  field variable \"{}\"".format(field_variable["name"]))
+  for component in field_variable["components"]:
+    print("    component \"{}\"".format(component["name"]))
+
 if abs(time_reference_solution - current_time) > 1e-5:
   print("Error, time does not match. Reference solution: t={}, simulation output: t={}".format(time_reference_solution, current_time))
   
@@ -81,12 +93,12 @@ for component,component_reference in zip(reference_solution_field_variable["comp
   values_reference = component_reference["values"]
   
   rms_relative_error = np.linalg.norm((values - values_reference) / values_reference) / np.sqrt(values_reference.size)
-  print("{} has rms {}"format(name_component,rms_relative_error))
+  print("{} has rms {}".format(name_component,rms_relative_error))
   
   relative_errors.append(rms_relative_error)
 
-mean_relative_error = np.mean(relative_errors)
-median_relative_error = np.median(relative_errors)
+mean_relative_error = np.nanmean(relative_errors)
+median_relative_error = np.nanmedian(relative_errors)
 
 print("total mean rms relative error: {}".format(mean_relative_error))
 print("total median rms relative error: {}".format(median_relative_error))
