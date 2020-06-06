@@ -11,7 +11,7 @@
 import sys
 import numpy as np
 
-end_time = 10   # [ms] end time of simulation
+end_time = 4   # [ms] end time of simulation
 n_elements = 200
 element_size = 1./100   # [cm]
 #element_size = 1./10
@@ -73,10 +73,10 @@ if "hodgkin_huxley" in cellml_file:
   mappings = {
     ("parameter", 0):           ("constant", "membrane/i_Stim"),      # parameter 0 is constant 2 = I_stim
     ("outputConnectorSlot", 0): ("state", "membrane/V"),              # expose state 0 = Vm to the operator splitting
-    ("outputConnectorSlot", 1): ("state", "sodium_channel_m_gate/m"),     # expose state 1 = m
-    ("outputConnectorSlot", 2): ("state", "sodium_channel_h_gate/h"),     # expose state 2 = h
-    ("outputConnectorSlot", 3): ("state", "potassium_channel_n_gate/n"),  # expose state 3 = n
-    ("outputConnectorSlot", 4): ("algebraic", "leakage_current/i_L"),  # expose algebraic 8 = leakage current
+    #("outputConnectorSlot", 1): ("state", "sodium_channel_m_gate/m"),     # expose state 1 = m
+    #("outputConnectorSlot", 2): ("state", "sodium_channel_h_gate/h"),     # expose state 2 = h
+    #("outputConnectorSlot", 3): ("state", "potassium_channel_n_gate/n"),  # expose state 3 = n
+    #("outputConnectorSlot", 4): ("algebraic", "leakage_current/i_L"),  # expose algebraic 8 = leakage current
   }
   parameters_initial_values = [0.0]
   nodal_stimulation_current = 40.
@@ -126,8 +126,8 @@ def set_specific_states(n_nodes_global, time_step_no, current_time, states, fibe
       nodes_to_stimulate_global.insert(0, innervation_node_global-1)
     if innervation_node_global < n_nodes_global-1:
       nodes_to_stimulate_global.append(innervation_node_global+1)
-    if rank_no == 0:
-      print("t: {}, stimulate fiber {} at nodes {}".format(current_time, fiber_no, nodes_to_stimulate_global))
+    #if rank_no == 0:
+    #  print("t: {}, stimulate fiber {} at nodes {}".format(current_time, fiber_no, nodes_to_stimulate_global))
 
     for node_no_global in nodes_to_stimulate_global:
       states[(node_no_global,0,0)] = 20.0   # key: ((x,y,z),nodal_dof_index,state_no)
@@ -197,8 +197,8 @@ config = {
     "logTimeStepWidthAsKey":      "dt_splitting",
     "durationLogKey":             "duration_total",
     "timeStepOutputInterval":     1000,
-    "connectedSlotsTerm1To2":     {0:0, 1:1, 2:2},   # transfer slot 0 = state Vm from Term1 (CellML) to Term2 (Diffusion), slot 1 = stress for output writer in diffusion
-    "connectedSlotsTerm2To1":     {0:0, 1:1, 2:2},   # transfer the same back, in order to reuse field variables
+    "connectedSlotsTerm1To2":     {0:0},   # transfer slot 0 = state Vm from Term1 (CellML) to Term2 (Diffusion), slot 1 = stress for output writer in diffusion
+    "connectedSlotsTerm2To1":     {0:0},   # transfer the same back, in order to reuse field variables
     
     "Term1": {      # CellML
       "Heun" : {
@@ -252,8 +252,8 @@ config = {
           
           # output writer for states, algebraics and parameters
           "OutputWriter" : [
-#            {"format": "Paraview", "outputInterval": int(1./dt_1D*output_timestep), "filename": "out/cellml", "binary": True, "onlyNodalValues": True, "fixedFormat": True, "combineFiles": True, "fileNumbering": "incremental"},
-            {"format": "PythonFile", "outputInterval": int(1./dt_1D*output_timestep), "filename": "out/cellml", "binary": True, "onlyNodalValues": True, "fixedFormat": True, "combineFiles": True, "fileNumbering": "incremental"},
+#            {"format": "Paraview", "outputInterval": int(1./dt_0D*output_timestep), "filename": "out/cellml", "binary": True, "onlyNodalValues": True, "fixedFormat": True, "combineFiles": True, "fileNumbering": "incremental"},
+            {"format": "PythonFile", "outputInterval": int(1./dt_0D*output_timestep), "filename": "out/cellml", "binary": True, "onlyNodalValues": True, "fixedFormat": True, "combineFiles": True, "fileNumbering": "incremental"},
           ],
         },
         
@@ -275,7 +275,7 @@ config = {
         "dirichletBoundaryConditions":  {},
         "solverName":                   "implicitSolver",
         "checkForNanInf":               True,             # check if the solution vector contains nan or +/-inf values, if yes, an error is printed. This is a time-consuming check.
-        "nAdditionalFieldVariables":    1,
+        "nAdditionalFieldVariables":    0,
         
         "FiniteElementMethod" : {
           "meshName":               "MeshFiber",
@@ -286,7 +286,7 @@ config = {
         
         # output writer only for the diffusion variable (i.e. state "Vm")
         "OutputWriter" : [
-          {"format": "PythonFile", "outputInterval": int(1./dt_1D*output_timestep), "filename": "out/vm", "binary": True, "onlyNodalValues": False, "fileNumbering": "incremental"},
+          #{"format": "PythonFile", "outputInterval": int(1./dt_1D*output_timestep), "filename": "out/vm", "binary": True, "onlyNodalValues": False, "fileNumbering": "incremental"},
           {"format": "Paraview",   "outputInterval": int(1./dt_1D*output_timestep), "filename": "out/vm", "binary": True, "fixedFormat": False, "combineFiles": True, "fileNumbering": "incremental"},
           #{"format": "ExFile", "filename": "out/fiber", "outputInterval": 1e5, "sphereSize": "0.02*0.02*0.02"},
         ],
