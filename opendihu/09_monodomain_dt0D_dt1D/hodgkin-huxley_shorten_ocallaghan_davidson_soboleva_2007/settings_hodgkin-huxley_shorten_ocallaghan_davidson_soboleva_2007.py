@@ -322,7 +322,8 @@ config = {
           # output writer for states, algebraics and parameters
           "OutputWriter" : [
 #            {"format": "Paraview", "outputInterval": int(1./dt_0D*output_timestep), "filename": "out/cellml", "binary": True, "onlyNodalValues": True, "fixedFormat": True, "combineFiles": True, "fileNumbering": "incremental"},
-            {"format": "PythonFile", "outputInterval":  int(1./dt_0D*output_timestep), "filename": "out/cellml", "binary": True, "onlyNodalValues": True, "fixedFormat": True, "combineFiles": True, "fileNumbering": "incremental"},
+            {"format": "PythonFile", "outputInterval":  1, "filename": "out/cellml", "binary": True, "onlyNodalValues": True, "fixedFormat": True, "combineFiles": True, "fileNumbering": "incremental"},
+#            {"format": "PythonFile", "outputInterval":  int(1./dt_0D*output_timestep), "filename": "out/cellml", "binary": True, "onlyNodalValues": True, "fixedFormat": True, "combineFiles": True, "fileNumbering": "incremental"},
           ],
         },
         
