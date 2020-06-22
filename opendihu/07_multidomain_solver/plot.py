@@ -122,15 +122,20 @@ def plot(df, items):
     'gmres_boomeramg_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':  "BoomerAMG (symmetric)",
     'gmres_euclid_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':    "Euclid",
     'gmres_euclid_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':     "Euclid (symmetric)",
-    'gmres_bjacobi_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':   "Block jacobi",
-    'gmres_bjacobi_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':    "Block jacobi (symmetric)",
-    'gmres_sor_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':       "Block Gauss-Seidel",
-    'gmres_sor_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':        "Block Gauss-Seidel (symmetric)", 
+    'gmres_bjacobi_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':   "Block Jacobi",
+    'gmres_bjacobi_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':    "Block Jacobi (symmetric)",
+    'gmres_sor_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':       "Parallel SOR",
+    'gmres_sor_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':        "Parallel SOR (symmetric)", 
     'gmres_pilut_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':     "Pilut",
     'gmres_pilut_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':      "Pilut (symmetric)",
     'gmres_none_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':      "No preconditioner",
     'gmres_none_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse':       "No preconditioner (symmetric)",
     'gmres_sor,ilu_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse':   "Block Gauss-Seidel with ILU",
+    'gmres_bjacobi,gamg_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse': "Block Jacobi with AMG",
+    'gmres_bjacobi,cg-euclid_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse': "Block Jacobi with Euclid",
+    'gmres_boomeramg,hypre_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse': 'BoomerAMG w/ coord.',
+    'gmres_boomeramg,hypre_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse': 'BoomerAMG w/ coord (symmetric)',
+    'gmres_bjacobi,hypre_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse': 'Block Jacobi + AMG',
   }
   
   #order = sorted(lines.iteritems())
@@ -146,8 +151,12 @@ def plot(df, items):
     'gmres_bjacobi_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse',#   "Block jacobi",
     'gmres_bjacobi_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse',#    "Block jacobi (symmetric)",
     'gmres_sor_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse',#       "Block Gauss-Seidel",
-    'gmres_sor_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse',#        "Block Gauss-Seidel (symmetric)", 
-    'gmres_sor,ilu_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse',#   "Block Gauss-Seidel with ILU",
+    'gmres_sor_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse',#        "Block Gauss-Seidel (symmetric)",
+    'gmres_bjacobi,gamg_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse',# "Block Jacobi with AMG",
+    'gmres_bjacobi,cg-euclid_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse', #Block Jacobi with Euclid",
+    'gmres_boomeramg,hypre_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse', #'BoomerAMG w/ coord.',
+    'gmres_boomeramg,hypre_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symTrue_lumpFalse', #'BoomerAMG w/ coord (symmetric)',
+    'gmres_bjacobi,hypre_dt0.0005_atol1e-15_rtol1e-15_theta1.0_symFalse_lumpFalse', #'Block Jacobi + AMG',
   ]
   
   mylabels = None
@@ -160,9 +169,9 @@ def plot(df, items):
   #colors = ["r","m","c","b"]
   #linestyle_cycler = cycler.cycler('linestyle',['-','--',':','-.'])
   # (cycler.cycler('color', ["k",(0.3,0.3,0.7),(0.7,0.7,1.0), "r", "y"])+cycler.cycler('linestyle', ['-', '--', ':', '-', '-'])))
-  plt.rc('axes', prop_cycle=(cycler('color', [colors[0],colors[1],colors[1],colors[2],colors[2],colors[3],colors[3],colors[4],colors[4],colors[5],colors[5],colors[6]]) +
-                             cycler('linestyle', ['-', '-', '--', '-', '--', '-', '--',  '-', '--', '-', '--','-']) +
-                             cycler('marker', ['o', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o'])
+  plt.rc('axes', prop_cycle=(cycler('color', [colors[0],colors[1],colors[1],colors[2],colors[2],colors[3],colors[3],colors[4],colors[4],colors[5],colors[5],colors[6],colors[7],colors[8],colors[8],colors[9]]) +
+                             cycler('linestyle', ['-', '-', '--', '-', '--', '-', '--',  '-', '--', '-', '--','-','-','-','--','-']) +
+                             cycler('marker', ['o', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'x', 'o', 'o', 'o', 'x', 'o'])
                              ))
   #plt.rc('axes', prop_cycle=("cycler('color', 'rgb') + cycler('linestyle',  ['-', '-', ':'])"))
   
@@ -196,7 +205,7 @@ def plot(df, items):
     #plt.show()
   else:
     plt.tight_layout()
-    plot_filename = "{}.pdf".format(title.replace(" ", "").replace("/", ""))
+    plot_filename = "{}_runtime.png".format(title.replace(" ", "").replace("/", ""))
     plt.savefig(plot_filename)
     print("Created \"{}\".".format(plot_filename))
    
@@ -228,7 +237,7 @@ def plot(df, items):
     plt.show()
   else:
     plt.tight_layout()
-    plot_filename = "{}.pdf".format(title.replace(" ", "").replace("/", ""))
+    plot_filename = "{}_iterations.png".format(title.replace(" ", "").replace("/", ""))
     plt.savefig(plot_filename)
     print("Created \"{}\".".format(plot_filename))
  
