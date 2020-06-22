@@ -13,6 +13,7 @@ import py_reader    # reader utility for opendihu *.py files
 import pprint 
 pp = pprint.PrettyPrinter()
 
+exit_value=0
 scenario_name = ""
 if len(sys.argv) > 1:
   scenario_name = sys.argv[1]
@@ -20,6 +21,10 @@ if len(sys.argv) > 2:
   dt_0D = float(sys.argv[2])
 if len(sys.argv) > 3:
   dt_1D = float(sys.argv[3])
+if len(sys.argv) > 4:
+  exit_value = int(sys.argv[4])
+
+print("exit_value: {}".format(exit_value))
 
 # load reference solution
 filename = "../reference_solution.py"
@@ -99,6 +104,11 @@ for component,component_reference in zip(reference_solution_field_variable["comp
 
 mean_relative_error = np.nanmean(relative_errors)
 median_relative_error = np.nanmedian(relative_errors)
+
+if exit_value != 0:
+  mean_relative_error = np.nan
+  median_relative_error = np.nan
+  print("set to nan")
 
 print("total mean rms relative error: {}".format(mean_relative_error))
 print("total median rms relative error: {}".format(median_relative_error))

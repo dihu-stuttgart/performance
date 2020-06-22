@@ -18,7 +18,7 @@ pwd
 
 dt=1e-3
 dx=1e-1
-$example_dir/build_release/${example_binary} settings.py $scenario_name ${dt} ${dx}
+mpirun -n 1 $example_dir/build_release/${example_binary} settings.py $scenario_name ${dt} ${dx}
 
 # copy reference solution
 cd out
@@ -31,10 +31,10 @@ for dx in 3.2 1.6 8e-1 4e-1 2e-1 1e-1 5e-2; do
 cd $current_dir/$scenario_name
 
 echo "Scenario $scenario_name, dt: $dt, dx: $dx"
-rm out/*
+rm -rf out/*
 
 # parameters: [<scenario_name> [<dt> [<dx>]]]
-$example_dir/build_release/${example_binary} settings.py $scenario_name ${dt} ${dx}
+mpirun -n 1 $example_dir/build_release/${example_binary} settings.py $scenario_name ${dt} ${dx}
 
 cd out
 python3 ../../evaluate.py $scenario_name ${dt} ${dx}

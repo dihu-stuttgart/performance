@@ -35,10 +35,12 @@ cd $current_dir
 
 # compute reference solution
 cd $current_dir/$scenario_name
+mv result.csv result_backup.csv
+
 dt_0D=1e-7
 dt_1D=1e-7
-nproc=8
-mpirun -n $nproc $example_dir/build_release/${example_binary} settings_${scenario_name}.py $scenario_name ${dt_0D} ${dt_1D}
+nproc=1
+mpirun -n 1 $example_dir/build_release/${example_binary} settings_${scenario_name}.py $scenario_name ${dt_0D} ${dt_1D}
 
 # copy reference solution
 cd out
@@ -55,14 +57,15 @@ fi
 cd $current_dir/$scenario_name
 
 echo "Scenario $scenario_name, dt_0D: $dt_0D, dt_1D: $dt_1D"
-rm -f out/*
+rm -rf out
 
 # hodgkin huxley model
 # parameters: [<scenario_name> [<dt_0D> [<dt_1D>]]]
 mpirun -n $nproc $example_dir/build_release/${example_binary} settings_${scenario_name}.py $scenario_name ${dt_0D} ${dt_1D}
+exit_value=$?
 
 cd out
-python3 ../../evaluate.py $scenario_name ${dt_0D} ${dt_1D}
+python3 ../../evaluate.py $scenario_name ${dt_0D} ${dt_1D} $exit_value
 
 # save result
 cd ..

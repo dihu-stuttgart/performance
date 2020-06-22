@@ -72,7 +72,7 @@ config = {
   },
   "ImplicitEuler": {
     "initialValues":                initial_values,
-    "timeStepWidth":                1e-3,
+    "timeStepWidth":                dt,
     "logTimeStepWidthAsKey":        "dt",
     "durationLogKey":               "duration_implicit_euler",
     "endTime":                      5.0,
