@@ -1,0 +1,52 @@
+#!/bin/bash
+#PBS -N name
+#PBS -l select=1:node_type=rome:mpiprocs=64
+#PBS -l walltime=01:00:00
+#PBS -j oe
+#PBS -o stdout
+##PBS -q test
+
+echo "ncpus=<ncpus>"
+
+# load modules  
+. ~/load_modules_hawk.sh
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+export OMP_NUM_THREADS=1
+export PRGENV=gnu
+export OPENDIHU_HOME=/lustre/cray/ws9/2/ws/icbbnmai-opendihu1/opendihu-hawk-${PRGENV}
+
+export EXAMPLE_HOME=${OPENDIHU_HOME}/examples/electrophysiology/fibers/fibers_emg
+
+partitioning="[x,x,x,x]"
+stride=x
+
+export X=`python -c "print($partitioning[0])"`
+export Y=`python -c "print($partitioning[1])"`
+export Z=`python -c "print($partitioning[2])"`
+export F=`python -c "print($partitioning[3])"`
+export XYZ=`python -c "print($X*$Y*$Z)"`
+
+echo "(X,Y,Z)=($X,$Y,$Z), n processes: $XYZ, stride: $stride, n fibers: ${F}x${F}, n tasks: $PBS_TASKNUM, n nodes: $PBS_NODENUM"
+#echo "nodes:"
+#cat ${PBS_NODEFILE} | tr -d '\n'
+
+#mpirun -np $XYZ omplace -vv -c `generate_cpu_list.py $X $Y $Z $stride` \
+mpirun -np $XYZ \
+${EXAMPLE_HOME}/build_release/fast_fibers_emg \
+     ${EXAMPLE_HOME}/settings_fibers_emg.py --dt_0D 1e-3 --dt_1D 2e-3 --dt_splitting 2e-3 --dt_3D 1.0 --end_time 2.0 \
+    --scenario_name hawk_weak_scaling_endtime_1.0_$stride \
+    --n_subdomains $X $Y $Z \
+    --fiber_file   input/left_biceps_brachii_${F}x${F}fibers.bin \
+    --emg_solver_type cg \
+    --emg_preconditioner_type none \
+    --emg_initial_guess_nonzero \
+    --firing_times_file input/MU_firing_times_immediately.txt \
+    --disable_firing_output \
+    --enable_weak_scaling \
+    --fiber_distribution_file input/MU_fibre_distribution_3780.txt \
+    --cellml_file input/hodgkin_huxley_1952.c
+#    --cellml_file input/shorten_ocallaghan_davidson_soboleva_2007.c
+#    --enable_surface_emg \
