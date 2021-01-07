@@ -51,7 +51,8 @@ plt.rcParams['lines.linewidth'] = 2
 df = pandas_utility.load_df(input_filename)
 
 # filter data
-df = df.loc[df['nIterations_multidomainLinearSolver'] != 0]       # exclude runs where solver diverged (no number of iterations)
+if 'nIterations_multidomainLinearSolver' in df:
+  df = df.loc[df['nIterations_multidomainLinearSolver'] != 0]       # exclude runs where solver diverged (no number of iterations)
 #df = df.loc[df['nIterations_multidomainLinearSolver'] < 1000]
 
 try:
@@ -105,6 +106,11 @@ def plot(df, items):
       lines_n_iterations[row_name] = [np.nan,np.nan,np.nan,np.nan]
       
     #if n_mus == 4: i = 0
+    print("n_mus: {}".format(n_mus))
+    
+    if n_mus < 6:
+      continue
+    
     if n_mus == 6: i = 0
     elif n_mus == 8: i = 1
     elif n_mus == 10: i = 2
@@ -177,7 +183,7 @@ def plot(df, items):
   
   # -------------------------------------
   # plot runtime
-  fig = plt.figure(figsize=(12,5))
+  fig = plt.figure(figsize=(8,5))
   for name in order:
     
     x_values = [6,8,10,12]
@@ -198,20 +204,20 @@ def plot(df, items):
     ax.legend(labels=mylabels)
   ax.legend(bbox_to_anchor=(1.0, 1.0))
     
-  fig.subplots_adjust(bottom=0.2, right=0.7)
+  fig.subplots_adjust(bottom=0.2, right=0.5)
   
   if show_plots:
     pass
     #plt.show()
   else:
     plt.tight_layout()
-    plot_filename = "{}_runtime.png".format(title.replace(" ", "").replace("/", ""))
+    plot_filename = "{}_runtime.png".format(title.replace(" ", "").replace("/", "").replace(".", ""))
     plt.savefig(plot_filename)
     print("Created \"{}\".".format(plot_filename))
    
   # -------------------------------------
   # plot number of iterations
-  fig = plt.figure(figsize=(12,5))
+  fig = plt.figure(figsize=(8,5))
   for name in order:
     
     x_values = [6,8,10,12]
@@ -231,16 +237,71 @@ def plot(df, items):
     ax.legend(labels=mylabels)
   ax.legend(bbox_to_anchor=(1.0, 1.0))
     
-  fig.subplots_adjust(bottom=0.2, right=0.7)
+  fig.subplots_adjust(bottom=0.2, right=0.5)
+  
+  if show_plots:
+    pass
+    #plt.show()
+  else:
+    plt.tight_layout()
+    plot_filename = "{}_iterations.png".format(title.replace(" ", "").replace("/", "").replace(".", ""))
+    plt.savefig(plot_filename)
+    print("Created \"{}\".".format(plot_filename))
+ 
+  # -------------------------------------
+  # combined plot
+  fig = plt.figure(figsize=(10,6))
+  # iterations
+  plt.subplot(2,1,1)
+  for name in order:
+    
+    x_values = [6,8,10,12]
+    y_values = lines_n_iterations[name]
+    
+    plt.plot(x_values, y_values, label=label[name])
+  
+  ax = plt.gca()
+  ax.set_yscale('log')
+  ax.grid(which='major')
+  ax.set_ylabel('number \nof iterations')
+  ax.set_xticks([6,8,10,12])
+  ax.set_xticklabels([])
+  
+  # legend
+  if mylabels is not None:
+    ax.legend(labels=mylabels)
+  ax.legend(bbox_to_anchor=(1.0, 1.0),frameon=False)
+  
+  # runtime
+  plt.subplot(2,1,2)
+  for name in order:
+    
+    x_values = [6,8,10,12]
+    y_values = lines_runtime[name]
+    
+    print(label[name])
+    
+    plt.plot(x_values, y_values, label=label[name])
+  
+  ax = plt.gca()
+  ax.set_yscale('log')
+  ax.grid(which='major')
+  ax.set_ylabel('runtime \nof solver [s]')
+  
+  # x
+  ax.set_xticks([6,8,10,12])
+  ax.set_xticklabels(["6\n36","8\n48","10\n60","12\n72"])
+  ax.set_xlabel('number of motor units\nnumber of processes')
+    
+  fig.subplots_adjust(bottom=0.2, right=0.5)
   
   if show_plots:
     plt.show()
   else:
-    plt.tight_layout()
-    plot_filename = "{}_iterations.png".format(title.replace(" ", "").replace("/", ""))
+    #plt.tight_layout()
+    plot_filename = "{}_combined.png".format(title.replace(" ", "").replace("/", "").replace(".", ""))
     plt.savefig(plot_filename)
     print("Created \"{}\".".format(plot_filename))
- 
  
  
 def output(df, title, columns_to_print, columns_to_plot, plot_labels=None):

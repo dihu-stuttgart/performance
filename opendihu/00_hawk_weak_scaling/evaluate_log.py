@@ -35,8 +35,8 @@ if len(sys.argv) == 1:
 
 # load matplotlib
 import matplotlib
-if not matplotlib.is_interactive() or not show_plots:
-  matplotlib.use('Agg')
+#if not matplotlib.is_interactive() or not show_plots:
+#  matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -141,8 +141,8 @@ def plot(df, title, columns_to_plot, mylabels=None):
   
   #linestyle_cycler = cycler.cycler('linestyle',['-','--',':','-.'])
   # (cycler.cycler('color', ["k",(0.3,0.3,0.7),(0.7,0.7,1.0), "r", "y"])+cycler.cycler('linestyle', ['-', '--', ':', '-', '-'])))
-  plt.rc('axes', prop_cycle=(cycler('color', ['k', 'b', 'r', 'y']) +
-                             cycler('linestyle', ['-', '--', '-.', '-'])))
+  plt.rc('axes', prop_cycle=(cycler('color', ['k', (0.7,0.7,1.0), 'b', 'r', 'y']) +
+                             cycler('linestyle', ['-', ':',  '--', '-.', '-'])))
   #plt.rc('axes', prop_cycle=("cycler('color', 'rgb') + cycler('linestyle',  ['-', '-', ':'])"))
     
   errors = df.groupby(['nRanks']).std()
@@ -236,9 +236,9 @@ column_shortnames = {
 
 # define columns for table and plot (long names)
 columns_to_print = ["meta_partitioning", "totalUsertime", "duration_total", "duration_0D", "duration_1D", "duration_bidomain", "duration_init", "durationOnlyWrite", "memoryResidentSet", "n"]
-columns_to_plot = ["duration_total", "duration_init", "durationOnlyWrite", "duration_0D", "duration_1D", "duration_bidomain"]
+columns_to_plot = ["duration_total", "duration_init", "duration_bidomain", "duration_1D", "duration_0D"]
 
-plot_labels = ["total", "initialization", "write VTK files", "1D model", "0D model", "3D model"]
+plot_labels = ["total", "initialization", "3D model", "1D model", "0D model"]
 
 title = input_filename
 output(df, title, columns_to_print, columns_to_plot, plot_labels)
