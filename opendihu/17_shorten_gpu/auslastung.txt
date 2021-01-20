@@ -1,0 +1,11 @@
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 460.32.03    Driver Version: 460.32.03    CUDA Version: 11.2     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  Quadro GP100        Off  | 00000000:5E:00.0 Off |                  Off |
+| 44%   62C    P0   134W / 235W |   8552MiB / 16278MiB |     63%      Default |
+|                               |                      |                  N/A |
+
