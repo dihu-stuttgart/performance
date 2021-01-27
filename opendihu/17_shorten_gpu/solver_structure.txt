@@ -1,0 +1,82 @@
+Solver structure: 
+
+├── Coupling                                                
+│  data slots:                                              
+│  [a] solution.wal_environment/vS             ├──────── ¤0 x
+│  [a] solution                                :├─────── ¤1 x
+│  [b] Vm                                      ::├────── ¤2 x
+│                                              :::          
+│  slot connections:                           :::          
+│  0¤ ─> ¤0                                    :::          
+│                                              :::          
+│ ├── FastMonodomainSolver                     :::          
+│ │   ("Term1")                                :::          
+│ │ └── MultipleInstances                      :::          
+│ │ │ ├── StrangSplitting                      :::          
+│ │ │ │  data slots:                           :::          
+│ │ │ │  [a] solution.wal_environment/vS       ├÷÷────── ¤0────┐
+│ │ │ │  [a] solution                          :├÷────── ¤1 x  │
+│ │ │ │                                        :::             │
+│ │ │ │  slot connections:                     :::             │
+│ │ │ │  0¤ <═> ¤0                             :::             │
+│ │ │ │                                        :::             │
+│ │ │ │ ├── MultipleInstances                  :::             │
+│ │ │ │ │   ("Term1")                          :::             │
+│ │ │ │ │ ├── Heun                             :::             │
+│ │ │ │ │ │  data slots:                       :::             │
+│ │ │ │ │ │  [a] solution.wal_environment/vS   ├÷÷────── ¤0══╗ │
+│ │ │ │ │ │                                     ::           ║ │
+│ │ │ │ │ │ └── CellmlAdapter                   ::           ║ │
+│ │ │ │ │ └                                     ::           ║ │
+│ │ │ │ └                                       ::           ║ │
+│ │ │ │                                         ::           ║ │
+│ │ │ │ └── MultipleInstances                   ::           ║ │
+│ │ │ │ │   ("Term2")                           ::           ║ m
+│ │ │ │ │ ├── ImplicitEuler                     ::           ║ │
+│ │ │ │ │ │  data slots:                        ::           ║ │
+│ │ │ │ │ │  [a] solution                       ├÷────── ¤0══╝ │
+│ │ │ │ │ │                                      :             │
+│ │ │ │ │ │ ├── FiniteElementMethod              :             │
+│ │ │ │ │ │ │  data slots:                       :             │
+│ │ │ │ │ │ │  [a] solution                      :       ¤0 x  │
+│ │ │ │ │ │ │                                    :             │
+│ │ │ │ │ └                                      :             │
+│ │ │ │ └                                        :             │
+│ │ │ └                                          :             │
+│ │ └                                            :             │
+│ └                                              :             │
+│                                                :             │
+│ ├── StaticBidomainSolver                       :             │
+│ │   ("Term2")                                  :             │
+│ │  data slots:                                 :             │
+│ │  [b] Vm                                      ├────── ¤0<───┘
+│ │                                                         
+│ │ ├── FiniteElementMethod                                 
+│ │ │   ("PotentialFlow")                                   
+│ │ │  data slots:                                          
+│ │ │  [b] solution                                      ¤0 x
+│ │ │                                                       
+│ │                                                         
+│ │ ├── FiniteElementMethod                                 
+│ │ │   ("Activation Transmembrane")                        
+│ │ │  data slots:                                          
+│ │ │  [b] solution                                      ¤0 x
+│ │ │                                                       
+│ │                                                         
+│ │ ├── FiniteElementMethod                                 
+│ │ │   ("Activation Extracellular")                        
+│ │ │  data slots:                                          
+│ │ │  [b] solution                                      ¤0 x
+│ │ │                                                       
+│ └                                                         
+└                                                           
+                                                            
+Connection Types:
+  +··+   Internal connection, no copy
+  ════   Reuse variable, no copy
+  ───>   Copy data in direction of arrow
+  ─m──   Mapping between different meshes
+
+Referenced Meshes:
+  [a] "MeshFiber_0", 1D structured deformable, linear Lagrange basis
+  [b] "3Dmesh", 3D structured deformable, linear Lagrange basis
