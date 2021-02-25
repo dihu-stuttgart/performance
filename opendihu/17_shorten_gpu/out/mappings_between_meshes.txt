@@ -1,0 +1,156 @@
+* Parse settings for mapping between meshes "MeshFiber_0" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_0" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_1" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_1" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_2" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_2" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_3" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_3" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_4" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_4" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_5" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_5" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_6" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_6" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_7" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_7" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_8" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_8" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_9" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_9" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_10" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_10" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_11" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_11" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_12" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_12" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_13" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_13" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_14" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_14" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_15" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_15" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_16" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_16" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_17" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_17" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_18" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_18" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_19" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_19" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_20" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_20" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_21" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_21" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_22" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_22" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_23" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_23" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_24" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_24" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_25" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_25" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_26" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_26" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_27" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_27" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_28" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_28" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_29" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_29" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_30" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_30" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_31" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_31" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_32" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_32" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_33" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_33" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_34" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_34" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_35" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_35" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_36" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_36" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_37" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_37" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_38" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_38" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_39" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_39" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_40" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_40" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_41" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_41" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_42" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_42" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_43" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_43" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_44" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_44" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_45" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_45" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_46" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_46" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_47" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_47" -> "3Dmesh_quadratic".
+* Parse settings for mapping between meshes "MeshFiber_48" -> "3Dmesh".
+* Parse settings for mapping between meshes "MeshFiber_48" -> "3Dmesh_quadratic".
+* Create mapping between meshes "MeshFiber_0" (1D) -> "3Dmesh" (3D).
+  Statistics: 0/494 source dofs are outside the target mesh,
+              0/40 target dofs are outside the source mesh (fixing this is disabled),
+              iterated 0 times over target mesh,
+              "xiTolerance": 0.1 (increase this value to reduce the number of (costly) iterations over the whole mesh, however increasing potentially leads to more elements being checked which takes longer).
+              Total duration of all mappings so far: 0.0102961 s.
+* Create mapping between meshes "MeshFiber_1" (1D) -> "3Dmesh" (3D).
+  Statistics: 0/494 source dofs are outside the target mesh,
+              0/40 target dofs are outside the source mesh (fixing this is disabled),
+              iterated 0 times over target mesh,
+              "xiTolerance": 0.1 (increase this value to reduce the number of (costly) iterations over the whole mesh, however increasing potentially leads to more elements being checked which takes longer).
+              Total duration of all mappings so far: 0.0128343 s.
+* Create mapping between meshes "MeshFiber_2" (1D) -> "3Dmesh" (3D).
+  Statistics: 0/494 source dofs are outside the target mesh,
+              8/40 target dofs are outside the source mesh (fixing this is disabled),
+              iterated 0 times over target mesh,
+              "xiTolerance": 0.1 (increase this value to reduce the number of (costly) iterations over the whole mesh, however increasing potentially leads to more elements being checked which takes longer).
+              Total duration of all mappings so far: 0.0205926 s.
+* Create mapping between meshes "MeshFiber_7" (1D) -> "3Dmesh" (3D).
+  Statistics: 0/494 source dofs are outside the target mesh,
+              0/40 target dofs are outside the source mesh (fixing this is disabled),
+              iterated 0 times over target mesh,
+              "xiTolerance": 0.1 (increase this value to reduce the number of (costly) iterations over the whole mesh, however increasing potentially leads to more elements being checked which takes longer).
+              Total duration of all mappings so far: 0.026812 s.
+* Create mapping between meshes "MeshFiber_8" (1D) -> "3Dmesh" (3D).
+  Statistics: 0/494 source dofs are outside the target mesh,
+              0/40 target dofs are outside the source mesh (fixing this is disabled),
+              iterated 0 times over target mesh,
+              "xiTolerance": 0.1 (increase this value to reduce the number of (costly) iterations over the whole mesh, however increasing potentially leads to more elements being checked which takes longer).
+              Total duration of all mappings so far: 0.027836 s.
+* Create mapping between meshes "MeshFiber_9" (1D) -> "3Dmesh" (3D).
+  Statistics: 0/494 source dofs are outside the target mesh,
+              20/40 target dofs are outside the source mesh (fixing this is disabled),
+              iterated 0 times over target mesh,
+              "xiTolerance": 0.1 (increase this value to reduce the number of (costly) iterations over the whole mesh, however increasing potentially leads to more elements being checked which takes longer).
+              Total duration of all mappings so far: 0.0288398 s.
+* Create mapping between meshes "MeshFiber_14" (1D) -> "3Dmesh" (3D).
+  Statistics: 0/494 source dofs are outside the target mesh,
+              8/40 target dofs are outside the source mesh (fixing this is disabled),
+              iterated 0 times over target mesh,
+              "xiTolerance": 0.1 (increase this value to reduce the number of (costly) iterations over the whole mesh, however increasing potentially leads to more elements being checked which takes longer).
+              Total duration of all mappings so far: 0.0340177 s.
+* Create mapping between meshes "MeshFiber_15" (1D) -> "3Dmesh" (3D).
+  Statistics: 0/494 source dofs are outside the target mesh,
+              20/40 target dofs are outside the source mesh (fixing this is disabled),
+              iterated 0 times over target mesh,
+              "xiTolerance": 0.1 (increase this value to reduce the number of (costly) iterations over the whole mesh, however increasing potentially leads to more elements being checked which takes longer).
+              Total duration of all mappings so far: 0.0350157 s.
+* Create mapping between meshes "MeshFiber_16" (1D) -> "3Dmesh" (3D).
+  Statistics: 0/494 source dofs are outside the target mesh,
+              15/40 target dofs are outside the source mesh (fixing this is disabled),
+              iterated 0 times over target mesh,
+              "xiTolerance": 0.1 (increase this value to reduce the number of (costly) iterations over the whole mesh, however increasing potentially leads to more elements being checked which takes longer).
+              Total duration of all mappings so far: 0.0361311 s.
+* Map from field variable "solution" component 0, mesh "MeshFiber_0" (1D)  [and other field variables/meshes, in total 9]
+        to field variable "Vm" component 0, mesh "3Dmesh" (3D)
+  using forward mapping "MeshFiber_0" (1D) -> "3Dmesh" (3D).
+  Description: Collection and normalization of the contributions from points in mesh "MeshFiber_0" that are located in adjacent elements to the target dof in the target mesh "3Dmesh". (Repeated 99 times)

@@ -1,4 +1,6 @@
-example_dir=$OPENDIHU_HOME/examples/electrophysiology/multidomain_with_fat
+example_dir=$OPENDIHU_HOME/examples/electrophysiology/multidomain/multidomain_with_fat
+#example_dir=$OPENDIHU_HOME/examples/electrophysiology/multidomain_with_fat
+# commit 748fec93223df34d7598b963fe3e1b1240e57271
 
 # run on neon
 
