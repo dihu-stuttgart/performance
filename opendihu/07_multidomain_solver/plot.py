@@ -12,7 +12,7 @@ from cycler import cycler
 import os
 import pandas_utility
 
-input_filename = "logs/log.csv"
+input_filename = "logs/log-combined.csv"
 list_columns = False
 show_plots = False
 
