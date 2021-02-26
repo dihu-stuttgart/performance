@@ -30,11 +30,16 @@ export F=`python -c "print($partitioning[3])"`
 export XYZ=`python -c "print($X*$Y*$Z)"`
 
 echo "(X,Y,Z)=($X,$Y,$Z), n processes: $XYZ, stride: $stride, n fibers: ${F}x${F}, n tasks: $PBS_TASKNUM, n nodes: $PBS_NODENUM"
-#echo "nodes:"
-#cat ${PBS_NODEFILE} | tr -d '\n'
 
-#mpirun -np $XYZ omplace -vv -c `generate_cpu_list.py $X $Y $Z $stride` \
-mpirun -np $XYZ \
+# The ${PBS_NODEFILE} contains the list of hosts for the MPI ranks. It can be altered prior to HPE mpirun
+# reorder the nodes
+NEW_PBS_NODEFILE=/tmp/icbbnmai.nodefile.${PBS_JOBID}
+generate_rank_list_hpe.py $X $Y $Z ${NEW_PBS_NODEFILE}
+
+# alternatively, the variable MPI_TASK_GEOMETRY can be set
+#MPI_TASK_GEOMETRY_FILE=/tmp/icbbnmai.geometry.${PBS_JOBID}
+#echo `generate_rank_list_hpe.py $X $Y $Z` > ${MPI_TASK_GEOMETRY_FILE} && MPI_TASK_GEOMETRY=${MPI_TASK_GEOMETRY_FILE} mpirun -np $XYZ omplace -vv -c 0-127:2 \
+PBS_NODEFILE=${NEW_PBS_NODEFILE} mpirun -np $XYZ omplace -vv -c 0-127:2 \
 ${EXAMPLE_HOME}/build_release/fast_fibers_emg \
      ${EXAMPLE_HOME}/settings_fibers_emg.py --dt_0D 1e-3 --dt_1D 2e-3 --dt_splitting 2e-3 --dt_3D 1.0 --end_time 2.0 \
     --scenario_name hawk_weak_scaling_endtime_1.0_$stride \
