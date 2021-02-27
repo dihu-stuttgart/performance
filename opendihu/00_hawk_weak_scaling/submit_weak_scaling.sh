@@ -51,10 +51,16 @@ done
 echo now submitting
 
 for partitioning in \
+"[2,2,1,7]" \
+"[3,3,2,13]" \
+"[4,4,4,25]" \
+"[6,6,4,37]" \
+"[7,8,8,67]" \
 "[12,12,8,109]" \
 "[15,15,16,187]" \
 "[22,22,16,277]" \
-"[24,24,32,427]"; do
+"[24,24,32,427]" \
+"[29,29,32,523]"; do
   stride=1  # a stride of 2 is given in the jobscript by mpiprocs=64
 
   # compute number of compute nodes

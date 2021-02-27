@@ -7,9 +7,10 @@
 
 # load modules  
 . ~/load_modules_hawk.sh
-unset PYTHONPATH
+#unset PYTHONPATH
 
 # Change to the directory that the job was submitted from
+export PBS_O_WORKDIR=$(pwd)    # comment this in for local execution without job
 cd $PBS_O_WORKDIR
 
 export OMP_NUM_THREADS=1
@@ -20,7 +21,7 @@ export EXAMPLE_HOME=${OPENDIHU_HOME}/examples/electrophysiology/fibers/fibers_co
 export INPUT_DIR=${OPENDIHU_HOME}/examples/electrophysiology/input
 
 # specify partitioning for muscle simulation [x,y,z,f], f is number of fibers in one coordinate direction
-partitioning="[4,4,4,31]"
+partitioning="[4,2,5,33]"
 # values from weak scaling:
 #"[2,2,1,7]" \
 #"[3,3,2,13]" \
@@ -59,34 +60,41 @@ ${EXAMPLE_HOME}/muscle_electrophysiology_precice \
     --fiber_file   ${INPUT_DIR}/left_biceps_brachii_${F}x${F}fibers.bin \
   | tee ${PBS_O_WORKDIR}/stdout/${PBS_JOBID}.muscle.txt  &
 
+
+# domain decomposition for tendons
+export X=2
+export Y=1
+export Z=2
+export XYZ=`python -c "print($X*$Y*$Z)"`
+
 # -------------------
 # tendon_bottom
 PBS_NODEFILE_TENDON_BOTTOM=/tmp/icbbnmai.nodefile_tendon_bottom.${PBS_JOBID}
-generate_rank_list_hpe.py 2 1 2 ${PBS_NODEFILE_TENDON_BOTTOM} $OFFSET_TENDON_BOTTOM
-PBS_NODEFILE=${PBS_NODEFILE_TENDON_BOTTOM} mpirun -np 4 \
+generate_rank_list_hpe.py $X $Y $Z ${PBS_NODEFILE_TENDON_BOTTOM} $OFFSET_TENDON_BOTTOM
+PBS_NODEFILE=${PBS_NODEFILE_TENDON_BOTTOM} mpirun -np $XYZ \
 ${EXAMPLE_HOME}/tendon_linear_precice_dynamic \
   ${EXAMPLE_HOME}/settings_tendon_bottom.py \
-    --n_subdomains 2 1 2 \
+    --n_subdomains $X $Y $Z \
   | tee ${PBS_O_WORKDIR}/stdout/${PBS_JOBID}.tendon_bottom.txt  &
 
 # -------------------
 # tendon_top_a
 PBS_NODEFILE_TENDON_TOP_A=/tmp/icbbnmai.nodefile_tendon_top_a.${PBS_JOBID}
-generate_rank_list_hpe.py 2 1 2 ${PBS_NODEFILE_TENDON_TOP_A} $OFFSET_TENDON_TOP_A
-PBS_NODEFILE=${PBS_NODEFILE_TENDON_TOP_A} mpirun -np 4 \
+generate_rank_list_hpe.py $X $Y $Z ${PBS_NODEFILE_TENDON_TOP_A} $OFFSET_TENDON_TOP_A
+PBS_NODEFILE=${PBS_NODEFILE_TENDON_TOP_A} mpirun -np $XYZ \
 ${EXAMPLE_HOME}/tendon_linear_precice_dynamic \
   ${EXAMPLE_HOME}/settings_tendon_top_a.py \
-    --n_subdomains 2 1 2 \
+    --n_subdomains $X $Y $Z \
   | tee ${PBS_O_WORKDIR}/stdout/${PBS_JOBID}.tendon_top_a.txt  &
 
 # -------------------
 # tendon_top_b
 PBS_NODEFILE_TENDON_TOP_B=/tmp/icbbnmai.nodefile_tendon_top_b.${PBS_JOBID}
-generate_rank_list_hpe.py 2 1 2 ${PBS_NODEFILE_TENDON_TOP_B} $OFFSET_TENDON_TOP_B
-PBS_NODEFILE=${PBS_NODEFILE_TENDON_TOP_B} mpirun -np 4 \
+generate_rank_list_hpe.py $X $Y $Z ${PBS_NODEFILE_TENDON_TOP_B} $OFFSET_TENDON_TOP_B
+PBS_NODEFILE=${PBS_NODEFILE_TENDON_TOP_B} mpirun -np $XYZ \
 ${EXAMPLE_HOME}/tendon_linear_precice_dynamic \
   ${EXAMPLE_HOME}/settings_tendon_top_b.py \
-    --n_subdomains 2 1 2 \
+    --n_subdomains $X $Y $Z \
   | tee ${PBS_O_WORKDIR}/stdout/${PBS_JOBID}.tendon_top_b.txt 
 
 
