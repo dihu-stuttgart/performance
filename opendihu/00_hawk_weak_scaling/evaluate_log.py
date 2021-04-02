@@ -14,21 +14,32 @@ import os
 input_filename = "logs/log.csv"
 list_columns = False
 show_plots = False
+scenario_name = None
 
 # parse arguments
+next_is_scenario_name = False
 for arg in sys.argv[1:]:
+  if next_is_scenario_name:
+    scenario_name = arg
+    continue
+  next_is_scenario_name = False
+  
   if ".csv" in arg:
     input_filename = arg
+  elif "-s" in arg:
+    next_is_scenario_name = True
   else:
     if "l" in arg:
       list_columns = True
     if "p" in arg:
       show_plots = True
+  
 
 if len(sys.argv) == 1:
-  print("usage: {} [-l] [-p] [<input_filename>]".format(sys.argv[0]))
+  print("usage: {} [-l] [-p] [-s <scenario_name>] [<input_filename>]".format(sys.argv[0]))
   print("   -l: list column names")
   print("   -p: show plot window (else create pdf plot)")
+  print("   -s: only filter scenario name")
   print("   <input_filename> log file, default: logs/log.csv")
   print("")
 
@@ -86,11 +97,15 @@ with open(input_filename) as f:
 if list_columns:
 	print("File {} contains {} colums: {}".format(input_filename, n_columns, column_names))
 
+print("{} usecols, {} names ".format(n_columns, len(column_names)))
+
 # load data frame
-df = pd.read_csv(input_filename, sep=';', error_bad_lines=False, warn_bad_lines=True, comment="#", header=None, names=column_names, usecols=range(n_columns), mangle_dupe_cols=True)
+df = pd.read_csv(input_filename, sep=';', error_bad_lines=False, warn_bad_lines=True, comment="#", header=None, names=column_names, usecols=range(n_columns), mangle_dupe_cols=True, low_memory=False)
 
 # filter data
-#df = df.loc[df['endTime'] == 1]
+if scenario_name is not None:
+  print("Using scenario {}".format(scenario_name))
+  df = df.loc[df['scenarioName'] == scenario_name]
 
 if not list_columns:
   print("File {} contains {} rows and {} colums.".format(input_filename, len(df.index), n_columns))
@@ -207,6 +222,8 @@ def output(df, title, columns_to_print, columns_to_plot, plot_labels=None):
 
   print("-"*120)
   print(title)
+  print(df.groupby(['scenarioName','nRanks']).agg(items)[columns_to_print])
+  print("-"*120)
   print(df.groupby(['scenarioName','nRanks']).agg(items).rename(columns = column_shortnames)[table_shortnames])
   print("-"*120)
 
@@ -232,10 +249,11 @@ column_shortnames = {
   "durationInitCellml": "initCell",
   "memoryResidentSet": "mem",
   "meta_partitioning": "subdomains",
+  "nIterations_activationSolver": "n_it",
 }
 
 # define columns for table and plot (long names)
-columns_to_print = ["meta_partitioning", "totalUsertime", "duration_total", "duration_0D", "duration_1D", "duration_bidomain", "duration_init", "durationOnlyWrite", "memoryResidentSet", "n"]
+columns_to_print = ["meta_partitioning", "totalUsertime", "duration_total", "duration_0D", "duration_1D", "duration_bidomain", "duration_init", "durationOnlyWrite", "memoryResidentSet", "nIterations_activationSolver","n"]
 columns_to_plot = ["duration_total", "duration_init", "duration_bidomain", "duration_1D", "duration_0D"]
 
 plot_labels = ["total", "initialization", "3D model", "1D model", "0D model"]

@@ -14,21 +14,32 @@ import os
 input_filename = "logs/log.csv"
 list_columns = False
 show_plots = True
+scenario_name = None
 
 # parse arguments
+next_is_scenario_name = False
 for arg in sys.argv[1:]:
+  if next_is_scenario_name:
+    scenario_name = arg
+    continue
+  next_is_scenario_name = False
+  
   if ".csv" in arg:
     input_filename = arg
+  elif "-s" in arg:
+    next_is_scenario_name = True
   else:
     if "l" in arg:
       list_columns = True
     if "p" in arg:
       show_plots = True
+  
 
 if len(sys.argv) == 1:
-  print("usage: {} [-l] [-p] [<input_filename>]".format(sys.argv[0]))
+  print("usage: {} [-l] [-p] [-s <scenario_name>] [<input_filename>]".format(sys.argv[0]))
   print("   -l: list column names")
   print("   -p: show plot window (else create pdf plot)")
+  print("   -s: only filter scenario name")
   print("   <input_filename> log file, default: logs/log.csv")
   print("")
 
@@ -88,10 +99,12 @@ if list_columns:
 	print("File {} contains {} colums: {}".format(input_filename, n_columns, column_names))
 
 # load data frame
-df = pd.read_csv(input_filename, sep=';', error_bad_lines=False, warn_bad_lines=True, comment="#", header=None, names=column_names, usecols=range(n_columns), mangle_dupe_cols=True)
+df = pd.read_csv(input_filename, sep=';', error_bad_lines=False, warn_bad_lines=True, comment="#", header=None, names=column_names, usecols=range(n_columns), mangle_dupe_cols=True, low_memory=False)
 
 # filter data
-#df = df.loc[df['endTime'] == 1]
+if scenario_name is not None:
+  print("Using scenario {}".format(scenario_name))
+  df = df.loc[df['scenarioName'] == scenario_name]
 
 if not list_columns:
   print("File {} contains {} rows and {} colums.".format(input_filename, len(df.index), n_columns))
@@ -121,10 +134,12 @@ except:
   df['duration_init'] = 0
 
 
-df["duration_bidomain"] *= 10000
-df["duration_1D"] *= 10000
-df["duration_0D"] *= 10000
-df['duration_total'] *= 10000
+scaling_factor = 1000 / df.iloc[0]["endTime"]
+print(scaling_factor)
+df["duration_bidomain"] *= scaling_factor
+df["duration_1D"] *= scaling_factor
+df["duration_0D"] *= scaling_factor
+df['duration_total'] *= scaling_factor
 
 # Info about the data structure
 #print("df info:")
@@ -220,7 +235,7 @@ def plot(df, title, columns_to_plot, mylabels=None):
   ax.text(0.5, -0.44, "Number of fibers", color="grey", ha="center", transform = ax.transAxes)
   
   ax.grid(which='major')
-  ax.set_ylabel('runtime [s]')
+  ax.set_ylabel('Runtime [s]')
   ax.set_xlabel('')
   if mylabels is not None:
     ax.legend(labels=mylabels, loc="upper left", bbox_to_anchor=(1.0,1.0), frameon=False)
@@ -228,8 +243,11 @@ def plot(df, title, columns_to_plot, mylabels=None):
     plt.subplots_adjust(right=0.68,bottom=0.3)
 
   plot_filename = "weak_scaling.pdf"
+  #plot_filename = "weak_scaling_cg1e-5.pdf"
   plt.savefig(plot_filename)
-  print("Created \"{}\".".format(plot_filename))
+  plot_filename_png = plot_filename.replace(".pdf",".png")
+  plt.savefig(plot_filename_png)
+  print("Created \"{}\" and \"{}\".".format(plot_filename,plot_filename_png))
   plt.show()
  
 def output(df, title, columns_to_print, columns_to_plot, plot_labels=None):
