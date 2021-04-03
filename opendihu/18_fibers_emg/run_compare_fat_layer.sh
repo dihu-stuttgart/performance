@@ -16,6 +16,13 @@ export pyod=$OPENDIHU_HOME/dependencies/python/install/bin/python3
 #mkdir -p fiber_distribution
 #$pyod $OPENDIHU_HOME/scripts/generate_fiber_distribution.py fiber_distribution/MU_fibre_distribution_37x37_20c.txt 20 3 1 37 1.1
 
+# simulation without fat layer
+# Additionally set "faces" to ["0+","1+"] in settings_fibers_emg.py!
+mpirun -n 9 $EXAMPLE_DIR/build_release/fast_fibers_emg \
+  $EXAMPLE_DIR/settings_fibers_emg.py $EXAMPLE_FAT_DIR/variables/20mus_fat_comparison.py \
+  --fiber_distribution_file=fiber_distribution/MU_fibre_distribution_37x37_20c.txt \
+  --scenario_name="no_fat" --n_subdomains 1 1 9
+
 # simulation with thick fat layer
 mpirun -n 27 $EXAMPLE_FAT_DIR/build_release/fibers_fat_emg \
   $EXAMPLE_FAT_DIR/settings_fibers_fat_emg.py $EXAMPLE_FAT_DIR/variables/20mus_fat_comparison.py \
@@ -28,9 +35,3 @@ mpirun -n 27 $EXAMPLE_FAT_DIR/build_release/fibers_fat_emg \
   --fiber_distribution_file=fiber_distribution/MU_fibre_distribution_37x37_20c.txt \
   --fat_mesh_file=$OPENDIHU_HOME/examples/electrophysiology/input/left_biceps_brachii_37x37fibers_thin_fat.bin \
   --scenario_name="thin_fat"
-
-# simulation without fat layer
-mpirun -n 27 $EXAMPLE_DIR/build_release/fibers_emg \
-  $EXAMPLE_DIR/settings_fibers_emg.py $EXAMPLE_FAT_DIR/variables/20mus_fat_comparison.py \
-  --fiber_distribution_file=fiber_distribution/MU_fibre_distribution_37x37_20c.txt \
-  --scenario_name="no_fat"
