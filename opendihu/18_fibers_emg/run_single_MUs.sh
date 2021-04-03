@@ -13,7 +13,7 @@ export pyod=$OPENDIHU_HOME/dependencies/python/install/bin/python3
 
 # generate fiber distribution
 mkdir -p fiber_distribution
-#$pyod $OPENDIHU_HOME/scripts/generate_fiber_distribution.py fiber_distribution/MU_fibre_distribution_37x37_20c.txt 20 3 1 37 1.1
+$pyod $OPENDIHU_HOME/scripts/generate_fiber_distribution.py fiber_distribution/MU_fibre_distribution_37x37_20c.txt 20 3 1 37 1.1
 
 # simulation with only the MU 1 activated
 mpirun -n 27 $EXAMPLE_DIR/build_release/fibers_fat_emg \
