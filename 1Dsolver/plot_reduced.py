@@ -422,9 +422,9 @@ colors = {
   13: "ko-",
   15: "ko-",    # total
   17: "yd-",    # 0D solver
-  "parabolic1|1": "b",   # LU
-  "parabolic2|1": "r",   # GMRES
-  "parabolic3|1": "g",   # CG
+  "parabolic1|1": "bo-",   # LU
+  "parabolic2|1": "ro-",   # GMRES
+  "parabolic3|1": "go-",   # CG
   "parabolic3|2": "ro:",
   "parabolic3|3": "r+-",
   "parabolic3|4": "r+--",
@@ -440,9 +440,9 @@ labels = {
   13: "Duration main simulation",
   15: "total runtime",
   17: "solver 0D model",
-  "parabolic1|1": "Direct",
-  "parabolic2|1": "GMRES",
-  "parabolic3|1": "CG",
+  "parabolic1|1": "Direct solver",
+  "parabolic2|1": "GMRES solver",
+  "parabolic3|1": "Conjugate gradient solver",
   "parabolic3|2": "Parabolic solver (CG, Jacobi)",
   "parabolic3|3": "Parabolic solver (CG, Block Jacobi)",
   "parabolic3|4": "Parabolic solver (CG, SOR)",
@@ -471,6 +471,15 @@ for plotkey in plotkeys:
   xlist = sorted(plotdata[plotkey]["value"])
   ylist = [y for y in plotdata[plotkey]["value"].values()]
   yerr = [y for y in plotdata[plotkey]['variance'].values()]
+
+  n = len(xlist)
+  basis = 1.5
+  iend = int(np.log(n)/np.log(basis))
+  indices = [int(basis**i) for i in range(0,iend+1)]
+  
+  xlist = [xlist[i] for i in indices] + [xlist[-1]]
+  ylist = [ylist[i] for i in indices] + [ylist[-1]]
+  yerr = [yerr[i] for i in indices] + [yerr[-1]]
 
   #plt.errorbar(xlist, ylist, fmt=colors[plotkey], yerr=yerr, label=labels[plotkey])
   plt.plot(xlist, ylist, colors[plotkey], label=labels[plotkey])
@@ -501,7 +510,7 @@ ax.set_xlim([8, 4e3])
 #ax.set_xticks([1,2,4,8,12,16,24,32,64])
 plt.xlabel('Number of 1D elements per fiber')
 ax.xaxis.set_label_coords(0.5, -0.13)
-plt.ylabel('Runtime (s)')
+plt.ylabel('Runtime [s]')
 
 plt.subplots_adjust(right=0.57, bottom=0.15)
 plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
