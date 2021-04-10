@@ -31,7 +31,7 @@ def listDir(dir):
     for filename in filenames:
         print('File Name: ' + filename)
         if filename == 'electrodes.csv':
-            input_data = pd.read_csv(os.path.join(dir, filename), delimiter=',', header=0, na_values=['NA'],
+            input_data = pd.read_csv(os.path.join(dir, filename), delimiter=';', header=0, na_values=['NA'],
                                      encoding='ISO-8859-9')
         elif filename == 'stimulation.log':
             output_data = open(os.path.join(dir, filename), 'r')
@@ -48,6 +48,7 @@ def generate_inputs(input_data):
     data = pd.DataFrame(data)
     time_data = data['t']
     #electrode_data = data.drop(data.iloc[:, :2], axis=1)
+    #electrode_data = data.iloc[:, 195:345]
     electrode_nos = [3+196+j*12+i for j in range(13) for i in range(5)]
     electrode_data = data.iloc[:, electrode_nos]
     # for adding gaussian noise with mean 0, unit variance(0, 1)
@@ -110,8 +111,10 @@ def train_test_data(input_data, output_data, look_back, bs):
     #  One hot coding using Keras Categorical
     y_tra = y_tra[0:len(y_tra) - 1]
     y_tes = y_tes[0:len(y_tes) - 1]
-    y_train = to_categorical(y_tra)
-    y_test = to_categorical(y_tes)
+    y_tra = to_categorical(y_tra)
+    y_tes = to_categorical(y_tes)
+    y_tra = np.vstack(y_tra)
+    y_tes = np.vstack(y_tes)
     print('X_train:', X_tra.shape, 'y_train:', y_tra.shape, type(X_tra), type(y_tra))
     print('X_test:', X_tes.shape, 'y_test:', y_tes.shape, type(X_tes), type(y_tes))
     # Reshape input to be 3D [samples, time steps, features] as expected by GRU
