@@ -47,8 +47,9 @@ def generate_inputs(input_data):
     data = input_data
     data = pd.DataFrame(data)
     time_data = data['t']
-    electrode_data = data.drop(data.iloc[:, :2], axis=1)
-    electrode_data = data.iloc[:, 195:345]
+    #electrode_data = data.drop(data.iloc[:, :2], axis=1)
+    electrode_nos = [3+196+j*12+i for j in range(13) for i in range(5)]
+    electrode_data = data.iloc[:, electrode_nos]
     # for adding gaussian noise with mean 0, unit variance(0, 1)
     electrode_data = electrode_data + np.random.normal(loc=0.0, scale=0.1, size=electrode_data.shape)
     print(electrode_data.shape)
