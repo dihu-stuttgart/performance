@@ -1,6 +1,8 @@
 #!/bin/bash
 
 # model: transisotropic hyperelasticity with mooney rivlin
+# As a prerequisite, compile the program under $example_dir two times with USE_VECTORIZED_FE_MATRIX_ASSEMBLY set to False and True
+# Save the programs as 3d_hyperelasticity_normal and 3d_hyperelasticity_vc.
 
 dir=$(pwd)
 
@@ -23,14 +25,12 @@ do
   export nranks=`python -c "print($n_elements[3])"`
 
   # run example with analytic jacobian, not vectorized
-  mpirun -n $nranks $example_dir/build_release/3d_hyperelasticity \
-    $example_dir/settings_3d_box.py --nx $nx --ny $ny --nz $nz \
-    --use_analytic_jacobian=True --use_numeric_jacobian=False --scenario_name="${nx}_${ny}_${nz}_analytic"
+  mpirun -n $nranks $example_dir/build_release/3d_hyperelasticity_normal \
+    $example_dir/settings_3d_box.py --nx $nx --ny $ny --nz $nz --scenario_name="${nx}_${ny}_${nz}_not_vectorized"
   
-  # run example with numeric jacobian
-  echo mpirun -n $nranks $example_dir/build_release/3d_hyperelasticity \
-    $example_dir/settings_3d_box.py --nx $nx --ny $ny --nz $nz \
-    --use_analytic_jacobian=False --use_numeric_jacobian=True --scenario_name="${nx}_${ny}_${nz}_numeric"
+  # run example with analytic jacobian
+  echo mpirun -n $nranks $example_dir/build_release/3d_hyperelasticity_vc \
+    $example_dir/settings_3d_box.py --nx $nx --ny $ny --nz $nz --scenario_name="${nx}_${ny}_${nz}_vectorized"
     
   break
 
