@@ -30,7 +30,7 @@ outlier_bottom = 2
   
 # read csv file
 report_filename = "paper_multi_node.csv"
-report_filename = "c.csv"
+report_filename = "a.csv"
 
 
 caption = u'Nodel-level weak scaling, Hazel Hen'
@@ -444,7 +444,7 @@ for plotkey in plotkeys:
   
   
 ax = plt.gca()
-ax.set_xscale('log', basey=2) 
+ax.set_xscale('log', basex=2) 
 ax.set_yscale('log', basey=10) 
 ax.set_xlim([2e3,1e5])
 #ax.set_xscale('log', basey=2) 
@@ -466,7 +466,7 @@ plt.grid(which='major')
 # twin axes for processes
 ax2 = ax.twiny()
 ax2.set_xlim(ax.get_xlim())
-ax2.set_xscale('log', basey=2)
+ax2.set_xscale('log', basex=2)
 
 xtickslist = sorted(list(set(xtickslist)))
 xtickslist = [(item[0],int(np.ceil(item[1]/24.))) for item in xtickslist]
@@ -584,7 +584,7 @@ for plotkey in plotkeys:
   
   
 ax = plt.gca()
-ax.set_xscale('log', basey=2) 
+ax.set_xscale('log', basex=2) 
 #ax.set_yscale('log', basey=10) 
 ax.set_xlim([2e3,1e5])
 #ax.set_xscale('log', basey=2) 
@@ -606,7 +606,7 @@ plt.grid(which='major')
 # twin axes for processes
 ax2 = ax.twiny()
 ax2.set_xlim(ax.get_xlim())
-ax2.set_xscale('log', basey=2)
+ax2.set_xscale('log', basex=2)
 
 xtickslist = sorted(list(set(xtickslist)))
 xtickslist = [(item[0],int(np.ceil(item[1]/24.))) for item in xtickslist]

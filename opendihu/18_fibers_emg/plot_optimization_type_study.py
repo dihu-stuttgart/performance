@@ -92,7 +92,7 @@ df = pandas_utility.load_df(input_filename)
 #df = pd.read_csv(input_filename, sep=';', error_bad_lines=False, warn_bad_lines=True, comment="#", header=None, names=column_names, usecols=range(n_columns), mangle_dupe_cols=True)
 
 # filter data
-#df = df.loc[df['endTime'] == 1]
+#df = df.loc[df['scenarioName'] != "openmp-18-0"]
 
 if not list_columns:
   print("File {} contains {} rows and {} colums.".format(input_filename, len(df.index), n_columns))

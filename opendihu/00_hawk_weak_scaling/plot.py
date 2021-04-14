@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # parallel weak scaling
@@ -133,6 +133,7 @@ try:
 except:
   df['duration_init'] = 0
 
+df['duration_transfer_01D'] = df['duration_total_advanceTimeSpan1'] - df['duration_0D'] - df['duration_1D']
 
 scaling_factor = 1000 / df.iloc[0]["endTime"]
 print(scaling_factor)
@@ -163,12 +164,12 @@ def plot(df, title, columns_to_plot, mylabels=None):
   
   #linestyle_cycler = cycler.cycler('linestyle',['-','--',':','-.'])
   # (cycler.cycler('color', ["k",(0.3,0.3,0.7),(0.7,0.7,1.0), "r", "y"])+cycler.cycler('linestyle', ['-', '--', ':', '-', '-'])))
-  plt.rc('axes', prop_cycle=(cycler('color', ['k', 'b', 'y', 'r', (0.7,0.7,1.0)]) +
-                             cycler('linestyle', ['-', ':',  '--', '-.', '-'])))
+  plt.rc('axes', prop_cycle=(cycler('color', ['k', 'b', 'y', 'r', (0.7,0.7,1.0), (1.0,0.7,0.2)]) +
+                             cycler('linestyle', ['-', '-',  '-', '-', ':', '-.'])))
   #plt.rc('axes', prop_cycle=("cycler('color', 'rgb') + cycler('linestyle',  ['-', '-', ':'])"))
     
   errors = df.groupby(['nRanks']).std()
-  ax = means.plot(figsize=(7,6), y=columns_to_plot, logx=True, logy=True, yerr=errors, marker='o')
+  ax = means.plot(figsize=(9,7), y=columns_to_plot, logx=True, logy=True, yerr=errors, marker='o')
   
   rank_nos = sorted(list(set(df["nRanks"])))
   ax = plt.gca()
@@ -208,16 +209,18 @@ def plot(df, title, columns_to_plot, mylabels=None):
     string_ranks = ranks
     string_fibers = n_fibers[ranks]
     
-    ypos_ranks = -0.08
-    ypos_fibers = -0.14
+    factor = 0.8
+    
+    ypos_ranks = -0.08*factor
+    ypos_fibers = -0.14*factor
     
     xpos_ranks = ranks
     xpos_fibers = ranks
     
     # adjust y pos
     if ranks == 7744 or ranks == 26912 or ranks == 1152:
-      ypos_ranks -= 0.14
-      ypos_fibers -= 0.14
+      ypos_ranks -= 0.14*factor
+      ypos_fibers -= 0.14*factor
     
     # adjust x pos
     if ranks == 7744:
@@ -231,8 +234,8 @@ def plot(df, title, columns_to_plot, mylabels=None):
     # number of fibers
     ax.text(ranks, ypos_fibers, s=string_fibers, color="grey", ha="center", transform=trans)
   
-  ax.text(0.5, -0.38, "Number of processes", color="black", ha="center", transform = ax.transAxes)
-  ax.text(0.5, -0.44, "Number of fibers", color="grey", ha="center", transform = ax.transAxes)
+  ax.text(0.5, -0.38*factor, "Number of processes", color="black", ha="center", transform = ax.transAxes)
+  ax.text(0.5, -0.44*factor, "Number of fibers", color="grey", ha="center", transform = ax.transAxes)
   
   ax.grid(which='major')
   ax.set_ylabel('Runtime [s]')
@@ -240,9 +243,9 @@ def plot(df, title, columns_to_plot, mylabels=None):
   if mylabels is not None:
     ax.legend(labels=mylabels, loc="upper left", bbox_to_anchor=(1.0,1.0), frameon=False)
     #plt.legend(loc="lower left", bbox_to_anchor=(0,1.0), frameon=False)
-    plt.subplots_adjust(right=0.68,bottom=0.3)
+    plt.subplots_adjust(right=0.67,bottom=0.24)
 
-  plot_filename = "weak_scaling.pdf"
+  plot_filename = "hawk_weak_scaling.pdf"
   #plot_filename = "weak_scaling_cg1e-5.pdf"
   plt.savefig(plot_filename)
   plot_filename_png = plot_filename.replace(".pdf",".png")
@@ -318,10 +321,10 @@ column_shortnames = {
 }
 
 # define columns for table and plot (long names)
-columns_to_print = ["meta_partitioning", "totalUsertime", "duration_total", "duration_0D", "duration_1D", "duration_bidomain", "duration_init", "durationOnlyWrite", "memoryResidentSet", "n"]
-columns_to_plot = ["duration_total", "duration_bidomain", "duration_0D", "duration_1D", "duration_init"]
+columns_to_print = ["meta_partitioning", "totalUsertime", "duration_total", "duration_0D", "duration_1D", "duration_bidomain", "duration_init", "memoryResidentSet", "duration_transfer_01D","n"]
+columns_to_plot = ["duration_total", "duration_bidomain", "duration_0D", "duration_1D", "duration_init", "duration_transfer_01D"]
 
-plot_labels = ["total", "3D model", "0D model", "1D model", "initialization"]
+plot_labels = ["Total", "3D model", "0D model", "1D model", "Initialization", "Communication 0D,1D"]
 
 title = input_filename
 output(df, title, columns_to_print, columns_to_plot, plot_labels)

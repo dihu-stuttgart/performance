@@ -62,37 +62,64 @@ for line in lines:
   #if "hodgkin_huxley" in entries[0]:
   #  values_hh.append([(float)(entries[1]), velocity, (float)(entries[3])])
 
-print(values_shorten)
+#print(values_shorten)
 
 
 x_hh = [x for [x,y,dt] in values_hh]
 y_hh = [y for [x,y,dt] in values_hh]
 
 
-x_shorten = [x for [x,y,dt] in values_shorten]
-y_shorten = [dt for [x,y,dt] in values_shorten]
-z_shorten = [y for [x,y,dt] in values_shorten]
+x_shorten = [x for [x,y,dt]                     in values_shorten if 190 < x < 5e2 and dt < 1e-4]      # resolution, error, dt
+y_shorten = [np.log(dt)/np.log(10) for [x,y,dt] in values_shorten if 190 < x < 5e2 and dt < 1e-4]
+z_shorten = [y for [x,y,dt]                     in values_shorten if 190 < x < 5e2 and dt < 1e-4]
 
-print("x_shorten: {}".format(x_shorten))
-print("y_shorten: {}".format(y_shorten))
-print("z_shorten: {}".format(z_shorten))
+#print("x_shorten: {}".format(x_shorten))
+#print("y_shorten: {}".format(y_shorten))
+#print("z_shorten: {}".format(z_shorten))
 
-fig = plt.figure(0)
+# define global plotting parameters
+import matplotlib
+matplotlib.rcdefaults()
+plt.rcParams.update({'font.size': 14})
+plt.rcParams['lines.linewidth'] = 2
+
+# ----------------------------------------
+# 3D plot
+fig = plt.figure(0, figsize=(8,7))
 ax = fig.add_subplot(111, projection='3d')
 
-plt.title("error of propagation velocity")
+#plt.title("error of propagation velocity")
 ax.scatter(x_shorten, y_shorten, z_shorten)
 
-ax.set_xlabel("resolution [1/cm]")
-ax.set_ylabel("dt [ms]")
+# lines
+nx = 0
+for i in range(1,len(x_shorten)):
+  print(x_shorten[i])
+  if x_shorten[i] != x_shorten[i-1]:
+    nx = i
+    break
+    
+ny = len(x_shorten)/nx
+
+print(nx,ny)
+for i in range(nx):
+  istart = i*ny
+  iend = (i+1)*ny
+  ax.plot(x_shorten[i::nx], y_shorten[i::nx], z_shorten[i::nx], "b-", lw=1)
+  
+#for 
+#  ax.plot(x_shorten, [y]*len(x_shorten), z_shorten, "b-", lw=1)
+
+ax.set_xlabel("\n\n\nSpatial resolution\n [$cm^{-1}$]")
+ax.set_ylabel("\n\n\n\nTimestep width \n$dt_{1D} = 10^y$ [ms]")
 ax.ticklabel_format(style='sci', scilimits=(0,0))
-ax.set_zlabel("relative error of \n velocity")
+ax.set_zlabel("\n\nRelative error         \n of velocity      ")
 #ax.set_xscale('log')
 #ax.set_yscale('log')
 #ax.set_zscale('log')
 
 plt.grid(which='both')
-plt.legend(loc="best")
+#plt.legend(loc="best")
 
 scenario = "none"
 if "sh_cn" in input_filename:
@@ -103,8 +130,11 @@ elif "sh_ie" in input_filename:
   scenario = "sh_ie"
 elif "hh_ie" in input_filename:
   scenario = "hh_ie"
-plt.savefig(scenario+"_error_3d.pdf")
+plt.savefig(scenario+"_error_propagation_velocity_3d.pdf")
+print("SAved \""+scenario+"_error_propagation_velocity_3d.pdf\"")
 
+# ----------------------------------------
+# 2D plot
 fig = plt.figure(1)
 plt.plot(x_shorten,z_shorten, 'o')
 plt.yscale('log')
@@ -114,6 +144,8 @@ plt.grid(which='both')
 plt.tight_layout()
 plt.savefig(scenario+"_error_resolution.pdf")
 
+# ----------------------------------------
+# 2D plot
 fig = plt.figure(2)
 plt.plot(y_shorten,z_shorten, 'o')
 plt.yscale('log')

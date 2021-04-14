@@ -410,7 +410,7 @@ xlist = sorted(xdata)
 
 ######################
 # plot serial scaling
-plt.figure(2, figsize=(14,8))
+plt.figure(2, figsize=(12,6))
 
 # 13 duration main sim
 # 17 ODE
@@ -512,7 +512,7 @@ plt.xlabel('Number of 1D elements per fiber')
 ax.xaxis.set_label_coords(0.5, -0.13)
 plt.ylabel('Runtime [s]')
 
-plt.subplots_adjust(right=0.57, bottom=0.15)
+plt.subplots_adjust(right=0.53, bottom=0.15)
 plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
 
 plt.grid(which='major')
@@ -527,7 +527,7 @@ plt.grid(which='major')
 if not paper_version:
   plt.title(caption)
 #plt.tight_layout()
-plt.savefig(output_path+SCENARIO+'_1D_solver.png')
+plt.savefig(output_path+SCENARIO+'_1D_solver.pdf')
 
 if show_plots:
   plt.show()
