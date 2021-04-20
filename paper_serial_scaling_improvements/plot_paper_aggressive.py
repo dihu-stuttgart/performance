@@ -326,23 +326,23 @@ colors = {
   "baseline41": "bx-",      # file output
   "baseline22": "mo-",      # memory consumption
   
-  "improvements15": "ko--",      # total
-  "improvements36": "yd--",      # 0D
-  "improvements37": "rv--",      # 1D
-  "improvements38": "gs--",      # 3D
-  "improvements39": "bp--",      # 1D->3D
-  "improvements40": "c<--",      # 3D->1D
-  "improvements41": "bx--",      # file output
-  "improvements22": "mo--",      # memory consumption
+  "improvements15": "ko:",      # total
+  "improvements36": "yd:",      # 0D
+  "improvements37": "rv:",      # 1D
+  "improvements38": "gs:",      # 3D
+  "improvements39": "bp:",      # 1D->3D
+  "improvements40": "c<:",      # 3D->1D
+  "improvements41": "bx:",      # file output
+  "improvements22": "mo:",      # memory consumption
 }
 
 labels = {
-  "baseline15": "total",                # total
-  "baseline36": "solver 0D model",      # 0D
-  "baseline37": "solver 1D model",      # 1D
-  "baseline38": "solver 3D model",      # 3D
-  "baseline39": u"homogenization, 1D to 3D",     # 1D->3D
-  "baseline40": u"interpolation, 3D to 1D",      # 3D->1D
+  "baseline15": "Total",                # total
+  "baseline36": "Solver 0D model",      # 0D
+  "baseline37": "Solver 1D model",      # 1D
+  "baseline38": "Solver 3D model",      # 3D
+  "baseline39": u"Homogenization, 1D to 3D",     # 1D->3D
+  "baseline40": u"Interpolation, 3D to 1D",      # 3D->1D
   "baseline41": "file output",          # file output
   "baseline22": "memory consumption",   # memory consumption
 }
@@ -476,12 +476,12 @@ for plotkey in plotkeys:
   else:
     plt.errorbar([2*x for x in xlist], ylist, fmt=color, yerr=yerr, label=label)
   
-plt.plot([], [], 'k-', label="baseline implementation")
-plt.plot([], [], 'k--', label="improvements")
+plt.plot([], [], 'k-', label="Baseline implementation")
+plt.plot([], [], 'k:', label="Improvements")
 plt.plot([], [], ' ', label="\n")
   
 ax = plt.gca()
-ax.set_xscale('log', basey=10) 
+ax.set_xscale('log', basex=10) 
 ax.set_yscale('log', basey=10) 
 ax.set_xlim([6e2, 12e5])
 #ax.set_xscale('log', basey=2) 
@@ -496,7 +496,7 @@ else:
   plt.subplots_adjust(right=0.57, top=0.84, bottom=0.12)
   plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False)
 
-plt.ylabel('Runtime (s)')
+plt.ylabel('Runtime [s]')
 #plt.legend(loc='best')
 plt.grid(which='major')
 
@@ -504,6 +504,7 @@ plt.subplot(gs[1])
 for plotkey in plotkeys_speedup:
     
   xlist = sorted(plotdata[plotkey]["value"])
+  print(xlist)
   ylist = [item[1] for item in sorted(plotdata[plotkey]["value"].items())]
   yerr = [item[1] for item in sorted(plotdata[plotkey]["variance"].items())]
 
@@ -516,7 +517,7 @@ for plotkey in plotkeys_speedup:
   plt.plot([2*x for x in xlist], ylist, color, label=label)
   
 ax = plt.gca()
-ax.set_xscale('log', basey=10) 
+ax.set_xscale('log', basex=10) 
 ax.set_yscale('log', basey=2) 
 
 #ax.set_xlim([1e3, 3e5])
@@ -528,9 +529,9 @@ ax.set_yscale('log', basey=2)
 
 #ax.set_xticks(np.linspace(000,60000,5))
 
-plt.xlabel('Number of 1D elements per fibre')
+plt.xlabel('Number of 1D elements per fiber')
 ax.xaxis.set_label_coords(0.5, -0.3)
-plt.ylabel('Speedup (-)')
+plt.ylabel('Speedup [-]')
 #plt.legend(loc='best')
 plt.grid(which='major')
 ax.set_xlim([6e2, 12e5])
@@ -551,6 +552,7 @@ if not paper_version:
   
 #plt.tight_layout()
 plt.savefig(outfile)
+plt.savefig("opencmiss_cuboid_serial_scaling_comparison_aggressive.pdf")
 
 if show_plots:
   plt.show()

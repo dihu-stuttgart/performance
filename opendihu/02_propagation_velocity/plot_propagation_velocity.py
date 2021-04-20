@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 import sys
@@ -22,8 +22,9 @@ print("filename: {}".format(input_filename))
 	
 show_plots = True
 
-plt.rcParams.update({'font.size': 16})
+plt.rcParams.update({'font.size': 20})
 plt.rcParams['lines.linewidth'] = 2
+plt.rcParams['lines.markersize'] = 6
 
 
 values_shorten = []
@@ -54,29 +55,33 @@ y_hh = [y for [x,y] in values_hh]
 x_shorten = [x for [x,y] in values_shorten]
 y_shorten = [y for [x,y] in values_shorten]
 
-print values_hh
+print(values_hh)
 
 
-print x_hh, y_hh
+print(x_hh, y_hh)
 
 fig = plt.figure(0)
-plt.title("propagation velocity")
+#plt.title("propagation velocity")
 plt.plot(x_hh, y_hh, "o-", label="Hodgkin Huxley")
 plt.plot(x_shorten, y_shorten, "o-", label="Shorten")
-plt.xlabel("number of elements per cm [1/cm]")
-plt.ylabel("velocity [cm/ms]")
+plt.xlabel("Number of elements per cm [1/cm]")
+plt.ylabel("Propagation velocity [cm/ms]")
+plt.tight_layout()
 
 plt.grid(which='both')
 plt.legend(loc="best")
+plt.savefig("propagation_velocity.pdf")
 
 fig = plt.figure(1)
-plt.title("Relative error")
+#plt.title("Relative error")
 plt.plot(x_hh, [abs(y-y_hh[-1])/y_hh[-1] for y in y_hh], "o-", label="Hodgkin Huxley")
 plt.plot(x_shorten, [abs(y-y_shorten[-1])/y_shorten[-1] for y in y_shorten], "o-", label="Shorten")
-plt.ylabel("relative error [-]")
-plt.xlabel("number of elements per cm [1/cm]")
+plt.ylabel("Relative error [-]")
+plt.xlabel("Number of elements per cm [1/cm]")
 plt.grid(which='both')
+plt.tight_layout()
 plt.legend(loc="best")
+plt.savefig("propagation_velocity_rel_error.pdf")
 
 #plt.yscale('log', basey=10)
 plt.show()

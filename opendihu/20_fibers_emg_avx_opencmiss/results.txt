@@ -1,0 +1,136 @@
+Scenario/Results:
+=================
+
+fibers_emg, Strang (Heun, Crank-Nicolson), same timestep widths
+81 fibers with 1481 nodes each, 18 processes
+end_time: 2 ms
+
+runtime opendihu: 1min 26 s = 86s
+runtime opencmiss: 1h 24min 19s = 5059s (factor 59)
+                    
+ideas: 
+- strong scaling                    
+- compare with opendihu GPU
+                    
+Output Opendihu:
+================
+0/18 : This is opendihu 1.2, built Jan  7 2021, C++ 201402, GCC 10.2.0, current time: 2021/1/7 22:31:38, hostname: pcsgs05, n ranks: 18                                                       
+0/18 : Open MPI v3.1.6, package: Open MPI maierbn@sgscl1 Distribution, ident: 3.1.6, repo rev: v3.1.6, Mar 18, 2020                                                                           0/18 : File "/data/scratch/maierbn/opendihu/examples/electrophysiology/fibers/fibers_emg/settings_fibers_emg.py" loaded.                                                                      
+0/18 : ---------------------------------------- begin python output ----------------------------------------                                                                                  Loading variables from opendihu_variables.py.                                                                                                                                                 
+scenario_name: vc,  n_subdomains: 3 3 2,  n_ranks: 18,  end_time: 2.0                                                                                                                         dt_0D:           1e-04, diffusion_solver_type:      cg                                                                                                                                        
+dt_1D:           5e-04, potential_flow_solver_type: gmres                                                                                                                                     
+dt_splitting:    5e-04, emg_solver_type:            cg, emg_initial_guess_nonzero: False                                                                                                      
+dt_3D:           1e-01, paraview_output: True, optimization_type: vc                                                                                                                          
+output_timestep: 1e-01  stimulation_frequency: 1.0 1/ms = 1000.0 Hz                                                                                                                           
+fiber_file:              /data/scratch/maierbn/opendihu/examples/electrophysiology/input/left_biceps_brachii_9x9fibers.bin                                                                    
+cellml_file:             /data/scratch/maierbn/opendihu/examples/electrophysiology/input/new_slow_TK_2014_12_08.cellml                                                                        
+fiber_distribution_file: /data/scratch/maierbn/opendihu/examples/electrophysiology/input/MU_fibre_distribution_10MUs.txt                                                                      
+firing_times_file:       /data/scratch/maierbn/opendihu/examples/electrophysiology/input/MU_firing_times_immediately.txt                                                                      
+********************************************************************************                                                                                                              
+prefactor: sigma_eff/(Am*Cm) = 0.03079310344827586 = 8.93 / (500.0*0.58)                                                                                                                      
+diffusion solver type: cg                                                                                                                                                                     
+n fibers:              81 (9 x 9)                                                                                                                                                             
+n points per fiber:    1481                                                                                                                                                                   
+18 ranks, partitioning: x3 x y3 x z2                                                           
+9 x 9 = 81 fibers, per partition: 3 x 3 = 9                                                    
+per fiber: 1D mesh    nodes global: 1481, local: 741                                                                                                                                          
+  sampling 3D mesh with stride 2 x 2 x 50                                                      
+    linear 3D mesh    nodes global: 6 x 6 x 31 = 1116, local: 2 x 2 x 15 = 60                                                                                                                 
+    linear 3D mesh elements global: 5 x 5 x 30 = 750, local: 2 x 2 x 15 = 60                                                                                                                  
+number of degrees of freedom:                                                                  
+                    1D fiber:       1481  (per process: 741)                                                                                                                                  
+            0D-1D monodomain:      82936  (per process: 41496)                                                                                                                                
+ all fibers 0D-1D monodomain:    6717816  (per process: 373464)                                                                                                                               
+                 3D bidomain:       1116  (per process: 60)                                                                                                                                   
+                       total:    6718932  (per process: 373524)                                                                                                                               
+Python config parsed in 0.9s.                                                                  
+0/18 : ----------------------------------------- end python output -----------------------------------------
+0/18 : Read from file "/data/scratch/maierbn/opendihu/examples/electrophysiology/input/left_biceps_brachii_9x9fibers.bin", 73 collective chunks.
+done.                                          
+0/18 : Initialize 1 global instances (1 local).                                                
+0/18 : CellML file "src/new_slow_TK_2014_12_08.c" with 57 states, 71 algebraics, specified 2 parameters: 
+  parameter 0 maps to "wal_environment/I_HH" (CONSTANTS[54]), initial value: 0,                                                                                                               
+  parameter 1 maps to "razumova/L_S" (CONSTANTS[67]), initial value: 1                                                                                                                        
+
+(…)
+                                                                                                                            
+Total user time: 1:26.46 min                    
+                    
+Output OpenCMISS:                    
+=================
+07.01.2021 22:43:56 Program started.
+                    18  process(es), normal number of elements per process:            1                                                                                                                
+ Working Directory: "/data/scratch/maierbn/paper_neuromuscular/results/0_fibers_emg_avx_opencmiss/opencmiss_run".                                                                             
+ Open file "../opencmiss_input/MU_firing_times_immediately.txt".                                                                                                                              
+ File "../opencmiss_input/MU_firing_times_immediately.txt" contains         9997  firing times.                                                                                               
+ File  "../opencmiss_input/innervation_zone_18.txt" contains           18  Entries, NumberOfFibres=          81 .                                                                             
+ File  "../opencmiss_input/MU_fibre_distribution_4050.txt" contains         3775  Entries, NumberOfFibres=          81 .                                                                      
+ CellML file: "../opencmiss_input/new_slow_TK_2014_12_08.cellml"                                                                                                                              
+ Scenario name: ""                                                                                                                                                                            
+                                                                                                                                                                                              
+ ---------- Timing parameters -----------------------------------------------                                                                                                                 
+ The time unit is 1 ms.                                                                                                                                                                       
+  Main loop, Δt =    2.00, dt =  0.10                                                                                                                                                         
+  - stimulation enabled:  Δt =  0.10                                                                                                                                                          
+  - stimulation disabled: Δt =  0.90                                                                                                                                                          
+                                                                                                                                                                                              
+- MAIN_TIME_LOOP,         Δt =   2.00, dt = .10000, N. Iter:    20                                                                                                                            
+  - MONODOMAIN_TIME_LOOP, Δt = .1000,  dt = .00050, N. Iter:   200                                                                                                                            
+    - SolverDAE,                       dt = .00010, N. Iter:     5                                                                                                                            
+    - SolverParabolic                                                                                                                                                                         
+  - ELASTICITY_LOOP     (disabled)                                                                                                                                                            
+ OutputTimeStepStride:          10 , EnableExportEMG: F                                                                                                                                       
+                                                                                                                                                                                              
+ ---------- Problem size parameters ------------------------------------------                                                                                                                
+# global FE-elements:           2,      3,      3, Total:           18                                                                                                                        
+# local nodes per element:    741,      3,      3, Total:         6669                                                                                                                        
+      NumberOfFibreLinesPerGlobalElement:        9                                                                                                                                            
+              NumberOfGlobalElementLines:        9                                                                                                                                            
+                          NumberOfFibres:       81                                                                                                                                            
+               NumberOfElementsMPerFibre:     1480                                                                                                                                            
+               NumberOfNodesPerLongFibre:     1481                                                                                                                                            
+                       NumberOfElementsM:   119880                                                                                                                                            
+                          NumberOfNodesM:   119961                                                                                                                                            
+                                                                                                                                                                                              
+              Non-decomposable atom:     1x    1x    1 elements                                                                                                                               
+                        Subdomain e:     1x    1x    1 elements                                                                                                                               
+             Domain decomposition p:     2x    3x    3 subdomains                                                                                                                             
+ Number of initial domains for domain decomposition:    18, number of processes:    18                                                                                                        
+ Number of different processes for a fibre:     2                                                                                                                                             
+                                               
+ ---------- Physical parameters -----------------------------------------------                                                                                                               
+       Dimensions [cm]: 14.80x 4.00x 4.00,          InitialStretch:  1.00                                                                                                                     
+ Stimulation [uA/cm^2]:     1200.00 on  0.03125 cm, i.e.  12 nodes,   1200.00 per node                                                                                                        
+ PMax: 7.30,        VMax: -0.02,   Conductivity:  3.83                                                                                                                                        
+   Am: 500.00, Cm (fast):   0.58,     Cm (slow):   0.58                                                                                                                                       
+ ModelType: 0 ("3a", MultiPhysStrain, Old mechanics formulation that works in parallel.)                                                                                                      
+                                               
+ ---------- Solvers -----------------------------------------------------------                                                                                                               
+ Splitting:       1 Strang                                                                     
+ (0D) ODE:        5 Improved Euler (Heun's method)                                  
+ (1D) Monodomain: 2 SOLVER_ITERATIVE_GMRES                                                     
+                  1 NO_PRECONDITIONER                                                          
+ ------------------------------------------------------------------------------                                                                                                               
+                                               
+ Custom Profiling is disabled. (Enable with -DUSE_CUSTOM_PROFILING)                                                                                                                           
+ TAU Profiling is disabled.                                                                    
+Running with     18 processes.                                                                                                                
+
+(…)
+
+     MemoryConsumption:  3.951 GB ( 3950854144 B), Resident:   1.654 GB   
+     MemoryConsumption:  1.580 GB ( 1579913216 B), Resident:   1.087 GB
+ 
+ --------------------------------------------------
+ Process            0
+ Timing (user time):
+    Ode Solver:       preload:    0.0000000000000000       s, main:    4740.3814755254425       s
+    Parabolic Solver: preload:    0.0000000000000000       s, main:    152.96606598678045       s
+    3D FE Solver:     preload:    0.0000000000000000       s, main:    4.6960449947509915       s
+    Node File Output: preload:    0.0000000000000000       s, main:    14.880271911621094       s
+            (system): preload:    0.0000000000000000       s, main:    0.0000000000000000       s
+    Total Simulation: preload:    1.9073486328125000E-006  s, main:    5.3958892822265625E-003  s
+    EMG Output: user:    0.0000000000000000       s, system:    0.0000000000000000       s
+08.01.2021 00:08:15 Program successfully completed. 
+
+(total runtime 07.01.2021 22:43:56 - 08.01.2021 00:08:15 = 1h 24min 19s)
