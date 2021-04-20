@@ -50,24 +50,27 @@ def run(x,y,z,n_fibers_per_dimension):
   #firing_times_file = "../../input/MU_firing_times_immediately.txt"
   firing_times_file = "../../input/MU_firing_times_real.txt"
   if emg_solver_type is None:
-    emg_solver_type = "gmres"
+    #emg_solver_type = "gmres"
+    emg_solver_type = "cg"
   else:
     scenario_name += "_"
 
   sleep_duration = (int)(n_available_nodes % 100);
+  if n_available_nodes > 300:
+    sleep_duration = 0
 
   command = "sleep {DURATION}; export PYTHONPATH=$PYTHONPATH:{EXAMPLE_HOME};  export MPICH_RANK_REORDER_METHOD=3; echo $({OPENDIHU_HOME}/scripts/generate_cpu_list.py {X} {Y} {Z}) > MPICH_RANK_ORDER; sleep 5; echo '{n_available_nodes} available compute nodes';\
   aprun \
   --pes-per-node {N} \
   -n {NP} \
-  {EXAMPLE_HOME}/build_release/fast_fibers_emg {SETTINGS_FILE} \
+  {EXAMPLE_HOME}/build_release/fast_fibers_emg {SETTINGS_FILE} variables.py \
     --scenario_name {SCENARIO_NAME} \
     --n_subdomains {X} {Y} {Z} \
     --fiber_file {FIBER_FILE} \
     --emg_solver_type {EMG_SOLVER_TYPE} \
     --emg_initial_guess_nonzero \
     --firing_times_file {FIRING_TIMES_FILE} \
-    --end_time 1.0 \
+    --end_time 10.0 \
     --disable_firing_output \
 ".format(OPENDIHU_HOME=opendihu_home, X=x, Y=y, Z=z, NP=x*y*z, N=pes_per_node, EXAMPLE_HOME=example_home, SETTINGS_FILE=settings_file, SCENARIO_NAME=scenario_name, FIBER_FILE=fiber_file, n_available_nodes=n_available_nodes, FIRING_TIMES_FILE=firing_times_file, EMG_SOLVER_TYPE=emg_solver_type, DURATION=sleep_duration)
 
@@ -127,6 +130,7 @@ partitionings = [
   [18, 18, 24, 277],
   [27, 27, 24, 427],
   [34, 34, 24, 523],
+  [46, 46, 24, 523],
 ]
 
 
@@ -169,5 +173,6 @@ partitioning 17*17*12= 3468  187^2= 34969 fibers, fibers/rank: 10.083333, need  
 partitioning 18*18*24= 7776  277^2= 76729 fibers, fibers/rank: 9.867413, need  324 nodes
 partitioning 27*27*24=17496  427^2=182329 fibers, fibers/rank: 10.421182, need  729 nodes
 partitioning 34*34*24=27744  523^2=273529 fibers, fibers/rank: 9.859033, need 1156 nodes
+partitioning 46*46*24=50784  523^2=273529 fibers, fibers/rank: 5.386125, need 2116 nodes
 
 """
