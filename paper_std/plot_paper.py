@@ -385,7 +385,7 @@ for plotkey in plotkeys:
   
   
 ax = plt.gca()
-ax.set_xscale('log', basey=10) 
+ax.set_xscale('log', basex=10) 
 ax.set_yscale('log', basey=10) 
 #ax.set_xlim([1e3, 3e5])
 #ax.set_xscale('log', basey=2) 

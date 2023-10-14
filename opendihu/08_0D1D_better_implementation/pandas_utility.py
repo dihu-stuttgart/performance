@@ -224,7 +224,7 @@ def print_table(df, title, columns_to_print_longnames, column_shortnames, group_
   print(agg_df[columns_to_print_shortnames])
   print("-"*120)
 
-def plot_weak_scaling(df, title, columns_to_plot, group_by_columns=['nRanks'], plot_labels=None):
+def plot_weak_scaling(df, title, columns_to_plot, group_by_columns=['nRanks'], plot_labels=None, show_title=True):
   """
   Make a weak scaling plot out of the df, write it to a png and pdf file in `out` directory.
   You have to call plt.show() to show the plotting window afterwards.
@@ -259,7 +259,10 @@ def plot_weak_scaling(df, title, columns_to_plot, group_by_columns=['nRanks'], p
   #                           cycler('linestyle', [ '-', '-', '-', '--','-'])))
     
   # plot values
-  ax = means.interpolate(method='linear', limit_area='inside').plot(figsize=(13,7), y=columns_to_plot, title = title, logx=True, logy=True, yerr=errors, marker='o')
+  if show_title:
+    ax = means.interpolate(method='linear', limit_area='inside').plot(figsize=(13,7), y=columns_to_plot, title = title, logx=True, logy=True, yerr=errors, marker='o')
+  else:
+    ax = means.interpolate(method='linear', limit_area='inside').plot(figsize=(13,7), y=columns_to_plot, logx=True, logy=True, yerr=errors, marker='o')
   #ax = means.plot(figsize=(13,7), y=columns_to_plot, title = title, logx=True, logy=True, yerr=errors, marker='o')
   
   # set axis labels
@@ -280,9 +283,10 @@ def plot_weak_scaling(df, title, columns_to_plot, group_by_columns=['nRanks'], p
   ax.set_xticks(rank_nos)
   ax.set_xticklabels(rank_no_labels)
   ax.grid(which='major')
-  ax.set_xlabel('number of processes')
-  ax.set_ylabel('runtime [s]')
-  ax.set_title(title)
+  ax.set_xlabel('Number of processes')
+  ax.set_ylabel('Runtime [s]')
+  if show_title:
+    ax.set_title(title)
   if plot_labels is not None:
     plt.subplots_adjust(right=0.66, top=0.94, bottom=0.18)
     ax.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0., frameon=False, labels=plot_labels)  

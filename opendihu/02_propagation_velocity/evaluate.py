@@ -14,7 +14,7 @@ import py_reader    # reader utility for opendihu *.py files
 import pprint 
 pp = pprint.PrettyPrinter()
 
-max_threshold = 30.0
+max_threshold = 20.0
 
 scenario_name = ""
 if len(sys.argv) > 1:
@@ -43,7 +43,7 @@ n_points = 0
 # loop over data files and output in readable formatting
 for dataset in data:
   current_time = dataset["currentTime"]
-  if current_time < 9:
+  if current_time < 3:
     continue
   
   solution = py_reader.get_values(dataset, "solution", "0")

@@ -432,7 +432,7 @@ for plotkey in plotkeys:
 ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
 ax.set_yscale('log', basey=10) 
-ax.set_xscale('log', basey=2) 
+ax.set_xscale('log', basex=2) 
 ticks = list(np.linspace(10**4, 10**5, 10)) + list(np.linspace(10**5, 3*10**5, 3))
 ax.set_xticks(ticks)
 ax.set_xticklabels([int(i/1000.) for i in ticks])
@@ -446,7 +446,7 @@ plt.grid(which='both')
 # twin axes for processes
 ax2 = ax.twiny()
 ax2.set_xlim(ax.get_xlim())
-ax2.set_xscale('log', basey=2)
+ax2.set_xscale('log', basex=2)
 
 xtickslist = sorted(list(set(xtickslist)))
 xticks = [item[0] for item in xtickslist]
@@ -544,7 +544,7 @@ plt.legend(bbox_to_anchor=(1.05, 1), loc=2, borderaxespad=0.)
 ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
 ax.set_yscale('log', basey=10) 
-ax.set_xscale('log', basey=2) 
+ax.set_xscale('log', basex=2) 
 ax.set_xlim([9*10**2, 5*10**4])
 #ticks = list(np.linspace(10**3, 10**4, 10)) + list(np.linspace(10**4, 3*10**4, 4))
 #ax.set_xticks(ticks)
@@ -560,7 +560,7 @@ plt.grid(which='both')
 # twin axes for processes
 ax2 = ax.twiny()
 ax2.set_xlim(ax.get_xlim())
-ax2.set_xscale('log', basey=2)
+ax2.set_xscale('log', basex=2)
 
 xtickslist = sorted(list(set(xtickslist)))
 
@@ -667,7 +667,7 @@ for plotkey in plotkeys:
 ax = plt.gca()
 #ax.set_xscale('log', basey=2) 
 #ax.set_yscale('log', basey=10) 
-ax.set_xscale('log', basey=2) 
+ax.set_xscale('log', basex=2) 
 #ticks = list(np.linspace(10**3, 10**4, 10)) + list(np.linspace(10**4, 3*10**4, 4))
 #ax.set_xticks(ticks)
 #ax.set_xticklabels([int(i/1000.) for i in ticks])
@@ -681,7 +681,7 @@ plt.grid(which='both')
 # twin axes for processes
 ax2 = ax.twiny()
 ax2.set_xlim(ax.get_xlim())
-ax2.set_xscale('log', basey=2)
+ax2.set_xscale('log', basex=2)
 
 xtickslist = sorted(list(set(xtickslist)))
 xticks = [item[0] for item in xtickslist]

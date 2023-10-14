@@ -1,0 +1,59 @@
+#!/bin/bash
+#PBS -N name
+#PBS -l select=1:node_type=rome:mpiprocs=64
+#PBS -l walltime=3:00:00
+#PBS -j oe
+#PBS -o stdout
+##PBS -q test
+
+echo "ncpus=<ncpus>"
+
+# load modules  
+. ~/load_modules_hawk.sh
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+export OMP_NUM_THREADS=1
+export PRGENV=gnu
+export OPENDIHU_HOME=/lustre/cray/ws9/2/ws/icbbnmai-opendihu1/opendihu-hawk-${PRGENV}
+
+export EXAMPLE_HOME=${OPENDIHU_HOME}/examples/electrophysiology/fibers/fibers_emg
+export INPUT_DIR=${OPENDIHU_HOME}/examples/electrophysiology/input
+export FIBRE_DISTRIBUTION_DIR=/lustre/cray/ws9/2/ws/icbbnmai-opendihu1/performance/opendihu/19_hawk_fibers_emg/fiber_distribution
+
+partitioning="[x,x,x,x]"
+stride=x
+
+export X=`python -c "print($partitioning[0])"`
+export Y=`python -c "print($partitioning[1])"`
+export Z=`python -c "print($partitioning[2])"`
+export F=`python -c "print($partitioning[3])"`
+export XYZ=`python -c "print($X*$Y*$Z)"`
+export S=`python -c "print($partitioning[4])"`
+
+echo "(X,Y,Z)=($X,$Y,$Z), n processes: $XYZ, S: $S, stride: $stride, n fibers: ${F}x${F}, n tasks: $PBS_TASKNUM, n nodes: $PBS_NODENUM"
+
+#export time=`python -c "print(($partitioning[3]-187)*5)"`
+#echo sleep $time
+#sleep $time
+#echo "go"
+
+# The ${PBS_NODEFILE} contains the list of hosts for the MPI ranks. It can be altered prior to HPE mpirun
+# reorder the nodes
+NEW_PBS_NODEFILE=/tmp/icbbnmai.nodefile.${PBS_JOBID}
+generate_rank_list_hpe.py $X $Y $Z ${NEW_PBS_NODEFILE}
+
+# alternatively, the variable MPI_TASK_GEOMETRY can be set
+#MPI_TASK_GEOMETRY_FILE=/tmp/icbbnmai.geometry.${PBS_JOBID}
+#echo `generate_rank_list_hpe.py $X $Y $Z` > ${MPI_TASK_GEOMETRY_FILE} && MPI_TASK_GEOMETRY=${MPI_TASK_GEOMETRY_FILE} mpirun -np $XYZ omplace -vv -c 0-127:2 \
+PBS_NODEFILE=${NEW_PBS_NODEFILE} mpirun -np $XYZ omplace -vv -c 0-127:2 \
+${EXAMPLE_HOME}/build_release/fast_fibers_emg \
+     ${EXAMPLE_HOME}/settings_fibers_emg.py 100mus.py \
+    --scenario_name hawk2_fibers_emg_${F} \
+    --n_subdomains $X $Y $Z \
+    --fiber_file   ${INPUT_DIR}/left_biceps_brachii_${F}x${F}fibers.bin \
+    --mesh3D_sampling_stride_z=${S} \
+    --emg_initial_guess_nonzero \
+    --fiber_distribution_file ${FIBRE_DISTRIBUTION_DIR}/MU_fibre_distribution_${F}x${F}_100mus.txt 
+

@@ -1,0 +1,49 @@
+#!/bin/bash
+#PBS -N p
+#PBS -l select=1:node_type=rome:mpiprocs=64
+#PBS -l walltime=03:00:00
+#PBS -j oe
+#PBS -o stdout
+
+# load modules  
+. ~/load_modules_hawk.sh
+unset PYTHONPATH
+
+# Change to the directory that the job was submitted from
+cd $PBS_O_WORKDIR
+
+export OMP_NUM_THREADS=1
+export PRGENV=gnu
+export OPENDIHU_HOME=/lustre/cray/ws9/2/ws/icbbnmai-opendihu1/opendihu-hawk-${PRGENV}
+
+#export EXAMPLE_HOME=${OPENDIHU_HOME}/examples/electrophysiology/fibers/fibers_contraction/with_tendons_precice/multiple_tendons_with_electrophysiology
+export EXAMPLE_HOME=${OPENDIHU_HOME}/examples/electrophysiology/fibers/fibers_contraction/with_tendons_precice/multiple_tendons
+
+echo "start"
+
+# muscle
+mpirun -np 1 omplace -vv -c 0-31:2 \
+${EXAMPLE_HOME}/muscle_precice \
+  ${EXAMPLE_HOME}/settings_muscle.py ramp.py \
+  | tee ${PBS_O_WORKDIR}/stdout/${PBS_JOBID}.muscle.txt  &
+
+# tendon_bottom
+mpirun -np 1 omplace -vv -c 32-63:2 \
+${EXAMPLE_HOME}/tendon_linear_precice_dynamic \
+  ${EXAMPLE_HOME}/settings_tendon_bottom.py \
+  | tee ${PBS_O_WORKDIR}/stdout/${PBS_JOBID}.tendon_bottom.txt  &
+
+# tendon_top_a
+mpirun -np 1 omplace -vv -c 64-95:2 \
+${EXAMPLE_HOME}/tendon_linear_precice_dynamic \
+  ${EXAMPLE_HOME}/settings_tendon_top_a.py \
+  | tee ${PBS_O_WORKDIR}/stdout/${PBS_JOBID}.tendon_top_a.txt  &
+
+# tendon_top_b
+mpirun -np 1 omplace -vv -c 96-127:2 \
+${EXAMPLE_HOME}/tendon_linear_precice_dynamic \
+  ${EXAMPLE_HOME}/settings_tendon_top_b.py \
+  | tee ${PBS_O_WORKDIR}/stdout/${PBS_JOBID}.tendon_top_b.txt 
+
+
+echo "end"

@@ -182,10 +182,13 @@ pandas_utility.print_table(df, title, columns_to_print, column_shortnames)
 
 # plot weak scaling
 # define colors and linestyles
-plt.rc('axes', prop_cycle=(cycler('color', ['b', '#6d1e91', 'r', 'y', (1.0,0.7,0.2)]) +
-                           cycler('linestyle', ['--', '-.', '-', '-', '-'])))
-pandas_utility.plot_weak_scaling(df, title, columns_to_plot, ['nRanks'], plot_labels)
+plt.rc('axes', prop_cycle=(cycler('color', ['r', 'r', 'r', 'y', (1.0,0.7,0.2)]) +
+                           cycler('linestyle', [':', '--', '-', '-', '-'])))
+                           
+                           
+pandas_utility.plot_weak_scaling(df, title, columns_to_plot, ['nRanks'], plot_labels, False)
 
+plt.gca().set_prop_cycle(marker=['o', '+', 'x', '*', '.', 'X']) # gca()=current axis
 
 
 if show_plots:
